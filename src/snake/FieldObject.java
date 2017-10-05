@@ -9,7 +9,5 @@ public abstract class FieldObject {
         this.y = y;
     }
 
-    public void intersectWithSnake() {
-        //
-    }
+    public abstract void intersectWithSnake();
 }
