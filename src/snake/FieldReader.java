@@ -84,7 +84,6 @@ public class FieldReader {
                     System.out.println(((SnakePart) r.objects[i][j]).direction);
                     System.out.println(((SnakePart) r.objects[i][j]).parent);
                 }
-                System.out.println();
             }
         }
     }
