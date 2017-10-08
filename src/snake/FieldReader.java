@@ -20,7 +20,7 @@ public class FieldReader {
             InstantiationException, NoSuchMethodException,
             InvocationTargetException, IOException {
         this.fileName = fileName;
-        characterSymbol = new HashMap<String, Class>();
+        characterSymbol = new HashMap<>();
         characterSymbol.put("#", Wall.class);
         characterSymbol.put(" ", Empty.class);
         characterSymbol.put("A", Apple.class);
