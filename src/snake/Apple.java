@@ -8,6 +8,6 @@ public class Apple extends FieldObject {
 
     @Override
     public void intersectWithSnake(Game game) throws Exception {
-        game.field.addSnakePart();
+        game.level.addSnakePart();
     }
 }

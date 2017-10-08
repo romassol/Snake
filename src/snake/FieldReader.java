@@ -38,7 +38,7 @@ public class FieldReader {
         try {
             objects = new FieldObject[lines.size()][lines.get(0).length()];
         } catch (IndexOutOfBoundsException e){
-            throw new IllegalArgumentException("Field is incorrect");
+            throw new IllegalArgumentException("Level is incorrect");
         }
         for(int i = 0; i<lines.size(); i++){
             for (int j = 0; j < lines.get(i).length(); j++){

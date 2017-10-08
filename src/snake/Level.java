@@ -1,11 +1,13 @@
 package snake;
 
-public class Field {
+public class Level {
     public FieldObject[][] objects;
     public Snake snake;
+    public AppleGenerator appleGenerator;
 
-    public Field(Integer width, Integer height) {
+    public Level(Integer width, Integer height, Integer applesCount) {
         objects = new FieldObject[width][height];
+        appleGenerator = new AppleGenerator(applesCount);
     }
 
     public FieldObject moveSnakeAndReturnOldCell(Vector snakeDirection) {

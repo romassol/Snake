@@ -13,8 +13,8 @@ public class AppleGenerator {
         return Objects.equals(oldCell.getClass().getName(), "Apple");
     }
 
-    public void generate(Field field){
-
+    public void generate(Level level){
+        
         applesCount--;
     }
 }
