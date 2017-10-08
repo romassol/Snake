@@ -19,6 +19,6 @@ public class SnakePart extends FieldObject {
 
     @Override
     public void intersectWithSnake(Game game) {
-
+        game.isGameOver = true;
     }
 }

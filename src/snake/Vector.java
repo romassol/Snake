@@ -8,4 +8,8 @@ public class Vector {
         DELTA_X = deltaX;
         DELTA_Y = deltaY;
     }
+
+    public Vector copy() {
+        return new Vector(this.DELTA_X, this.DELTA_Y);
+    }
 }

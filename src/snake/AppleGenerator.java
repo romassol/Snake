@@ -1,5 +1,7 @@
 package snake;
 
+import java.util.Objects;
+
 public class AppleGenerator {
     private Integer applesCount;
 
@@ -7,11 +9,12 @@ public class AppleGenerator {
         this.applesCount = applesCount;
     }
 
-    public boolean isHaveApple() {
-        return applesCount > 0;
+    public boolean isNeedToAdd(FieldObject oldCell) {
+        return Objects.equals(oldCell.getClass().getName(), "Apple");
     }
 
-    public void generate(){
+    public void generate(Field field){
 
+        applesCount--;
     }
 }
