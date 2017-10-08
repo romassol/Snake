@@ -4,12 +4,10 @@ import jdk.jshell.spi.ExecutionControl;
 
 public class Game {
     public Field field;
-    public Snake snake;
-    public  AppleGenerator appleGenerator;
+    private AppleGenerator appleGenerator;
+    public boolean isGameOver;
 
-    public void tick() { }
+    public void tick() {
 
-    public boolean gameOver() {
-        return true;
     }
 }

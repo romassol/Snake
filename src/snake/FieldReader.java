@@ -16,7 +16,9 @@ public class FieldReader {
     private Map<String, Class> characterSymbol;
     public FieldObject[][] objects;
 
-    public FieldReader(String fileName) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException, IOException {
+    public FieldReader(String fileName) throws IllegalAccessException,
+            InstantiationException, NoSuchMethodException,
+            InvocationTargetException, IOException {
         this.fileName = fileName;
         characterSymbol = new HashMap<String, Class>();
         characterSymbol.put("#", Wall.class);
@@ -26,13 +28,17 @@ public class FieldReader {
         fillObjects();
     }
 
-    public void fillObjects() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, IOException {
-        List<String> lines = null;
-        lines = Files.readAllLines(Paths.get(fileName), StandardCharsets.UTF_8);
+    public void fillObjects() throws NoSuchMethodException,
+            IllegalAccessException, InvocationTargetException,
+            InstantiationException, IOException {
+        System.out.println(Paths.get(fileName));
+        List<String> lines = Files.readAllLines(
+                Paths.get(fileName),
+                StandardCharsets.UTF_8);
         try {
             objects = new FieldObject[lines.size()][lines.get(0).length()];
         } catch (IndexOutOfBoundsException e){
-            throw new IllegalArgumentException("field is incorrect");
+            throw new IllegalArgumentException("Field is incorrect");
         }
         for(int i = 0; i<lines.size(); i++){
             for (int j = 0; j < lines.get(i).length(); j++){
@@ -48,7 +54,10 @@ public class FieldReader {
                     arg[1] = i;
                     arg[2] = null;
                     arg[3] = null;
-                    objects[i][j] = (FieldObject) characterSymbol.get(symbol).getConstructor(type).newInstance(arg[0], arg[1], arg[2], arg[3]);
+                    objects[i][j] = (FieldObject) characterSymbol
+                            .get(symbol)
+                            .getConstructor(type)
+                            .newInstance(arg[0], arg[1], arg[2], arg[3]);
                 }
                 else {
                     Class[] type = new Class[2];
@@ -57,13 +66,15 @@ public class FieldReader {
                     type[1] = Integer.class;
                     arg[0] = j;
                     arg[1] = i;
-                    objects[i][j] = (FieldObject) characterSymbol.get(symbol).getConstructor(type).newInstance(arg[0], arg[1]);
+                    objects[i][j] = (FieldObject) characterSymbol
+                            .get(symbol).getConstructor(type)
+                            .newInstance(arg[0], arg[1]);
                 }
             }
         }
     }
     public static void main(String[] args) throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, IOException {
-        FieldReader r = new FieldReader(new String("C:\\ООП\\Snake\\src\\snake\\level1.txt"));
+        FieldReader r = new FieldReader("level1.txt");
         for(int i = 0; i<r.objects.length; i++) {
             for (int j = 0; j < r.objects[i].length; j++) {
                 System.out.println(r.objects[i][j]);
@@ -71,7 +82,7 @@ public class FieldReader {
                 System.out.println(r.objects[i][j].y);
                 if (r.objects[i][j] instanceof SnakePart){
                     System.out.println(((SnakePart) r.objects[i][j]).direction);
-                    System.out.println(((SnakePart) r.objects[i][j]).next);
+                    System.out.println(((SnakePart) r.objects[i][j]).parent);
                 }
                 System.out.println();
             }

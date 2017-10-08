@@ -6,7 +6,7 @@ public class Empty extends FieldObject {
     }
 
     @Override
-    public void intersectWithSnake() {
+    public void intersectWithSnake(Game game) {
 
     }
 }

@@ -1,17 +1,24 @@
 package snake;
 
 public class SnakePart extends FieldObject {
-    public Direction direction;
-    public SnakePart next;
+    public Vector direction;
+    public SnakePart parent;
+    public SnakePart child;
 
-    public SnakePart(Integer x, Integer y, Direction direction, SnakePart next) {
+    public SnakePart(
+            Integer x,
+            Integer y,
+            Vector direction,
+            SnakePart parent,
+            SnakePart child) {
         super(x, y);
         this.direction = direction;
-        this.next = next;
+        this.parent = parent;
+        this.child = child;
     }
 
     @Override
-    public void intersectWithSnake() {
+    public void intersectWithSnake(Game game) {
 
     }
 }

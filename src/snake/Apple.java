@@ -7,7 +7,7 @@ public class Apple extends FieldObject {
     }
 
     @Override
-    public void intersectWithSnake() {
+    public void intersectWithSnake(Game game) throws Exception {
 
     }
 }

@@ -6,7 +6,7 @@ public class Wall extends FieldObject {
     }
 
     @Override
-    public void intersectWithSnake() {
-
+    public void intersectWithSnake(Game game) {
+        game.isGameOver = true;
     }
 }

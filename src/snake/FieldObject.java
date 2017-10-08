@@ -9,5 +9,5 @@ public abstract class FieldObject {
         this.y = y;
     }
 
-    public abstract void intersectWithSnake();
+    public abstract void intersectWithSnake(Game game) throws Exception;
 }
