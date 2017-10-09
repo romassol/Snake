@@ -5,28 +5,25 @@ import java.util.Objects;
 import java.util.Random;
 
 public class AppleGenerator {
-    private Integer applesCount;
+    private int applesCount;
 
     public AppleGenerator(Integer applesCount) {
         this.applesCount = applesCount;
     }
 
     public boolean isNeedToAdd(FieldObject oldCell) {
-        return Objects.equals(oldCell.getClass().getName(), "Apple");
+        return Objects.equals(oldCell.getClass().getName(), "Apple") && applesCount > 0;
     }
 
     public void generate(Level level){
-        while(applesCount > 0){
-            ArrayList<Vector> indexesFreeCells = getAllFreeCells(level);
-            Random random = new Random();
-            Integer index = random.nextInt(indexesFreeCells.size());
-            Vector randomFreeCells = indexesFreeCells.get(index);
-            Integer x = randomFreeCells.DELTA_X;
-            Integer y = randomFreeCells.DELTA_Y;
-            level.objects[x][y] = new Apple(x, y);
-            applesCount--;
-        }
-
+        ArrayList<Vector> indexesFreeCells = getAllFreeCells(level);
+        Random random = new Random();
+        int index = random.nextInt(indexesFreeCells.size());
+        Vector randomFreeCells = indexesFreeCells.get(index);
+        int x = randomFreeCells.DELTA_X;
+        int y = randomFreeCells.DELTA_Y;
+        level.objects[x][y] = new Apple(x, y);
+        applesCount--;
     }
 
     private ArrayList<Vector> getAllFreeCells(Level level) {
