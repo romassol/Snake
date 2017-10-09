@@ -2,7 +2,7 @@ package snake;
 
 public class Apple extends FieldObject {
 
-    public Apple(Integer x, Integer y) {
+    public Apple(int x, int y) {
         super(x, y);
     }
 

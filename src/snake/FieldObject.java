@@ -1,10 +1,10 @@
 package snake;
 
 public abstract class FieldObject {
-    public Integer x;
-    public Integer y;
+    public int x;
+    public int y;
 
-    public FieldObject(Integer x, Integer y) {
+    public FieldObject(int x, int y) {
         this.x = x;
         this.y = y;
     }

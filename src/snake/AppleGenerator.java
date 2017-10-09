@@ -7,12 +7,12 @@ import java.util.Random;
 public class AppleGenerator {
     private int applesCount;
 
-    public AppleGenerator(Integer applesCount) {
+    public AppleGenerator(int applesCount) {
         this.applesCount = applesCount;
     }
 
     public boolean isNeedToAdd(FieldObject oldCell) {
-        return Objects.equals(oldCell.getClass().getName(), "Apple") && applesCount > 0;
+        return oldCell instanceof Apple && applesCount > 0;
     }
 
     public void generate(Level level){

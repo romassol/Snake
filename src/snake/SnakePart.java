@@ -6,8 +6,8 @@ public class SnakePart extends FieldObject {
     public SnakePart child;
 
     public SnakePart(
-            Integer x,
-            Integer y,
+            int x,
+            int y,
             Vector direction,
             SnakePart parent,
             SnakePart child) {

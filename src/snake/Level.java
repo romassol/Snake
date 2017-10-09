@@ -5,7 +5,7 @@ public class Level {
     public Snake snake;
     public AppleGenerator appleGenerator;
 
-    public Level(Integer width, Integer height, Integer applesCount) {
+    public Level(int width, int height, int applesCount) {
         objects = new FieldObject[width][height];
         appleGenerator = new AppleGenerator(applesCount);
     }
@@ -16,8 +16,8 @@ public class Level {
         Vector snakePartToGo = snakeDirection;
         SnakePart snakePartNow = snake.head;
         while (snakePartNow != null) {
-            Integer x = snakePartNow.x + snakePartToGo.DELTA_X;
-            Integer y = snakePartNow.y + snakePartToGo.DELTA_Y;
+            int x = snakePartNow.x + snakePartToGo.DELTA_X;
+            int y = snakePartNow.y + snakePartToGo.DELTA_Y;
 
             if (isNeedToSaveOldCell) {
                 oldCell = objects[x][y];

@@ -1,7 +1,7 @@
 package snake;
 
 public class Empty extends FieldObject {
-    public Empty(Integer x, Integer y) {
+    public Empty(int x, int y) {
         super(x, y);
     }
 

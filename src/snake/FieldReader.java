@@ -44,10 +44,11 @@ public class FieldReader {
             for (int j = 0; j < lines.get(i).length(); j++){
                 String symbol = String.valueOf(lines.get(i).charAt(j));
                 if (Objects.equals(symbol, "S")){
+                    /*
                     Class[] type = new Class[4];
-                    Integer[] arg = new Integer[4];
-                    type[0] = Integer.class;
-                    type[1] = Integer.class;
+                    int[] arg = new int[4];
+                    type[0] = int.class;
+                    type[1] = int.class;
                     type[2] = Direction.class;
                     type[3] = SnakePart.class;
                     arg[0] = j;
@@ -57,10 +58,10 @@ public class FieldReader {
                     objects[i][j] = (FieldObject) characterSymbol
                             .get(symbol)
                             .getConstructor(type)
-                            .newInstance(arg[0], arg[1], arg[2], arg[3]);
+                            .newInstance(arg[0], arg[1], arg[2], arg[3]);*/
                 }
                 else {
-                    Class[] type = new Class[2];
+                    /*Class[] type = new Class[2];
                     Integer[] arg = new Integer[2];
                     type[0] = Integer.class;
                     type[1] = Integer.class;
@@ -68,7 +69,7 @@ public class FieldReader {
                     arg[1] = i;
                     objects[i][j] = (FieldObject) characterSymbol
                             .get(symbol).getConstructor(type)
-                            .newInstance(arg[0], arg[1]);
+                            .newInstance(arg[0], arg[1]);*/
                 }
             }
         }

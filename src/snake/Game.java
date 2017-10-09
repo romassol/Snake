@@ -2,7 +2,6 @@ package snake;
 
 public class Game {
     public Level level;
-
     public Vector playerDirection;
     public boolean isGameOver;
 
