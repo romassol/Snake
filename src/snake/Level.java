@@ -27,7 +27,10 @@ public class Level {
     public FieldObject moveSnakeAndReturnOldCell(Vector snakeDirection) {
         FieldObject oldCell = null;
         boolean isNeedToSaveOldCell = true;
-        Vector snakePartToGo = snakeDirection;
+        Vector snakePartToGo =
+                snakeDirection == null
+                ? snake.head.direction
+                : snakeDirection;
         SnakePart snakePartNow = snake.head;
         int tailX = snake.tail.getX();
         int tailY = snake.tail.getY();
@@ -49,7 +52,7 @@ public class Level {
             snakePartNow.direction = futurePartNowDirection;
             snakePartNow = snakePartNow.child;
         }
-        objects[tailY][tailX] = new Empty();
+        objects[tailX][tailY] = new Empty();
 
         return oldCell;
     }
