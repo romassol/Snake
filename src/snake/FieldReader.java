@@ -48,7 +48,7 @@ public class FieldReader {
                 StandardCharsets.UTF_8);
 
         try {
-            objects = new FieldObject[lines.size()][lines.get(0).length()];
+            objects = new FieldObject[lines.size() - 1][lines.get(1).length()];
         } catch (IndexOutOfBoundsException e){
             throw new IllegalArgumentException("Level is incorrect");
         }
@@ -63,15 +63,15 @@ public class FieldReader {
                 Integer[] args;
                 if (Objects.equals(symbol, "S")){
                     type = new Class[]{int.class, int.class, Vector.class, SnakePart.class, SnakePart.class};
-                    args = new Integer[]{j, i, null, null, null};
+                    args = new Integer[]{j, i - 1, null, null, null};
                     snakeX = j;
-                    snakeY = i;
+                    snakeY = i - 1;
                 }
                 else {
                     type = new Class[]{int.class, int.class};
-                    args = new Integer[]{j, i};
+                    args = new Integer[]{j, i - 1};
                 }
-                objects[i][j] = getNewObject(getConstructor(symbol,type), args);
+                objects[i - 1][j] = getNewObject(getConstructor(symbol,type), args);
             }
         }
         snake = (SnakePart) objects[snakeY][snakeX];
