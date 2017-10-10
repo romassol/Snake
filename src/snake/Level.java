@@ -5,25 +5,23 @@ public class Level {
     public Snake snake;
     public AppleGenerator appleGenerator;
 
-    public Level(int width, int height, int applesCount) {
+    public Level(
+            int width,
+            int height,
+            int applesCount,
+            int snakeX,
+            int snakeY,
+            Vector snakeDirection) {
         objects = new FieldObject[width][height];
         appleGenerator = new AppleGenerator(applesCount);
-    }
-    public Level(FieldObject[][] field, int applesCount) {
-        objects = field;
-        appleGenerator = new AppleGenerator(applesCount);
-        createSnake();
+        snake = new Snake(snakeX, snakeY, snakeDirection);
+        objects[snakeX][snakeY] = snake.head;
     }
 
-    private void createSnake(){
-        for(int i = 0; i < objects.length; i++){
-            for(int j = 0; j < objects[i].length; j++){
-                if (objects[i][j] instanceof SnakePart){
-                    SnakePart part = (SnakePart) objects[i][j];
-                    snake = new Snake(j, i, part.direction);
-                }
-            }
-        }
+    public Level(FieldReader reader, int applesCount) {
+        objects = reader.getObjects();
+        snake = new Snake(reader.getSnakePart());
+        appleGenerator = new AppleGenerator(applesCount);
     }
 
     public FieldObject moveSnakeAndReturnOldCell(Vector snakeDirection) {
@@ -31,11 +29,11 @@ public class Level {
         boolean isNeedToSaveOldCell = true;
         Vector snakePartToGo = snakeDirection;
         SnakePart snakePartNow = snake.head;
-        int tailX = snake.tail.x;
-        int tailY = snake.tail.y;
+        int tailX = snake.tail.getX();
+        int tailY = snake.tail.getY();
         while (snakePartNow != null) {
-            int x = snakePartNow.x + snakePartToGo.DELTA_X;
-            int y = snakePartNow.y + snakePartToGo.DELTA_Y;
+            int x = snakePartNow.getX() + snakePartToGo.DELTA_X;
+            int y = snakePartNow.getY() + snakePartToGo.DELTA_Y;
 
             if (isNeedToSaveOldCell) {
                 oldCell = objects[x][y];
@@ -43,21 +41,21 @@ public class Level {
             }
 
             objects[x][y] = snakePartNow;
-            snakePartNow.x = x;
-            snakePartNow.y = y;
+            snakePartNow.setX(x);
+            snakePartNow.setY(y);
 
             Vector futurePartNowDirection = snakePartToGo.copy();
             snakePartToGo = snakePartNow.direction;
             snakePartNow.direction = futurePartNowDirection;
             snakePartNow = snakePartNow.child;
         }
-        objects[tailY][tailX] = new Empty(tailX,tailY);
+        objects[tailY][tailX] = new Empty();
 
         return oldCell;
     }
 
     public void addSnakePart() {
         SnakePart tail = snake.addPartAndReturnTail();
-        objects[tail.x][tail.y] = tail;
+        objects[tail.getX()][tail.getY()] = tail;
     }
 }

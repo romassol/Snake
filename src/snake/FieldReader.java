@@ -15,8 +15,8 @@ import java.util.Objects;
 public class FieldReader {
     public String fileName;
     private Map<String, Class> characterSymbol;
-    public FieldObject[][] objects;
-    public SnakePart snake;
+    private FieldObject[][] objects;
+    private SnakePart snake;
     private int snakeX;
     private int snakeY;
     private Vector direction;
@@ -81,7 +81,17 @@ public class FieldReader {
     private Constructor getConstructor(String symbol, Class... type) throws NoSuchMethodException {
         return characterSymbol.get(symbol).getConstructor(type);
     }
-    private FieldObject getNewObject(Constructor constructor, Integer... args) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+    private FieldObject getNewObject(Constructor constructor, Integer... args)
+            throws IllegalAccessException, InvocationTargetException,
+            InstantiationException {
         return (FieldObject) constructor.newInstance(args);
+    }
+
+    public FieldObject[][] getObjects() {
+        return objects;
+    }
+
+    public SnakePart getSnakePart() {
+        return snake;
     }
 }

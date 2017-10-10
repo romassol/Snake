@@ -22,7 +22,7 @@ public class AppleGenerator {
         Vector randomFreeCells = indexesFreeCells.get(index);
         int x = randomFreeCells.DELTA_X;
         int y = randomFreeCells.DELTA_Y;
-        level.objects[x][y] = new Apple(x, y);
+        level.objects[x][y] = new Apple();
         applesCount--;
     }
 

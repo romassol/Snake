@@ -1,8 +1,8 @@
 package snake;
 
 public class Game {
-    public Level level;
-    public Vector playerDirection;
+    private Level level;
+    private Vector playerDirection;
     public boolean isGameOver;
 
     public void changeGameState() throws Exception {
@@ -13,11 +13,16 @@ public class Game {
             level.appleGenerator.generate(level);
     }
 
-    public Game(Level level, Vector playerDirection) {
+    public Game(Level level) {
         this.level = level;
-        this.playerDirection = playerDirection;
         isGameOver = false;
     }
 
+    public void setPlayerDirection(Vector playerDirection) {
+        this.playerDirection = playerDirection;
+    }
 
+    public Level getLevel() {
+        return level;
+    }
 }

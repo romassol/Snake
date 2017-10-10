@@ -9,9 +9,13 @@ public class Snake {
         tail = head;
     }
 
+    public Snake(SnakePart snakePart) {
+        head = snakePart;
+    }
+
     public SnakePart addPartAndReturnTail() {
-        int x = tail.x + tail.direction.DELTA_X * (-1);
-        int y = tail.y + tail.direction.DELTA_Y * (-1);
+        int x = tail.getX() + tail.direction.DELTA_X * (-1);
+        int y = tail.getY() + tail.direction.DELTA_Y * (-1);
         SnakePart newPart = new SnakePart(x, y, tail.direction, tail, null);
         tail.child = newPart;
         tail = newPart;

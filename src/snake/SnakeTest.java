@@ -6,41 +6,46 @@ import static org.junit.Assert.*;
 
 public class SnakeTest {
 
-    private FieldObject[][] fillField(){
-        FieldObject[][] field = new FieldObject[3][3];
-        field[0][0] = new Empty(0,0);
-        field[0][1] = new Empty(0,1);
-        field[0][2] = new Empty(0,2);
-        field[1][0] = new Apple(1,0);
-        field[1][1] = new Wall(1,1);
-        field[1][2] = new Empty(1,2);
-        field[2][0] = new Wall(2,0);
-        field[2][1] = new Empty(2,1);
-        field[2][2] = new SnakePart(2,2, Direction.LEFT, null,null);
-        return field;
+    private void fillField(Level level){
+        level.objects[0][0] = new Empty();
+        level.objects[0][1] = new Empty();
+        level.objects[0][2] = new Empty();
+        level.objects[1][0] = new Apple();
+        level.objects[1][1] = new Wall();
+        level.objects[1][2] = new Empty();
+        level.objects[2][0] = new Wall();
+        level.objects[2][1] = new Empty();
     }
-    private FieldObject[][] field = fillField();
 
     @Test
-    public void SnakeMoving() throws Exception {
-        Level level1 = new Level(field,1);
-        Game game = new Game(level1, Direction.LEFT);
+    public void snakeMoving() throws Exception {
+        Level level = new Level(
+                3 ,3,1, 2, 2, Direction.LEFT);
+        Game game = new Game(level);
         game.changeGameState();
-        assertEquals(game.level.snake.head.x, 1);
-        assertEquals(game.level.snake.head.y, 2);
-        assertEquals(game.level.snake.head.child, null);
-        assertEquals(game.level.snake.head.parent, null);
-        assertTrue(game.level.objects[2][2] instanceof Empty);
-//        System.out.println(level1.snake);
-//        System.out.println();
-//        for(int i = 0; i < field.length; i++) {
-//            for (int j = 0; j < field[i].length; j++) {
-//                System.out.println(field[j][i]);
-//                System.out.println("x: " + j + " " + "y: " + i);
-//                System.out.println();
-//            }
-//        }
+        assertEquals(game.getLevel().snake.head.getX(), 1);
+        assertEquals(game.getLevel().snake.head.getY(), 2);
+        assertEquals(game.getLevel().snake.head.child, null);
+        assertEquals(game.getLevel().snake.head.parent, null);
     }
 
+    @Test
+    public void addPartAndReturnTail_newSnake() {
+        Snake snake = new Snake(2, 0, Direction.RIGHT);
+        SnakePart head = snake.head;
 
+        SnakePart newTail = snake.addPartAndReturnTail();
+
+        assertEquals(head, snake.head);
+        assertEquals(newTail, snake.tail);
+        assertEquals(1, newTail.getX());
+        assertEquals(0, newTail.getY());
+        assertEquals(Direction.RIGHT, newTail.direction);
+        assertEquals(newTail, snake.head.child);
+        assertEquals(head, snake.tail.parent);
+    }
+
+    public void addPartAndReturnTail_notEmptySnake() {
+
+    }
 }
