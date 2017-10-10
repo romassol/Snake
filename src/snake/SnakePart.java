@@ -1,7 +1,5 @@
 package snake;
 
-import jdk.nashorn.internal.runtime.regexp.joni.exception.ValueException;
-
 public class SnakePart extends FieldObject {
     public Vector direction;
     public SnakePart parent;
@@ -33,7 +31,7 @@ public class SnakePart extends FieldObject {
 
     public void setX(int x) {
         if (x < 0)
-            throw new ValueException(
+            throw new IllegalArgumentException(
                     "Coordinate must have be more than zero");
         this.x = x;
     }
@@ -44,7 +42,7 @@ public class SnakePart extends FieldObject {
 
     public void setY(int y) {
         if (y < 0)
-            throw new ValueException(
+            throw new IllegalArgumentException(
                     "Coordinate must have be more than zero");
         this.y = y;
     }

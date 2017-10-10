@@ -20,12 +20,14 @@ public class FieldReader {
     private int snakeX;
     private int snakeY;
     private Vector direction;
+    private Map<String, Vector> directionToVector;
 
     public FieldReader(String fileName) throws IllegalAccessException,
             InstantiationException, NoSuchMethodException,
             InvocationTargetException, IOException {
         this.fileName = fileName;
         characterSymbol = getCharacterSymbol();
+        directionToVector = getDirectionToVector();
         fillObjects();
     }
 
@@ -36,6 +38,15 @@ public class FieldReader {
         characterSymbol.put("A", Apple.class);
         characterSymbol.put("S", SnakePart.class);
         return characterSymbol;
+    }
+
+    private HashMap<String, Vector> getDirectionToVector(){
+        HashMap<String, Vector> directionToVector = new HashMap<>();
+        directionToVector.put("left", new Vector(-1,0));
+        directionToVector.put("right", new Vector(1,0));
+        directionToVector.put("down", new Vector(0,1));
+        directionToVector.put("up", new Vector(0,-1));
+        return directionToVector;
     }
 
     private void fillObjects() throws NoSuchMethodException,
@@ -53,8 +64,7 @@ public class FieldReader {
             throw new IllegalArgumentException("Level is incorrect");
         }
         for (int i = 0; i < lines.size() && i < 1; i++){
-            String[] a = lines.get(i).split(" ");
-            direction = new Vector(Integer.parseInt(a[0]), Integer.parseInt(a[1]));
+            direction = directionToVector.get(lines.get(i).toLowerCase());
         }
         for(int i = 1; i < lines.size(); i++){
             for (int j = 0; j < lines.get(i).length(); j++){
@@ -68,8 +78,8 @@ public class FieldReader {
                     snakeY = i - 1;
                 }
                 else {
-                    type = new Class[]{int.class, int.class};
-                    args = new Integer[]{j, i - 1};
+                    type = new Class[]{};
+                    args = new Integer[]{};
                 }
                 objects[i - 1][j] = getNewObject(getConstructor(symbol,type), args);
             }
