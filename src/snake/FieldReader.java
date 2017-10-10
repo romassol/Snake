@@ -1,6 +1,7 @@
 package snake;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -15,77 +16,72 @@ public class FieldReader {
     public String fileName;
     private Map<String, Class> characterSymbol;
     public FieldObject[][] objects;
+    public SnakePart snake;
+    private int snakeX;
+    private int snakeY;
+    private Vector direction;
 
     public FieldReader(String fileName) throws IllegalAccessException,
             InstantiationException, NoSuchMethodException,
             InvocationTargetException, IOException {
         this.fileName = fileName;
-        characterSymbol = new HashMap<>();
+        characterSymbol = getCharacterSymbol();
+        fillObjects();
+    }
+
+    private HashMap<String, Class> getCharacterSymbol(){
+        HashMap<String, Class> characterSymbol = new HashMap<>();
         characterSymbol.put("#", Wall.class);
         characterSymbol.put(" ", Empty.class);
         characterSymbol.put("A", Apple.class);
         characterSymbol.put("S", SnakePart.class);
-        fillObjects();
+        return characterSymbol;
     }
 
-    public void fillObjects() throws NoSuchMethodException,
+    private void fillObjects() throws NoSuchMethodException,
             IllegalAccessException, InvocationTargetException,
             InstantiationException, IOException {
-        System.out.println(Paths.get(fileName));
+
+        final String dir = System.getProperty("user.dir");
         List<String> lines = Files.readAllLines(
-                Paths.get(fileName),
+                Paths.get(dir+"/levels/"+fileName),
                 StandardCharsets.UTF_8);
+
         try {
             objects = new FieldObject[lines.size()][lines.get(0).length()];
         } catch (IndexOutOfBoundsException e){
             throw new IllegalArgumentException("Level is incorrect");
         }
-        for(int i = 0; i<lines.size(); i++){
+        for (int i = 0; i < lines.size() && i < 1; i++){
+            String[] a = lines.get(i).split(" ");
+            direction = new Vector(Integer.parseInt(a[0]), Integer.parseInt(a[1]));
+        }
+        for(int i = 1; i < lines.size(); i++){
             for (int j = 0; j < lines.get(i).length(); j++){
                 String symbol = String.valueOf(lines.get(i).charAt(j));
+                Class[] type;
+                Integer[] args;
                 if (Objects.equals(symbol, "S")){
-                    /*
-                    Class[] type = new Class[4];
-                    int[] arg = new int[4];
-                    type[0] = int.class;
-                    type[1] = int.class;
-                    type[2] = Direction.class;
-                    type[3] = SnakePart.class;
-                    arg[0] = j;
-                    arg[1] = i;
-                    arg[2] = null;
-                    arg[3] = null;
-                    objects[i][j] = (FieldObject) characterSymbol
-                            .get(symbol)
-                            .getConstructor(type)
-                            .newInstance(arg[0], arg[1], arg[2], arg[3]);*/
+                    type = new Class[]{int.class, int.class, Vector.class, SnakePart.class, SnakePart.class};
+                    args = new Integer[]{j, i, null, null, null};
+                    snakeX = j;
+                    snakeY = i;
                 }
                 else {
-                    /*Class[] type = new Class[2];
-                    Integer[] arg = new Integer[2];
-                    type[0] = Integer.class;
-                    type[1] = Integer.class;
-                    arg[0] = j;
-                    arg[1] = i;
-                    objects[i][j] = (FieldObject) characterSymbol
-                            .get(symbol).getConstructor(type)
-                            .newInstance(arg[0], arg[1]);*/
+                    type = new Class[]{int.class, int.class};
+                    args = new Integer[]{j, i};
                 }
+                objects[i][j] = getNewObject(getConstructor(symbol,type), args);
             }
         }
+        snake = (SnakePart) objects[snakeY][snakeX];
+        snake.direction = direction;
     }
-    public static void main(String[] args) throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, IOException {
-        FieldReader r = new FieldReader("level1.txt");
-        for(int i = 0; i<r.objects.length; i++) {
-            for (int j = 0; j < r.objects[i].length; j++) {
-                System.out.println(r.objects[i][j]);
-                System.out.println(r.objects[i][j].x);
-                System.out.println(r.objects[i][j].y);
-                if (r.objects[i][j] instanceof SnakePart){
-                    System.out.println(((SnakePart) r.objects[i][j]).direction);
-                    System.out.println(((SnakePart) r.objects[i][j]).parent);
-                }
-            }
-        }
+
+    private Constructor getConstructor(String symbol, Class... type) throws NoSuchMethodException {
+        return characterSymbol.get(symbol).getConstructor(type);
+    }
+    private FieldObject getNewObject(Constructor constructor, Integer... args) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+        return (FieldObject) constructor.newInstance(args);
     }
 }
