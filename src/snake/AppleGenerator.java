@@ -11,8 +11,13 @@ public class AppleGenerator {
         this.applesCount = applesCount;
     }
 
-    public boolean isNeedToAdd(FieldObject oldCell) {
-        return oldCell instanceof Apple && applesCount > 0;
+    public boolean isNeedToAdd(FieldObject oldCell)
+    {
+        return oldCell instanceof Apple;
+    }
+
+    public int getApplesCount() {
+        return applesCount;
     }
 
     public void generate(Level level){
