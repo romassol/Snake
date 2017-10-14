@@ -2,7 +2,7 @@ package snake;
 
 public class Apple extends FieldObject {
     @Override
-    public void intersectWithSnake(Game game) throws Exception {
+    public void intersectWithSnake(Game game) {
         game.getLevel().addSnakePart();
     }
 }

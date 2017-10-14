@@ -25,34 +25,44 @@ public class Level {
     }
 
     public FieldObject moveSnakeAndReturnOldCell(Vector snakeDirection) {
-        FieldObject oldCell = null;
-        boolean isNeedToSaveOldCell = true;
-        Vector snakePartToGo =
-                snakeDirection == null
-                ? snake.head.direction
-                : snakeDirection;
-        SnakePart snakePartNow = snake.head;
-        int tailX = snake.tail.getX();
-        int tailY = snake.tail.getY();
+        SnakePart snakePartNow = snake.head.child;
+        Vector parentDirection = snake.head.direction;
+        Empty emptyObj = new Empty();
+
         while (snakePartNow != null) {
-            int x = snakePartNow.getX() + snakePartToGo.DELTA_X;
-            int y = snakePartNow.getY() + snakePartToGo.DELTA_Y;
+            int x = snakePartNow.getX() + parentDirection.DELTA_X;
+            int y = snakePartNow.getY() + parentDirection.DELTA_Y;
+            parentDirection = snakePartNow.direction;
 
-            if (isNeedToSaveOldCell) {
-                oldCell = objects[x][y];
-                isNeedToSaveOldCell = false;
-            }
-
-            objects[x][y] = snakePartNow;
+            objects[snakePartNow.getX()][snakePartNow.getY()] = emptyObj;
+            snakePartNow.direction = snakePartNow.parent.direction;
             snakePartNow.setX(x);
             snakePartNow.setY(y);
+            objects[x][y] = snakePartNow;
 
-            Vector futurePartNowDirection = snakePartToGo.copy();
-            snakePartToGo = snakePartNow.direction;
-            snakePartNow.direction = futurePartNowDirection;
             snakePartNow = snakePartNow.child;
         }
-        objects[tailX][tailY] = new Empty();
+
+        return moveSnakeHeadAndReturnOldCell(snakeDirection);
+    }
+
+    private FieldObject moveSnakeHeadAndReturnOldCell(Vector snakeDirection) {
+        Vector direction;
+
+        if (snakeDirection == null ||
+                snake.head.direction.isOpposite(snakeDirection))
+            direction = snake.head.direction;
+        else
+            direction = snakeDirection;
+
+        int x = snake.head.getX() + direction.DELTA_X;
+        int y = snake.head.getY() + direction.DELTA_Y;
+
+        FieldObject oldCell = objects[x][y];
+        snake.head.setX(x);
+        snake.head.setY(y);
+        snake.head.direction = direction;
+        objects[x][y] = snake.head;
 
         return oldCell;
     }

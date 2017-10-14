@@ -6,7 +6,7 @@ public class Game {
     public boolean isGameOver;
     public boolean isWin;
 
-    public void changeGameState() throws Exception {
+    public void makeTurn() {
         FieldObject oldCell = level.moveSnakeAndReturnOldCell(playerDirection);
         oldCell.intersectWithSnake(this);
 

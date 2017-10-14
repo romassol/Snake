@@ -79,4 +79,21 @@ public class SnakeTest {
         assertEquals(1, level.snake.head.getX());
         assertEquals(2, level.snake.head.getY());
     }
+
+    @Test
+    public void snakeMovingInCircle() {
+        Level level = new Level(
+                4 ,5,1, 1, 1, Direction.TOP);
+
+        level.addSnakePart();
+        level.snake.tail.direction = Direction.LEFT;
+        level.addSnakePart();
+        level.snake.tail.direction = Direction.BOTTOM;
+        level.addSnakePart();
+        SnakePart head = level.snake.head;
+
+        FieldObject oldCell = level.moveSnakeAndReturnOldCell(Direction.RIGHT);
+        assertTrue(oldCell instanceof Empty);
+        assertEquals(head, level.objects[2][1]);
+    }
 }

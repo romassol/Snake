@@ -42,10 +42,10 @@ public class FieldReader {
 
     private HashMap<String, Vector> getDirectionToVector(){
         HashMap<String, Vector> directionToVector = new HashMap<>();
-        directionToVector.put("left", new Vector(-1,0));
-        directionToVector.put("right", new Vector(1,0));
-        directionToVector.put("down", new Vector(0,1));
-        directionToVector.put("up", new Vector(0,-1));
+        directionToVector.put("left", Direction.LEFT);
+        directionToVector.put("right", Direction.RIGHT);
+        directionToVector.put("down", Direction.BOTTOM);
+        directionToVector.put("up", Direction.TOP);
         return directionToVector;
     }
 
