@@ -79,4 +79,8 @@ public class Level {
     public boolean isOver(){
         return appleGenerator.getApplesCount() == 0;
     }
+
+    public boolean isOver(){
+        return appleGenerator.getApplesCount() == 0;
+    }
 }
