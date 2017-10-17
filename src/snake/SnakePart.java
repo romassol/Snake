@@ -1,6 +1,7 @@
 package snake;
 
-public class SnakePart extends FieldObject {
+public class
+SnakePart extends FieldObject {
     public Vector direction;
     public SnakePart parent;
     public SnakePart child;

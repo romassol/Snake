@@ -15,7 +15,7 @@ public class Level {
         objects = new FieldObject[width][height];
         appleGenerator = new AppleGenerator(applesCount);
         snake = new Snake(snakeX, snakeY, snakeDirection);
-        objects[snakeX][snakeY] = snake.head;
+        objects[snakeY][snakeX] = snake.head;
     }
 
     public Level(FieldReader reader, int applesCount) {
@@ -32,14 +32,16 @@ public class Level {
         while (snakePartNow != null) {
             int x = snakePartNow.getX() + parentDirection.DELTA_X;
             int y = snakePartNow.getY() + parentDirection.DELTA_Y;
-            parentDirection = snakePartNow.direction;
 
-            objects[snakePartNow.getX()][snakePartNow.getY()] = emptyObj;
-            snakePartNow.direction = snakePartNow.parent.direction;
+            Vector tmp = snakePartNow.direction.clone();
+            objects[snakePartNow.getY()][snakePartNow.getX()] = emptyObj;
+            snake.newPartDirection = parentDirection;
+            snakePartNow.direction = parentDirection;
             snakePartNow.setX(x);
             snakePartNow.setY(y);
-            objects[x][y] = snakePartNow;
+            objects[y][x] = snakePartNow;
 
+            parentDirection = tmp;
             snakePartNow = snakePartNow.child;
         }
 
@@ -58,18 +60,20 @@ public class Level {
         int x = snake.head.getX() + direction.DELTA_X;
         int y = snake.head.getY() + direction.DELTA_Y;
 
-        FieldObject oldCell = objects[x][y];
+        FieldObject oldCell = objects[y][x];
+        if (snake.head.child == null)
+            objects[snake.head.getY()][snake.head.getX()] = new Empty();
         snake.head.setX(x);
         snake.head.setY(y);
         snake.head.direction = direction;
-        objects[x][y] = snake.head;
+        objects[y][x] = snake.head;
 
         return oldCell;
     }
 
     public void addSnakePart() {
         SnakePart tail = snake.addPartAndReturnTail();
-        objects[tail.getX()][tail.getY()] = tail;
+        objects[tail.getY()][tail.getX()] = tail;
     }
 
     public boolean isOver(){
