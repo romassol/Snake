@@ -1,26 +1,41 @@
 package snake;
 
+
 public class Game {
-    private Level level;
+    private Level[] levels;
+    private int indexOfCurrentLevel;
     private Vector playerDirection;
     public boolean isGameOver;
     public boolean isWin;
 
-    public void makeTurn() {
-        FieldObject oldCell = level.moveSnakeAndReturnOldCell(playerDirection);
+    public void makeTurn() throws MakeTurnException {
+        if(isGameOver){
+            throw new MakeTurnException();
+        }
+
+        FieldObject oldCell = getCurrentLevel().moveSnakeAndReturnOldCell(playerDirection);
         oldCell.intersectWithSnake(this);
 
-        if (level.appleGenerator.isNeedToAdd(oldCell)) {
-            if (level.appleGenerator.getApplesCount() == 0) {
-                isWin = true;
-                return;
+        if(isGameOver){
+            return;
+        }
+
+        if (getCurrentLevel().appleGenerator.isNeedToAdd(oldCell)) {
+            if (getCurrentLevel().isOver()) {
+                if(isLevelLast()){
+                    isWin = true;
+                    isGameOver = true;
+                    return;
+                }
+                indexOfCurrentLevel++;
             }
-            level.appleGenerator.generate(level);
+            getCurrentLevel().appleGenerator.generate(getCurrentLevel());
         }
     }
 
-    public Game(Level level) {
-        this.level = level;
+    public Game(Level[] levels) {
+        this.levels = levels;
+        indexOfCurrentLevel = 0;
         isGameOver = false;
         isWin = false;
     }
@@ -29,7 +44,11 @@ public class Game {
         this.playerDirection = playerDirection;
     }
 
-    public Level getLevel() {
-        return level;
+    public Level getCurrentLevel() {
+        return levels[indexOfCurrentLevel];
+    }
+
+    private boolean isLevelLast(){
+        return indexOfCurrentLevel == levels.length - 1;
     }
 }

@@ -11,6 +11,7 @@ public class Snake {
 
     public Snake(SnakePart snakePart) {
         head = snakePart;
+        tail = head;
     }
 
     public SnakePart addPartAndReturnTail() {
@@ -20,5 +21,18 @@ public class Snake {
         tail.child = newPart;
         tail = newPart;
         return newPart;
+    }
+
+    public void addPart(SnakePart part){
+        part.direction = tail.direction;
+        part.parent = tail;
+        tail.child = part;
+        tail = part;
+    }
+
+    public void removeTail(){
+        SnakePart futureTail = tail.parent;
+        futureTail.child = null;
+        tail = futureTail;
     }
 }

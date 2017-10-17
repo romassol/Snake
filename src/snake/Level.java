@@ -20,7 +20,7 @@ public class Level {
 
     public Level(FieldReader reader, int applesCount) {
         objects = reader.getObjects();
-        snake = new Snake(reader.getSnakePart());
+        snake = reader.getSnake();
         appleGenerator = new AppleGenerator(applesCount);
     }
 
@@ -70,5 +70,9 @@ public class Level {
     public void addSnakePart() {
         SnakePart tail = snake.addPartAndReturnTail();
         objects[tail.getX()][tail.getY()] = tail;
+    }
+
+    public boolean isOver(){
+        return appleGenerator.getApplesCount() == 0;
     }
 }

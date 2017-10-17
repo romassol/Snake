@@ -1,42 +1,41 @@
 package snake;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 
 public class FieldReader {
-    public String fileName;
-    private Map<String, Class> characterSymbol;
+    private String fileName;
+    private Map<Character, IObjectCreator> characterSymbol;
     private FieldObject[][] objects;
-    private SnakePart snake;
-    private int snakeX;
-    private int snakeY;
+    private List<SnakePart> snakeParts;
+    private SnakePart head;
     private Vector direction;
     private Map<String, Vector> directionToVector;
+    private Snake snake;
 
-    public FieldReader(String fileName) throws IllegalAccessException,
+    FieldReader(String fileName) throws IllegalAccessException,
             InstantiationException, NoSuchMethodException,
             InvocationTargetException, IOException {
         this.fileName = fileName;
+        snakeParts = new ArrayList<>();
         characterSymbol = getCharacterSymbol();
         directionToVector = getDirectionToVector();
         fillObjects();
+        createSnake();
     }
 
-    private HashMap<String, Class> getCharacterSymbol(){
-        HashMap<String, Class> characterSymbol = new HashMap<>();
-        characterSymbol.put("#", Wall.class);
-        characterSymbol.put(" ", Empty.class);
-        characterSymbol.put("A", Apple.class);
-        characterSymbol.put("S", SnakePart.class);
+    private HashMap<Character, IObjectCreator> getCharacterSymbol(){
+        HashMap<Character, IObjectCreator> characterSymbol = new HashMap<>();
+        characterSymbol.put('#', (x, y, vector, parent, child) -> new Wall());
+        characterSymbol.put(' ', (x, y, vector, parent, child) -> new Empty());
+        characterSymbol.put('A', (x, y, vector, parent, child) -> new Apple());
+        characterSymbol.put('S', SnakePart::new);
+        characterSymbol.put('H', SnakePart::new);
         return characterSymbol;
     }
 
@@ -68,40 +67,73 @@ public class FieldReader {
         }
         for(int i = 1; i < lines.size(); i++){
             for (int j = 0; j < lines.get(i).length(); j++){
-                String symbol = String.valueOf(lines.get(i).charAt(j));
-                Class[] type;
-                Integer[] args;
-                if (Objects.equals(symbol, "S")){
-                    type = new Class[]{int.class, int.class, Vector.class, SnakePart.class, SnakePart.class};
-                    args = new Integer[]{j, i - 1, null, null, null};
-                    snakeX = j;
-                    snakeY = i - 1;
+                Character symbol = lines.get(i).charAt(j);
+                objects[i - 1][j] = characterSymbol.get(symbol).createFieldObject(j, i - 1, direction,null,null);
+                if(symbol == 'S'){
+                    snakeParts.add((SnakePart) objects[i - 1][j]);
                 }
-                else {
-                    type = new Class[]{};
-                    args = new Integer[]{};
+                if(symbol == 'H'){
+                    head = (SnakePart) objects[i - 1][j];
                 }
-                objects[i - 1][j] = getNewObject(getConstructor(symbol,type), args);
             }
         }
-        snake = (SnakePart) objects[snakeY][snakeX];
-        snake.direction = direction;
     }
 
-    private Constructor getConstructor(String symbol, Class... type) throws NoSuchMethodException {
-        return characterSymbol.get(symbol).getConstructor(type);
+    private void createSnake(){
+        Snake snake = new Snake(head);
+//        List<SnakePart> copySnakeParts = new ArrayList<>();
+//        copySnakeParts.addAll(snakeParts.subList(0,snakeParts.size()));
+        List<SnakePart> neighbors = getNearbySnakeParts(getNeighbours(head));
+        getSnakePart(neighbors, snake);
+        this.snake = snake;
     }
-    private FieldObject getNewObject(Constructor constructor, Integer... args)
-            throws IllegalAccessException, InvocationTargetException,
-            InstantiationException {
-        return (FieldObject) constructor.newInstance(args);
+
+    private List<SnakePart> getNearbySnakeParts(List<FieldObject> neighbours){
+        List<SnakePart> nearbySnakeParts = new ArrayList<>();
+        for (FieldObject neighbour : neighbours) {
+            if (neighbour instanceof SnakePart && snakeParts.contains(neighbour)) {
+                nearbySnakeParts.add((SnakePart) neighbour);
+            }
+        }
+        return nearbySnakeParts;
+    }
+
+    private void getSnakePart(List<SnakePart> nearbySnakeParts, Snake snake){
+        SnakePart next;
+        for (SnakePart nearbySnakePart : nearbySnakeParts) {
+            next = nearbySnakePart;
+            snake.addPart(next);
+            snakeParts.remove(next);
+            List<SnakePart> tmp = getNearbySnakeParts(getNeighbours(nearbySnakePart));
+            getSnakePart(tmp, snake);
+        }
+        if(snakeParts.size()!=0){
+            snakeParts.add(snake.tail);
+            snake.removeTail();
+            return;
+        }
+    }
+
+    private List<FieldObject> getNeighbours(SnakePart center){
+        List<Vector> offset = Arrays.asList(Direction.LEFT, Direction.RIGHT, Direction.BOTTOM, Direction.TOP);
+        List<FieldObject> neighbours = new ArrayList<>();
+        int x;
+        int y;
+        for (Vector anOffset : offset) {
+            x = center.getX() + anOffset.DELTA_X;
+            y = center.getY() + anOffset.DELTA_Y;
+            if (x >= 0 && y >= 0 && x <= objects[0].length && y <= objects.length) {
+                neighbours.add(objects[y][x]);
+            }
+        }
+        return neighbours;
     }
 
     public FieldObject[][] getObjects() {
         return objects;
     }
 
-    public SnakePart getSnakePart() {
+    public Snake getSnake() {
         return snake;
     }
 }
