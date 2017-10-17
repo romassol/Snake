@@ -1,5 +1,7 @@
 package snake;
 
+import snakeGUI.Settings;
+
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -53,9 +55,8 @@ public class FieldReader {
             IllegalAccessException, InvocationTargetException,
             InstantiationException, IOException {
 
-        final String dir = System.getProperty("user.dir");
         List<String> lines = Files.readAllLines(
-                Paths.get(dir+"/levels/"+fileName),
+                Paths.get(Settings.levelUrl+fileName),
                 StandardCharsets.UTF_8);
 
         try {
