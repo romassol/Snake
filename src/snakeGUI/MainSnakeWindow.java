@@ -1,6 +1,7 @@
 package snakeGUI;
 
 import snake.Game;
+import snake.MakeTurnException;
 import snake.Vector;
 
 import javax.swing.*;
@@ -29,7 +30,7 @@ class MainSnakeWindow extends JFrame
 
         scorePanel = new ScorePanel(
                 "Уровень 1", 0, sizeWidth, 30);
-        fieldPanel = new FieldPanel(game.getLevel(), cellSize);
+        fieldPanel = new FieldPanel(game.getCurrentLevel(), cellSize);
 
         mainPanel.add(scorePanel, BorderLayout.NORTH);
         mainPanel.add(fieldPanel, BorderLayout.CENTER);
@@ -44,7 +45,11 @@ class MainSnakeWindow extends JFrame
 
         timer = new Timer(Settings.frequency, e -> {
             game.setPlayerDirection(playerDirection);
-            game.makeTurn();
+            try {
+                game.makeTurn();
+            } catch (MakeTurnException exception) {
+                exception.printStackTrace();
+            }
 
             if (game.isGameOver) {
                 if (game.isWin)
@@ -70,8 +75,8 @@ class MainSnakeWindow extends JFrame
         int maxWidth = (int) (screenSize.width * 0.9);
         int maxHeight = (int) (screenSize.height * 0.9);
 
-        int fieldHeight = game.getLevel().objects.length;
-        int fieldWidth = game.getLevel().objects[0].length;
+        int fieldHeight = game.getCurrentLevel().objects.length;
+        int fieldWidth = game.getCurrentLevel().objects[0].length;
 
         cellSize = calculateCellSize(maxWidth, maxHeight, fieldWidth, fieldHeight);
 

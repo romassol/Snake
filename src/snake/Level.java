@@ -35,7 +35,6 @@ public class Level {
 
             Vector tmp = snakePartNow.direction.clone();
             objects[snakePartNow.getY()][snakePartNow.getX()] = emptyObj;
-            snake.newPartDirection = parentDirection;
             snakePartNow.direction = parentDirection;
             snakePartNow.setX(x);
             snakePartNow.setY(y);
@@ -74,10 +73,6 @@ public class Level {
     public void addSnakePart() {
         SnakePart tail = snake.addPartAndReturnTail();
         objects[tail.getY()][tail.getX()] = tail;
-    }
-
-    public boolean isOver(){
-        return appleGenerator.getApplesCount() == 0;
     }
 
     public boolean isOver(){

@@ -20,7 +20,7 @@ public class FieldReader {
     private Map<String, Vector> directionToVector;
     private Snake snake;
 
-    FieldReader(String fileName) throws IllegalAccessException,
+    public FieldReader(String fileName) throws IllegalAccessException,
             InstantiationException, NoSuchMethodException,
             InvocationTargetException, IOException {
         this.fileName = fileName;

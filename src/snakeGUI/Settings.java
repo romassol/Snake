@@ -6,5 +6,5 @@ public final class Settings {
     public static final String levelUrl =
             System.getProperty("user.dir") + "/levels/";
 
-    static final int frequency = 100;
+    static final int frequency = 200;
 }

@@ -5,12 +5,15 @@ public class Snake {
     public SnakePart head;
 
     public Snake(int x, int y, Vector direction) {
-        head = new SnakePart(x, y, direction, null, null);
-        tail = head;
+        initialize(x, y, direction);
     }
 
     public Snake(SnakePart snakePart) {
-        head = snakePart;
+        initialize(snakePart.getX(), snakePart.getY(), snakePart.direction);
+    }
+
+    private void initialize(int x, int y, Vector direction) {
+        head = new SnakePart(x, y, direction, null, null);
         tail = head;
     }
 

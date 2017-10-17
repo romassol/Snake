@@ -9,7 +9,9 @@ import java.lang.reflect.InvocationTargetException;
 
 public class Program {
     public static void main(String[] args) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IOException, IllegalAccessException {
-        Game game = new Game(new Level(new FieldReader("level2.txt"), 4));
+        Level[] levels = new Level[1];
+        levels[0] = new Level(new FieldReader("level2.txt"), 6);
+        Game game = new Game(levels);
         MainSnakeWindow window = new MainSnakeWindow(game);
     }
 }
