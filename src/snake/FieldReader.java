@@ -12,27 +12,25 @@ import java.util.*;
 
 public class FieldReader {
     private String fileName;
-    private Map<Character, IObjectCreator> characterToFieldObject;
+    private static HashMap<Character, IObjectCreator> characterToFieldObject;
     private FieldObject[][] field;
     private Snake snake;
+
+    static {
+        characterToFieldObject = new HashMap<>();
+        characterToFieldObject.put('#', (x, y, vector, parent, child) -> new Wall());
+        characterToFieldObject.put(' ', (x, y, vector, parent, child) -> new Empty());
+        characterToFieldObject.put('A', (x, y, vector, parent, child) -> new Apple());
+        characterToFieldObject.put('S', SnakePart::new);
+        characterToFieldObject.put('H', SnakePart::new);
+    }
 
     public FieldReader(String fileName) throws IllegalAccessException,
             InstantiationException, NoSuchMethodException,
             InvocationTargetException, IOException {
         this.fileName = fileName;
-        characterToFieldObject = getCharacterToFieldObject();
         fillFieldAndCreateSnake();
         setDirection();
-    }
-
-    private HashMap<Character, IObjectCreator> getCharacterToFieldObject(){
-        HashMap<Character, IObjectCreator> characterSymbol = new HashMap<>();
-        characterSymbol.put('#', (x, y, vector, parent, child) -> new Wall());
-        characterSymbol.put(' ', (x, y, vector, parent, child) -> new Empty());
-        characterSymbol.put('A', (x, y, vector, parent, child) -> new Apple());
-        characterSymbol.put('S', SnakePart::new);
-        characterSymbol.put('H', SnakePart::new);
-        return characterSymbol;
     }
 
     private void fillFieldAndCreateSnake() throws NoSuchMethodException,
