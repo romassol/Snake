@@ -13,10 +13,14 @@ import java.util.*;
 public class FieldReader {
     private String fileName;
     private Map<Character, IObjectCreator> characterSymbol;
-    private FieldObject[][] objects;
+    private FieldObject[][] field;
     private List<SnakePart> snakeParts;
     private SnakePart head;
     private Snake snake;
+
+    static {
+
+    }
 
     public FieldReader(String fileName) throws IllegalAccessException,
             InstantiationException, NoSuchMethodException,
@@ -48,19 +52,20 @@ public class FieldReader {
                 StandardCharsets.UTF_8);
 
         try {
-            objects = new FieldObject[lines.size()][lines.get(0).length()];
+            field = new FieldObject[lines.size()][lines.get(0).length()];
         } catch (IndexOutOfBoundsException e){
             throw new IllegalArgumentException("Level is incorrect");
         }
         for(int i = 0; i < lines.size(); i++){
             for (int j = 0; j < lines.get(i).length(); j++){
                 Character symbol = lines.get(i).charAt(j);
-                objects[i][j] = characterSymbol.get(symbol).createFieldObject(j, i, null,null,null);
+                field[i][j] = characterSymbol.get(symbol)
+                        .createFieldObject(j, i, null,null,null);
                 if(symbol == 'S'){
-                    snakeParts.add((SnakePart) objects[i][j]);
+                    snakeParts.add((SnakePart) field[i][j]);
                 }
                 if(symbol == 'H'){
-                    head = (SnakePart) objects[i][j];
+                    head = (SnakePart) field[i][j];
                 }
             }
         }
@@ -69,7 +74,7 @@ public class FieldReader {
     private void createSnake(){
         Snake snake = new Snake(head);
         List<SnakePart> neighbors = getNearbySnakeParts(getNeighbours(head));
-        getSnakePart(neighbors, snake);
+        constructSnake(neighbors, snake);
         this.snake = snake;
     }
 
@@ -83,16 +88,16 @@ public class FieldReader {
         return nearbySnakeParts;
     }
 
-    private void getSnakePart(List<SnakePart> nearbySnakeParts, Snake snake){
+    private void constructSnake(List<SnakePart> nearbySnakeParts, Snake snake){
         SnakePart next;
         for (SnakePart nearbySnakePart : nearbySnakeParts) {
             next = nearbySnakePart;
             snake.addPart(next);
             snakeParts.remove(next);
             List<SnakePart> tmp = getNearbySnakeParts(getNeighbours(nearbySnakePart));
-            getSnakePart(tmp, snake);
+            constructSnake(tmp, snake);
         }
-        if(snakeParts.size()!=0){
+        if(snakeParts.size() != 0){
             snakeParts.add(snake.tail);
             snake.removeTail();
             return;
@@ -107,8 +112,8 @@ public class FieldReader {
         for (Vector anOffset : offset) {
             x = center.getX() + anOffset.DELTA_X;
             y = center.getY() + anOffset.DELTA_Y;
-            if (x >= 0 && y >= 0 && x <= objects[0].length && y <= objects.length) {
-                neighbours.add(objects[y][x]);
+            if (x >= 0 && y >= 0 && x <= field[0].length && y <= field.length) {
+                neighbours.add(field[y][x]);
             }
         }
         return neighbours;
@@ -128,8 +133,8 @@ public class FieldReader {
         current.direction = Direction.BOTTOM;
     }
 
-    public FieldObject[][] getObjects() {
-        return objects;
+    public FieldObject[][] getField() {
+        return field;
     }
 
     public Snake getSnake() {

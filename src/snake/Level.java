@@ -19,7 +19,7 @@ public class Level {
     }
 
     public Level(FieldReader reader, int applesCount) {
-        objects = reader.getObjects();
+        objects = reader.getField();
         snake = reader.getSnake();
         appleGenerator = new AppleGenerator(applesCount);
     }
