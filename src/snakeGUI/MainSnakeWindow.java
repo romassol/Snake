@@ -44,9 +44,9 @@ class MainSnakeWindow extends JFrame
         addKeyListener(new ArrowKeysListener(this));
 
         timer = new Timer(Settings.frequency, e -> {
-            if(playerDirection == null){
+            if (playerDirection == null)
                 return;
-            }
+
             game.setPlayerDirection(playerDirection);
             try {
                 game.makeTurn();

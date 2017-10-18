@@ -13,7 +13,8 @@ public class Game {
             throw new MakeTurnException();
         }
 
-        FieldObject oldCell = getCurrentLevel().moveSnakeAndReturnOldCell(playerDirection);
+        FieldObject oldCell = getCurrentLevel()
+                .moveSnakeAndReturnOldCell(playerDirection);
         oldCell.intersectWithSnake(this);
 
         if(isGameOver){
