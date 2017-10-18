@@ -13,7 +13,7 @@ public class FieldReaderTest {
     public void snakePosition() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IOException, IllegalAccessException {
         FieldReader r = new FieldReader("level2.txt");
         Snake snake = r.getSnake();
-        FieldObject[][] objects = r.getObjects();
+        FieldObject[][] objects = r.getField();
         assertEquals(9, snake.head.getX());
         assertEquals(2, snake.head.getY());
         SnakePart next = snake.head;

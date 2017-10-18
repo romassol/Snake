@@ -21,4 +21,12 @@ public class Vector implements Cloneable{
     public boolean isEqualWithOther(Vector other){
         return DELTA_X == other.DELTA_X && DELTA_Y == other.DELTA_Y;
     }
+
+    public Vector substractOtherFromThis(Vector other){
+        return new Vector(DELTA_X - other.DELTA_X, DELTA_Y - other.DELTA_Y);
+    }
+
+    public Vector summarizeOtherWithThis(Vector other){
+        return new Vector(DELTA_X + other.DELTA_X, DELTA_Y + other.DELTA_Y);
+    }
 }

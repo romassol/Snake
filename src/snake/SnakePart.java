@@ -5,8 +5,7 @@ SnakePart extends FieldObject {
     public Vector direction;
     public SnakePart parent;
     public SnakePart child;
-    private int x;
-    private int y;
+    private Vector position;
 
     public SnakePart(
             int x,
@@ -14,8 +13,7 @@ SnakePart extends FieldObject {
             Vector direction,
             SnakePart parent,
             SnakePart child) {
-        setX(x);
-        setY(y);
+        setPosition(x, y);
         this.direction = direction;
         this.parent = parent;
         this.child = child;
@@ -26,25 +24,19 @@ SnakePart extends FieldObject {
         game.isGameOver = true;
     }
 
-    public int getX() {
-        return x;
+    public Vector getPosition() {
+        return position;
     }
 
-    public void setX(int x) {
-        if (x < 0)
-            throw new IllegalArgumentException(
-                    "Coordinate must have be more than zero");
-        this.x = x;
+    public void setPosition(int x, int y) {
+        this.position = new Vector(x, y);
     }
 
-    public int getY() {
-        return y;
+    public int getX(){
+        return position.DELTA_X;
     }
 
-    public void setY(int y) {
-        if (y < 0)
-            throw new IllegalArgumentException(
-                    "Coordinate must have be more than zero");
-        this.y = y;
+    public int getY(){
+        return position.DELTA_Y;
     }
 }
