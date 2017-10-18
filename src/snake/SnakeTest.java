@@ -2,6 +2,10 @@ package snake;
 
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
+
 import static org.junit.Assert.*;
 
 public class SnakeTest {
@@ -95,5 +99,18 @@ public class SnakeTest {
         FieldObject oldCell = level.moveSnakeAndReturnOldCell(Direction.RIGHT);
         assertTrue(oldCell instanceof Empty);
         assertEquals(head, level.objects[2][1]);
+    }
+
+    @Test
+    public void goToTheNextLevel() throws MakeTurnException, InvocationTargetException, NoSuchMethodException, InstantiationException, IOException, IllegalAccessException {
+        Level[] levels = new Level[2];
+        levels[0] = new Level(new FieldReader("level5.txt"), 0);
+        levels[1] = new Level(new FieldReader("level4.txt"), 1);
+        Game game = new Game(levels);
+        assertEquals(levels[0], game.getCurrentLevel());
+        game.setPlayerDirection(Direction.RIGHT);
+        game.makeTurn();
+        System.out.println(game.getCurrentLevel().isOver());
+        assertEquals(levels[1], game.getCurrentLevel());
     }
 }

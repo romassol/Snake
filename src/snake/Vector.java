@@ -17,4 +17,8 @@ public class Vector implements Cloneable{
         return Math.abs(this.DELTA_X - vector.DELTA_X) == 2 ||
                 Math.abs(this.DELTA_Y - vector.DELTA_Y) == 2;
     }
+
+    public boolean isEqualWithOther(Vector other){
+        return DELTA_X == other.DELTA_X && DELTA_Y == other.DELTA_Y;
+    }
 }

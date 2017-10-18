@@ -6,10 +6,11 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class FieldReaderTest {
     @Test
-    public void getSnakeFromFieldReader() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IOException, IllegalAccessException {
+    public void snakePosition() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IOException, IllegalAccessException {
         FieldReader r = new FieldReader("level2.txt");
         Snake snake = r.getSnake();
         FieldObject[][] objects = r.getObjects();
@@ -27,5 +28,19 @@ public class FieldReaderTest {
         next = next.child;
         assertEquals(10, next.child.getX());
         assertEquals(1, next.child.getY());
+    }
+    @Test
+    public void setDirection() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IOException, IllegalAccessException {
+        FieldReader r = new FieldReader("level4.txt");
+        Snake snake = r.getSnake();
+        assertTrue(Direction.TOP.isEqualWithOther(snake.head.direction));
+        SnakePart next = snake.head;
+        assertTrue(Direction.LEFT.isEqualWithOther(next.child.direction));
+        next = next.child;
+        assertTrue(Direction.BOTTOM.isEqualWithOther(next.child.direction));
+        next = next.child;
+        assertTrue(Direction.BOTTOM.isEqualWithOther(next.child.direction));
+        next = next.child;
+        assertTrue(Direction.BOTTOM.isEqualWithOther(next.child.direction));
     }
 }
