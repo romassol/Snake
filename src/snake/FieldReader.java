@@ -16,8 +16,6 @@ public class FieldReader {
     private FieldObject[][] objects;
     private List<SnakePart> snakeParts;
     private SnakePart head;
-    private Vector direction;
-    private Map<String, Vector> directionToVector;
     private Snake snake;
 
     public FieldReader(String fileName) throws IllegalAccessException,
@@ -26,9 +24,9 @@ public class FieldReader {
         this.fileName = fileName;
         snakeParts = new ArrayList<>();
         characterSymbol = getCharacterSymbol();
-        directionToVector = getDirectionToVector();
         fillObjects();
         createSnake();
+        setDirection();
     }
 
     private HashMap<Character, IObjectCreator> getCharacterSymbol(){
@@ -41,15 +39,6 @@ public class FieldReader {
         return characterSymbol;
     }
 
-    private HashMap<String, Vector> getDirectionToVector(){
-        HashMap<String, Vector> directionToVector = new HashMap<>();
-        directionToVector.put("left", Direction.LEFT);
-        directionToVector.put("right", Direction.RIGHT);
-        directionToVector.put("down", Direction.BOTTOM);
-        directionToVector.put("up", Direction.TOP);
-        return directionToVector;
-    }
-
     private void fillObjects() throws NoSuchMethodException,
             IllegalAccessException, InvocationTargetException,
             InstantiationException, IOException {
@@ -59,22 +48,19 @@ public class FieldReader {
                 StandardCharsets.UTF_8);
 
         try {
-            objects = new FieldObject[lines.size() - 1][lines.get(1).length()];
+            objects = new FieldObject[lines.size()][lines.get(0).length()];
         } catch (IndexOutOfBoundsException e){
             throw new IllegalArgumentException("Level is incorrect");
         }
-        for (int i = 0; i < lines.size() && i < 1; i++){
-            direction = directionToVector.get(lines.get(i).toLowerCase());
-        }
-        for(int i = 1; i < lines.size(); i++){
+        for(int i = 0; i < lines.size(); i++){
             for (int j = 0; j < lines.get(i).length(); j++){
                 Character symbol = lines.get(i).charAt(j);
-                objects[i - 1][j] = characterSymbol.get(symbol).createFieldObject(j, i - 1, direction,null,null);
+                objects[i][j] = characterSymbol.get(symbol).createFieldObject(j, i, null,null,null);
                 if(symbol == 'S'){
-                    snakeParts.add((SnakePart) objects[i - 1][j]);
+                    snakeParts.add((SnakePart) objects[i][j]);
                 }
                 if(symbol == 'H'){
-                    head = (SnakePart) objects[i - 1][j];
+                    head = (SnakePart) objects[i][j];
                 }
             }
         }
@@ -82,8 +68,6 @@ public class FieldReader {
 
     private void createSnake(){
         Snake snake = new Snake(head);
-//        List<SnakePart> copySnakeParts = new ArrayList<>();
-//        copySnakeParts.addAll(snakeParts.subList(0,snakeParts.size()));
         List<SnakePart> neighbors = getNearbySnakeParts(getNeighbours(head));
         getSnakePart(neighbors, snake);
         this.snake = snake;
@@ -128,6 +112,20 @@ public class FieldReader {
             }
         }
         return neighbours;
+    }
+
+    private void setDirection(){
+        SnakePart current = snake.head;
+        SnakePart next = snake.head.child;
+        while (next != null) {
+            int x = current.getX() - next.getX();
+            int y = current.getY() - next.getY();
+            current.direction = new Vector(x, y);
+            current = next;
+            next = current.child;
+
+        }
+        current.direction = Direction.BOTTOM;
     }
 
     public FieldObject[][] getObjects() {
