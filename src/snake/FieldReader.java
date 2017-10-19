@@ -12,38 +12,28 @@ import java.util.*;
 
 public class FieldReader {
     private String fileName;
-    private Map<Character, IObjectCreator> characterSymbol;
+    private static HashMap<Character, IObjectCreator> characterToFieldObject;
     private FieldObject[][] field;
-    private List<SnakePart> snakeParts;
-    private SnakePart head;
     private Snake snake;
 
     static {
-
+        characterToFieldObject = new HashMap<>();
+        characterToFieldObject.put('#', (x, y, vector, parent, child) -> new Wall());
+        characterToFieldObject.put(' ', (x, y, vector, parent, child) -> new Empty());
+        characterToFieldObject.put('A', (x, y, vector, parent, child) -> new Apple());
+        characterToFieldObject.put('S', SnakePart::new);
+        characterToFieldObject.put('H', SnakePart::new);
     }
 
     public FieldReader(String fileName) throws IllegalAccessException,
             InstantiationException, NoSuchMethodException,
             InvocationTargetException, IOException {
         this.fileName = fileName;
-        snakeParts = new ArrayList<>();
-        characterSymbol = getCharacterSymbol();
-        fillObjects();
-        createSnake();
+        fillFieldAndCreateSnake();
         setDirection();
     }
 
-    private HashMap<Character, IObjectCreator> getCharacterSymbol(){
-        HashMap<Character, IObjectCreator> characterSymbol = new HashMap<>();
-        characterSymbol.put('#', (x, y, vector, parent, child) -> new Wall());
-        characterSymbol.put(' ', (x, y, vector, parent, child) -> new Empty());
-        characterSymbol.put('A', (x, y, vector, parent, child) -> new Apple());
-        characterSymbol.put('S', SnakePart::new);
-        characterSymbol.put('H', SnakePart::new);
-        return characterSymbol;
-    }
-
-    private void fillObjects() throws NoSuchMethodException,
+    private void fillFieldAndCreateSnake() throws NoSuchMethodException,
             IllegalAccessException, InvocationTargetException,
             InstantiationException, IOException {
 
@@ -56,11 +46,12 @@ public class FieldReader {
         } catch (IndexOutOfBoundsException e){
             throw new IllegalArgumentException("Level is incorrect");
         }
+        List<SnakePart> snakeParts = new ArrayList<>();
+        SnakePart head = null;
         for(int i = 0; i < lines.size(); i++){
             for (int j = 0; j < lines.get(i).length(); j++){
                 Character symbol = lines.get(i).charAt(j);
-                field[i][j] = characterSymbol.get(symbol)
-                        .createFieldObject(j, i, null,null,null);
+                field[i][j] = characterToFieldObject.get(symbol).createFieldObject(j, i, null,null,null);
                 if(symbol == 'S'){
                     snakeParts.add((SnakePart) field[i][j]);
                 }
@@ -69,16 +60,17 @@ public class FieldReader {
                 }
             }
         }
+        createSnake(head,snakeParts);
     }
 
-    private void createSnake(){
+    private void createSnake(SnakePart head, List<SnakePart> snakeParts){
         Snake snake = new Snake(head);
-        List<SnakePart> neighbors = getNearbySnakeParts(getNeighbours(head));
-        constructSnake(neighbors, snake);
+        List<SnakePart> neighbors = getNearbySnakeParts(getNeighbours(head), snakeParts);
+        constructSnake(neighbors, snake, snakeParts);
         this.snake = snake;
     }
 
-    private List<SnakePart> getNearbySnakeParts(List<FieldObject> neighbours){
+    private List<SnakePart> getNearbySnakeParts(List<FieldObject> neighbours, List<SnakePart> snakeParts){
         List<SnakePart> nearbySnakeParts = new ArrayList<>();
         for (FieldObject neighbour : neighbours) {
             if (neighbour instanceof SnakePart && snakeParts.contains(neighbour)) {
@@ -88,16 +80,16 @@ public class FieldReader {
         return nearbySnakeParts;
     }
 
-    private void constructSnake(List<SnakePart> nearbySnakeParts, Snake snake){
+    private void constructSnake(List<SnakePart> nearbySnakeParts, Snake snake, List<SnakePart> snakeParts){
         SnakePart next;
         for (SnakePart nearbySnakePart : nearbySnakeParts) {
             next = nearbySnakePart;
             snake.addPart(next);
             snakeParts.remove(next);
-            List<SnakePart> tmp = getNearbySnakeParts(getNeighbours(nearbySnakePart));
-            constructSnake(tmp, snake);
+            List<SnakePart> tmp = getNearbySnakeParts(getNeighbours(nearbySnakePart), snakeParts);
+            constructSnake(tmp, snake, snakeParts);
         }
-        if(snakeParts.size() != 0){
+        if(snakeParts.size()!=0){
             snakeParts.add(snake.tail);
             snake.removeTail();
             return;
@@ -107,13 +99,11 @@ public class FieldReader {
     private List<FieldObject> getNeighbours(SnakePart center){
         List<Vector> offset = Arrays.asList(Direction.LEFT, Direction.RIGHT, Direction.BOTTOM, Direction.TOP);
         List<FieldObject> neighbours = new ArrayList<>();
-        int x;
-        int y;
         for (Vector anOffset : offset) {
-            x = center.getX() + anOffset.DELTA_X;
-            y = center.getY() + anOffset.DELTA_Y;
-            if (x >= 0 && y >= 0 && x <= field[0].length && y <= field.length) {
-                neighbours.add(field[y][x]);
+            Vector neighbour = center.getPosition().summarizeOtherWithThis(anOffset);
+            if (neighbour.DELTA_X >= 0 && neighbour.DELTA_Y >= 0 &&
+                    neighbour.DELTA_X <= field[0].length && neighbour.DELTA_Y <= field.length) {
+                neighbours.add(field[neighbour.DELTA_Y][neighbour.DELTA_X]);
             }
         }
         return neighbours;
@@ -123,9 +113,7 @@ public class FieldReader {
         SnakePart current = snake.head;
         SnakePart next = snake.head.child;
         while (next != null) {
-            int x = current.getX() - next.getX();
-            int y = current.getY() - next.getY();
-            current.direction = new Vector(x, y);
+            current.direction = current.getPosition().substractOtherFromThis(next.getPosition());
             current = next;
             next = current.child;
 
