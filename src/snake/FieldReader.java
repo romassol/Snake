@@ -18,9 +18,12 @@ public class FieldReader {
 
     static {
         characterToFieldObject = new HashMap<>();
-        characterToFieldObject.put('#', (x, y, vector, parent, child) -> new Wall());
-        characterToFieldObject.put(' ', (x, y, vector, parent, child) -> new Empty());
-        characterToFieldObject.put('A', (x, y, vector, parent, child) -> new Apple());
+        characterToFieldObject.put('#',
+                (x, y, vector, parent, child) -> new Wall());
+        characterToFieldObject.put(' ',
+                (x, y, vector, parent, child) -> new Empty());
+        characterToFieldObject.put('A',
+                (x, y, vector, parent, child) -> new Apple());
         characterToFieldObject.put('S', SnakePart::new);
         characterToFieldObject.put('H', SnakePart::new);
     }
@@ -51,7 +54,9 @@ public class FieldReader {
         for(int i = 0; i < lines.size(); i++){
             for (int j = 0; j < lines.get(i).length(); j++){
                 Character symbol = lines.get(i).charAt(j);
-                field[i][j] = characterToFieldObject.get(symbol).createFieldObject(j, i, null,null,null);
+                field[i][j] = characterToFieldObject.get(symbol)
+                        .createFieldObject(
+                                j, i, null,null,null);
                 if(symbol == 'S'){
                     snakeParts.add((SnakePart) field[i][j]);
                 }
@@ -65,12 +70,15 @@ public class FieldReader {
 
     private void createSnake(SnakePart head, List<SnakePart> snakeParts){
         Snake snake = new Snake(head);
-        List<SnakePart> neighbors = getNearbySnakeParts(getNeighbours(head), snakeParts);
+        List<SnakePart> neighbors =
+                getNearbySnakeParts(getNeighbours(head), snakeParts);
         constructSnake(neighbors, snake, snakeParts);
         this.snake = snake;
     }
 
-    private List<SnakePart> getNearbySnakeParts(List<FieldObject> neighbours, List<SnakePart> snakeParts){
+    private List<SnakePart> getNearbySnakeParts(
+            List<FieldObject> neighbours,
+            List<SnakePart> snakeParts){
         List<SnakePart> nearbySnakeParts = new ArrayList<>();
         for (FieldObject neighbour : neighbours) {
             if (neighbour instanceof SnakePart && snakeParts.contains(neighbour)) {
@@ -80,13 +88,18 @@ public class FieldReader {
         return nearbySnakeParts;
     }
 
-    private void constructSnake(List<SnakePart> nearbySnakeParts, Snake snake, List<SnakePart> snakeParts){
+    private void constructSnake(
+            List<SnakePart> nearbySnakeParts,
+            Snake snake,
+            List<SnakePart> snakeParts){
         SnakePart next;
         for (SnakePart nearbySnakePart : nearbySnakeParts) {
             next = nearbySnakePart;
             snake.addPart(next);
             snakeParts.remove(next);
-            List<SnakePart> tmp = getNearbySnakeParts(getNeighbours(nearbySnakePart), snakeParts);
+            List<SnakePart> tmp = getNearbySnakeParts(
+                    getNeighbours(nearbySnakePart),
+                    snakeParts);
             constructSnake(tmp, snake, snakeParts);
         }
         if(snakeParts.size()!=0){
@@ -96,12 +109,18 @@ public class FieldReader {
     }
 
     private List<FieldObject> getNeighbours(SnakePart center){
-        List<Vector> offset = Arrays.asList(Direction.LEFT, Direction.RIGHT, Direction.BOTTOM, Direction.TOP);
+        List<Vector> offset = Arrays.asList(
+                Direction.LEFT,
+                Direction.RIGHT,
+                Direction.BOTTOM,
+                Direction.TOP);
+
         List<FieldObject> neighbours = new ArrayList<>();
         for (Vector anOffset : offset) {
             Vector neighbour = center.getPosition().summarizeOtherWithThis(anOffset);
             if (neighbour.DELTA_X >= 0 && neighbour.DELTA_Y >= 0 &&
-                    neighbour.DELTA_X <= field[0].length && neighbour.DELTA_Y <= field.length) {
+                    neighbour.DELTA_X <= field[0].length &&
+                    neighbour.DELTA_Y <= field.length) {
                 neighbours.add(field[neighbour.DELTA_Y][neighbour.DELTA_X]);
             }
         }
@@ -112,7 +131,10 @@ public class FieldReader {
         SnakePart current = snake.getHead();
         SnakePart next = snake.getHead().getChild();
         while (next != null) {
-            current.setDirection(current.getPosition().subtractOtherFromThis(next.getPosition()));
+            current.setDirection(
+                    current
+                        .getPosition()
+                        .subtractOtherFromThis(next.getPosition()));
             current = next;
             next = current.getChild();
 

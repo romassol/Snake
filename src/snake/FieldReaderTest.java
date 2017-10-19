@@ -10,10 +10,11 @@ import static org.junit.Assert.assertTrue;
 
 public class FieldReaderTest {
     @Test
-    public void snakePosition() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IOException, IllegalAccessException {
+    public void snakePosition() throws InvocationTargetException,
+            NoSuchMethodException, InstantiationException,
+            IOException, IllegalAccessException {
         FieldReader r = new FieldReader("level2.txt");
         Snake snake = r.getSnake();
-        FieldObject[][] objects = r.getField();
         assertEquals(9, snake.getHead().getX());
         assertEquals(2, snake.getHead().getY());
         SnakePart next = snake.getHead();
@@ -30,17 +31,24 @@ public class FieldReaderTest {
         assertEquals(1, next.getChild().getY());
     }
     @Test
-    public void setDirection() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IOException, IllegalAccessException {
+    public void setDirection() throws InvocationTargetException, 
+            NoSuchMethodException, InstantiationException,
+            IOException, IllegalAccessException {
         FieldReader r = new FieldReader("level4.txt");
         Snake snake = r.getSnake();
-        assertTrue(Direction.TOP.isEqualWithOther(snake.getHead().getDirection()));
+        assertTrue(Direction.TOP.isEqualWithOther(
+                snake.getHead().getDirection()));
         SnakePart next = snake.getHead();
-        assertTrue(Direction.LEFT.isEqualWithOther(next.getChild().getDirection()));
+        assertTrue(Direction.LEFT.isEqualWithOther(
+                next.getChild().getDirection()));
         next = next.getChild();
-        assertTrue(Direction.BOTTOM.isEqualWithOther(next.getChild().getDirection()));
+        assertTrue(Direction.BOTTOM.isEqualWithOther(
+                next.getChild().getDirection()));
         next = next.getChild();
-        assertTrue(Direction.BOTTOM.isEqualWithOther(next.getChild().getDirection()));
+        assertTrue(Direction.BOTTOM.isEqualWithOther(
+                next.getChild().getDirection()));
         next = next.getChild();
-        assertTrue(Direction.BOTTOM.isEqualWithOther(next.getChild().getDirection()));
+        assertTrue(Direction.BOTTOM.isEqualWithOther(
+                next.getChild().getDirection()));
     }
 }
