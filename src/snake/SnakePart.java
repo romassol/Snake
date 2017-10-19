@@ -2,9 +2,9 @@ package snake;
 
 @ImageFileName(fileName = "snakepart.jpg")
 public class SnakePart extends FieldObject {
-    public Vector direction;
-    public SnakePart parent;
-    public SnakePart child;
+    private Vector direction;
+    private SnakePart parent;
+    private SnakePart child;
     private Vector position;
 
     public SnakePart(
@@ -38,5 +38,29 @@ public class SnakePart extends FieldObject {
 
     public int getY(){
         return position.DELTA_Y;
+    }
+
+    public Vector getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Vector direction) {
+        this.direction = direction;
+    }
+
+    public SnakePart getParent() {
+        return parent;
+    }
+
+    public void setParent(SnakePart parent) {
+        this.parent = parent;
+    }
+
+    public SnakePart getChild() {
+        return child;
+    }
+
+    public void setChild(SnakePart child) {
+        this.child = child;
     }
 }

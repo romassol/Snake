@@ -5,10 +5,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashSet;
 
-public class FieldPanel extends JPanel {
+class FieldPanel extends JPanel {
     private int cellSize;
     private Level level;
-    private HashSet<FieldObjectLabel> labels;
+    private HashSet<FieldObjectImage> labels;
     private ImageSaver imageSaver;
 
     FieldPanel(Level level, int cellSize) {
@@ -30,7 +30,7 @@ public class FieldPanel extends JPanel {
         updateLabels();
     }
 
-    public void updateLabels() {
+    void updateLabels() {
         if (labels.size() > 0)
             removeLabels();
 
@@ -38,7 +38,7 @@ public class FieldPanel extends JPanel {
 
         for (int y = 0; y < level.field.length; y++) {
             for (int x = 0; x < level.field[y].length; x++) {
-                FieldObjectLabel label = new FieldObjectLabel(
+                FieldObjectImage label = new FieldObjectImage(
                         level.field[y][x],
                         cellSize,
                         imageSaver);
@@ -49,7 +49,7 @@ public class FieldPanel extends JPanel {
     }
 
     private void removeLabels() {
-        for (FieldObjectLabel label : labels) {
+        for (FieldObjectImage label : labels) {
             label.setVisible(false);
             remove(label);
         }

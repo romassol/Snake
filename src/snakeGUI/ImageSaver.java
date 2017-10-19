@@ -56,7 +56,7 @@ public class ImageSaver {
         return fileImage;
     }
 
-    public void setCellSize(int cellSize) {
+    private void setCellSize(int cellSize) {
         if (cellSize < 0)
             throw new IllegalArgumentException("Cell size can't be negative");
 

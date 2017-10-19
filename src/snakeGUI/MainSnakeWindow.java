@@ -22,8 +22,6 @@ class MainSnakeWindow extends JFrame
         super("Snake");
         setWindowSizeConstants(game);
 
-        // ImageSaver.loadImages(cellSize);
-
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
         mainPanel.setSize(sizeWidth, sizeHeight);
@@ -94,6 +92,11 @@ class MainSnakeWindow extends JFrame
 
     private void endGame(boolean isWin) {
         timer.stop();
-        System.out.println(isWin);
+        String isWinMessage = isWin
+                ? "Поздравляем! Вы победили!"
+                : "Упс! Кажется, вы проиграли";
+        JOptionPane.showMessageDialog(this,
+                isWinMessage,
+                "End of the game", JOptionPane.INFORMATION_MESSAGE);
     }
 }

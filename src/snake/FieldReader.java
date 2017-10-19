@@ -113,7 +113,7 @@ public class FieldReader {
         SnakePart current = snake.head;
         SnakePart next = snake.head.child;
         while (next != null) {
-            current.direction = current.getPosition().substractOtherFromThis(next.getPosition());
+            current.direction = current.getPosition().subtractOtherFromThis(next.getPosition());
             current = next;
             next = current.child;
 

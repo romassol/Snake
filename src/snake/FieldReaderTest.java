@@ -14,33 +14,33 @@ public class FieldReaderTest {
         FieldReader r = new FieldReader("level2.txt");
         Snake snake = r.getSnake();
         FieldObject[][] objects = r.getField();
-        assertEquals(9, snake.head.getX());
-        assertEquals(2, snake.head.getY());
-        SnakePart next = snake.head;
-        assertEquals(9, next.child.getX());
-        assertEquals(3, next.child.getY());
-        next = next.child;
-        assertEquals(10, next.child.getX());
-        assertEquals(3, next.child.getY());
-        next = next.child;
-        assertEquals(10, next.child.getX());
-        assertEquals(2, next.child.getY());
-        next = next.child;
-        assertEquals(10, next.child.getX());
-        assertEquals(1, next.child.getY());
+        assertEquals(9, snake.getHead().getX());
+        assertEquals(2, snake.getHead().getY());
+        SnakePart next = snake.getHead();
+        assertEquals(9, next.getChild().getX());
+        assertEquals(3, next.getChild().getY());
+        next = next.getChild();
+        assertEquals(10, next.getChild().getX());
+        assertEquals(3, next.getChild().getY());
+        next = next.getChild();
+        assertEquals(10, next.getChild().getX());
+        assertEquals(2, next.getChild().getY());
+        next = next.getChild();
+        assertEquals(10, next.getChild().getX());
+        assertEquals(1, next.getChild().getY());
     }
     @Test
     public void setDirection() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IOException, IllegalAccessException {
         FieldReader r = new FieldReader("level4.txt");
         Snake snake = r.getSnake();
-        assertTrue(Direction.TOP.isEqualWithOther(snake.head.direction));
-        SnakePart next = snake.head;
-        assertTrue(Direction.LEFT.isEqualWithOther(next.child.direction));
-        next = next.child;
-        assertTrue(Direction.BOTTOM.isEqualWithOther(next.child.direction));
-        next = next.child;
-        assertTrue(Direction.BOTTOM.isEqualWithOther(next.child.direction));
-        next = next.child;
-        assertTrue(Direction.BOTTOM.isEqualWithOther(next.child.direction));
+        assertTrue(Direction.TOP.isEqualWithOther(snake.getHead().getDirection()));
+        SnakePart next = snake.getHead();
+        assertTrue(Direction.LEFT.isEqualWithOther(next.getChild().getDirection()));
+        next = next.getChild();
+        assertTrue(Direction.BOTTOM.isEqualWithOther(next.getChild().getDirection()));
+        next = next.getChild();
+        assertTrue(Direction.BOTTOM.isEqualWithOther(next.getChild().getDirection()));
+        next = next.getChild();
+        assertTrue(Direction.BOTTOM.isEqualWithOther(next.getChild().getDirection()));
     }
 }

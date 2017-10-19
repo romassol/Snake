@@ -23,17 +23,17 @@ public class SnakeTest {
     @Test
     public void snake_addPartAndReturnTail_newSnake() {
         Snake snake = new Snake(2, 0, Direction.RIGHT);
-        SnakePart head = snake.head;
+        SnakePart head = snake.getHead();
 
         SnakePart tail = snake.addPartAndReturnTail();
 
-        assertEquals(head, snake.head);
-        assertEquals(tail, snake.tail);
+        assertEquals(head, snake.getHead());
+        assertEquals(tail, snake.getTail());
         assertEquals(1, tail.getX());
         assertEquals(0, tail.getY());
-        assertEquals(Direction.RIGHT, tail.direction);
-        assertEquals(tail, snake.head.child);
-        assertEquals(head, snake.tail.parent);
+        assertEquals(Direction.RIGHT, tail.getDirection());
+        assertEquals(tail, snake.getHead().getChild());
+        assertEquals(head, snake.getTail().getParent());
     }
 
     @Test
@@ -42,19 +42,20 @@ public class SnakeTest {
         snake.addPartAndReturnTail();
         SnakePart tail = snake.addPartAndReturnTail();
 
-        assertEquals(snake.head.child.child, tail);
-        assertEquals(snake.head.child, tail.parent);
-        assertEquals(null, tail.child);
+        assertEquals(snake.getHead().getChild().getChild(), tail);
+        assertEquals(snake.getHead().getChild(), tail.getParent());
+        assertEquals(null, tail.getChild());
     }
 
     @Test
     public void level_addSnakePart() {
-        Level level = new Level(3, 4, 3, 1, 1, Direction.TOP);
+        Level level = new Level(
+                3, 4, 3, 1, 1, Direction.TOP);
         level.addSnakePart();
         level.addSnakePart();
 
-        assertEquals(level.field[2][1], level.snake.head.child);
-        assertEquals(level.field[3][1], level.snake.tail);
+        assertEquals(level.field[2][1], level.snake.getHead().getChild());
+        assertEquals(level.field[3][1], level.snake.getTail());
     }
     
     @Test
@@ -65,10 +66,10 @@ public class SnakeTest {
         level.addSnakePart();
 
         level.moveSnakeAndReturnOldCell(Direction.TOP);
-        assertEquals(2, level.snake.head.getX());
-        assertEquals(1, level.snake.head.getY());
-        assertEquals(2, level.snake.tail.getX());
-        assertEquals(2, level.snake.tail.getY());
+        assertEquals(2, level.snake.getHead().getX());
+        assertEquals(1, level.snake.getHead().getY());
+        assertEquals(2, level.snake.getTail().getX());
+        assertEquals(2, level.snake.getTail().getY());
         assertTrue(level.field[2][1] instanceof Empty);
     }
 
@@ -79,8 +80,8 @@ public class SnakeTest {
         fillField(level);
 
         level.moveSnakeAndReturnOldCell(null);
-        assertEquals(1, level.snake.head.getX());
-        assertEquals(2, level.snake.head.getY());
+        assertEquals(1, level.snake.getHead().getX());
+        assertEquals(2, level.snake.getHead().getY());
     }
 
     @Test
@@ -89,11 +90,11 @@ public class SnakeTest {
                 4 ,5,1, 1, 1, Direction.TOP);
 
         level.addSnakePart();
-        level.snake.tail.direction = Direction.LEFT;
+        level.snake.getTail().setDirection(Direction.LEFT);
         level.addSnakePart();
-        level.snake.tail.direction = Direction.BOTTOM;
+        level.snake.getTail().setDirection(Direction.BOTTOM);
         level.addSnakePart();
-        SnakePart head = level.snake.head;
+        SnakePart head = level.snake.getHead();
 
         FieldObject oldCell = level.moveSnakeAndReturnOldCell(Direction.RIGHT);
         assertTrue(oldCell instanceof Empty);
@@ -101,7 +102,9 @@ public class SnakeTest {
     }
 
     @Test
-    public void goToTheNextLevel() throws MakeTurnException, InvocationTargetException, NoSuchMethodException, InstantiationException, IOException, IllegalAccessException {
+    public void goToTheNextLevel() throws MakeTurnException,
+            InvocationTargetException, NoSuchMethodException,
+            InstantiationException, IOException, IllegalAccessException {
         Level[] levels = new Level[2];
         levels[0] = new Level(new FieldReader("level5.txt"), 0);
         levels[1] = new Level(new FieldReader("level4.txt"), 1);
