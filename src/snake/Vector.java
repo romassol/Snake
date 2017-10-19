@@ -14,8 +14,10 @@ public class Vector implements Cloneable{
     }
 
     public boolean isOpposite(Vector vector) {
-        return Math.abs(this.DELTA_X - vector.DELTA_X) == 2 ||
-                Math.abs(this.DELTA_Y - vector.DELTA_Y) == 2;
+        return !this.isEqualWithOther(Direction.ZERO) &&
+                !vector.isEqualWithOther(Direction.ZERO) &&
+                (Math.abs(this.DELTA_X - vector.DELTA_X) == 2 ||
+                        Math.abs(this.DELTA_Y - vector.DELTA_Y) == 2);
     }
 
     public boolean isEqualWithOther(Vector other){

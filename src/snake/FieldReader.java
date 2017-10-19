@@ -118,7 +118,7 @@ public class FieldReader {
             next = current.child;
 
         }
-        current.direction = Direction.Zero;
+        current.direction = Direction.ZERO;
     }
 
     public FieldObject[][] getField() {
