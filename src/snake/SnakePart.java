@@ -1,7 +1,7 @@
 package snake;
 
-public class
-SnakePart extends FieldObject {
+@ImageFileName(fileName = "snakepart.jpg")
+public class SnakePart extends FieldObject {
     public Vector direction;
     public SnakePart parent;
     public SnakePart child;

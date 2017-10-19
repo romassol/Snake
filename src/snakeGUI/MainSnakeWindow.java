@@ -22,7 +22,7 @@ class MainSnakeWindow extends JFrame
         super("Snake");
         setWindowSizeConstants(game);
 
-        ImageSaver.loadImages(cellSize);
+        // ImageSaver.loadImages(cellSize);
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());

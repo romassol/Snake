@@ -36,8 +36,7 @@ public class Level {
             Vector tmp = snakePartNow.direction.clone();
             objects[snakePartNow.getY()][snakePartNow.getX()] = emptyObj;
             snakePartNow.direction = parentDirection;
-            snakePartNow.setX(x);
-            snakePartNow.setY(y);
+            snakePartNow.setPosition(x, y);
             objects[y][x] = snakePartNow;
 
             parentDirection = tmp;
@@ -62,8 +61,7 @@ public class Level {
         FieldObject oldCell = objects[y][x];
         if (snake.head.child == null)
             objects[snake.head.getY()][snake.head.getX()] = new Empty();
-        snake.head.setX(x);
-        snake.head.setY(y);
+        snake.head.setPosition(x, y);
         snake.head.direction = direction;
         objects[y][x] = snake.head;
 

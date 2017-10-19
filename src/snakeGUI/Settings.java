@@ -5,6 +5,7 @@ public final class Settings {
             System.getProperty("user.dir") + "/images/";
     public static final String levelUrl =
             System.getProperty("user.dir") + "/levels/";
+    public static final String defaultImageFileName = "default.png";
 
     static final int frequency = 200;
 }

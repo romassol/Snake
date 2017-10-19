@@ -8,13 +8,13 @@ import java.awt.*;
 public class FieldObjectLabel extends JLabel {
     private FieldObject parent;
 
-    FieldObjectLabel(FieldObject parent, int size) {
+    FieldObjectLabel(FieldObject parent, int size, ImageSaver imageSaver) {
         super();
 
         this.parent = parent;
 
         setPreferredSize(new Dimension(size, size));
-        setIcon(ImageSaver.getIcon(parent));
+        setIcon(imageSaver.getIcon(parent));
         setVisible(true);
     }
 }

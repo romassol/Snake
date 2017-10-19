@@ -11,12 +11,14 @@ public class FieldPanel extends JPanel {
     private int cellSize;
     private Level level;
     private HashSet<FieldObjectLabel> labels;
+    private ImageSaver imageSaver;
 
     FieldPanel(Level level, int cellSize) {
         super();
         setBackground(Color.WHITE);
 
         this.cellSize = cellSize;
+        imageSaver = new ImageSaver(cellSize);
 
         int width = cellSize * level.objects[0].length;
         int height = cellSize * level.objects.length;
@@ -39,7 +41,7 @@ public class FieldPanel extends JPanel {
         for (int y = 0; y < level.objects.length; y++) {
             for (int x = 0; x < level.objects[y].length; x++) {
                 FieldObjectLabel label =
-                        new FieldObjectLabel(level.objects[y][x], cellSize);
+                        new FieldObjectLabel(level.objects[y][x], cellSize, imageSaver);
                 labels.add(label);
                 add(label);
             }

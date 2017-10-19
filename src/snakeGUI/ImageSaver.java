@@ -8,55 +8,58 @@ import java.awt.*;
 import java.io.File;
 import java.util.Hashtable;
 
-public final class ImageSaver {
-    private static Hashtable<String, ImageIcon> images =
-            new Hashtable<>();
+public class ImageSaver {
+    private Hashtable<String, ImageIcon> images;
     private static Pair<String, ImageIcon> defaultImage;
+    private int cellSize;
 
-    public static void loadImages(int size) {
+    public ImageSaver(int cellSize) {
+        setCellSize(cellSize);
+        images = new Hashtable<>();
         defaultImage = new Pair<>(
-                Settings.imageUrl + "default.png",
-                getImageIcon(Settings.imageUrl + "default.png", size));
-
-        Hashtable<Class, String> names = new Hashtable<>();
-        names.put(Empty.class, "empty.jpg");
-        names.put(Wall.class, "wall.jpg");
-        names.put(Apple.class, "apple.jpg");
-        names.put(SnakePart.class, "snakepart.jpg");
-
-        names.forEach((key, value) -> {
-            String name = key.getName().toLowerCase();
-
-            String fileName = Settings.imageUrl + value;
-
-            if (!new File(fileName).exists()) {
-                System.out.println("Can't find a " + fileName + "!");
-                fileName = defaultImage.getKey();
-            }
-
-            images.put(name, getImageIcon(fileName, size));
-        });
+            Settings.imageUrl + Settings.defaultImageFileName,
+            getImageIcon(Settings.defaultImageFileName)
+        );
     }
 
-    private static ImageIcon getImageIcon(String fileName, int size) {
-        Image img = new ImageIcon(fileName)
+    private ImageIcon getImageIcon(String fileName) {
+        Image img = new ImageIcon(Settings.imageUrl + fileName)
                 .getImage()
-                .getScaledInstance(size, size, Image.SCALE_SMOOTH);
+                .getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
         ImageIcon imageIcon = new ImageIcon();
         imageIcon.setImage(img);
 
         return imageIcon;
     }
 
-    private static String getImageName(FieldObject obj) {
-        return obj.getClass().getName().toLowerCase() + ".png";
-    }
-
-    public static ImageIcon getIcon(FieldObject obj) {
-        String className = obj.getClass().getName().toLowerCase();
+    public ImageIcon getIcon(FieldObject obj) {
+        String className = obj.getClass().getSimpleName().toLowerCase();
 
         if (images.containsKey(className))
             return images.get(className);
-        return defaultImage.getValue();
+
+        ImageFileName annotation = obj.getClass().getAnnotation(ImageFileName.class);
+
+        if (annotation == null) {
+            images.put(defaultImage.getKey(), defaultImage.getValue());
+            return defaultImage.getValue();
+        }
+
+        String fileName = annotation.fileName();
+        ImageIcon fileImage;
+        if (!new File(Settings.imageUrl + fileName).exists())
+            fileImage = defaultImage.getValue();
+        else
+            fileImage = getImageIcon(fileName);
+
+        images.put(className, fileImage);
+        return fileImage;
+    }
+
+    public void setCellSize(int cellSize) {
+        if (cellSize < 0)
+            throw new IllegalArgumentException("Cell size can't be negative");
+
+        this.cellSize = cellSize;
     }
 }
