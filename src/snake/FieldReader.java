@@ -30,7 +30,7 @@ public class FieldReader {
             InvocationTargetException, IOException {
         this.fileName = fileName;
         fillFieldAndCreateSnake();
-        setDirection();
+        fillSnakePartsDirections();
     }
 
     private void fillFieldAndCreateSnake() throws NoSuchMethodException,
@@ -109,7 +109,7 @@ public class FieldReader {
         return neighbours;
     }
 
-    private void setDirection(){
+    private void fillSnakePartsDirections(){
         SnakePart current = snake.head;
         SnakePart next = snake.head.child;
         while (next != null) {
@@ -118,7 +118,7 @@ public class FieldReader {
             next = current.child;
 
         }
-        current.direction = Direction.BOTTOM;
+        current.direction = Direction.Zero;
     }
 
     public FieldObject[][] getField() {
