@@ -90,9 +90,8 @@ public class FieldReader {
             constructSnake(tmp, snake, snakeParts);
         }
         if(snakeParts.size()!=0){
-            snakeParts.add(snake.tail);
+            snakeParts.add(snake.getTail());
             snake.removeTail();
-            return;
         }
     }
 
@@ -110,15 +109,15 @@ public class FieldReader {
     }
 
     private void fillSnakePartsDirections(){
-        SnakePart current = snake.head;
-        SnakePart next = snake.head.child;
+        SnakePart current = snake.getHead();
+        SnakePart next = snake.getHead().getChild();
         while (next != null) {
-            current.direction = current.getPosition().subtractOtherFromThis(next.getPosition());
+            current.setDirection(current.getPosition().subtractOtherFromThis(next.getPosition()));
             current = next;
-            next = current.child;
+            next = current.getChild();
 
         }
-        current.direction = Direction.ZERO;
+        current.setDirection(Direction.ZERO);
     }
 
     public FieldObject[][] getField() {
