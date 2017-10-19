@@ -1,6 +1,5 @@
 package snakeGUI;
 
-import snake.FieldObject;
 import snake.Level;
 
 import javax.swing.*;
@@ -18,8 +17,8 @@ public class FieldPanel extends JPanel {
 
         this.cellSize = cellSize;
 
-        int width = cellSize * level.objects[0].length;
-        int height = cellSize * level.objects.length;
+        int width = cellSize * level.field[0].length;
+        int height = cellSize * level.field.length;
 
         setPreferredSize(new Dimension(width, height));
         setLayout(new FieldLayout(width, height, cellSize));
@@ -36,10 +35,10 @@ public class FieldPanel extends JPanel {
 
         labels = new HashSet<>();
 
-        for (int y = 0; y < level.objects.length; y++) {
-            for (int x = 0; x < level.objects[y].length; x++) {
+        for (int y = 0; y < level.field.length; y++) {
+            for (int x = 0; x < level.field[y].length; x++) {
                 FieldObjectLabel label =
-                        new FieldObjectLabel(level.objects[y][x], cellSize);
+                        new FieldObjectLabel(level.field[y][x], cellSize);
                 labels.add(label);
                 add(label);
             }

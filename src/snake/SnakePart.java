@@ -29,7 +29,7 @@ SnakePart extends FieldObject {
     }
 
     public void setPosition(int x, int y) {
-        this.position = new Vector(x, y);
+        position = new Vector(x, y);
     }
 
     public int getX(){
