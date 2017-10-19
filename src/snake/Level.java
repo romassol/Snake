@@ -1,7 +1,7 @@
 package snake;
 
 public class Level {
-    public FieldObject[][] objects;
+    public FieldObject[][] field;
     public Snake snake;
     public AppleGenerator appleGenerator;
 
@@ -12,14 +12,14 @@ public class Level {
             int snakeX,
             int snakeY,
             Vector snakeDirection) {
-        objects = new FieldObject[width][height];
+        field = new FieldObject[height][width];
         appleGenerator = new AppleGenerator(applesCount);
         snake = new Snake(snakeX, snakeY, snakeDirection);
-        objects[snakeY][snakeX] = snake.head;
+        field[snakeY][snakeX] = snake.head;
     }
 
     public Level(FieldReader reader, int applesCount) {
-        objects = reader.getField();
+        field = reader.getField();
         snake = reader.getSnake();
         appleGenerator = new AppleGenerator(applesCount);
     }
@@ -34,10 +34,10 @@ public class Level {
             int y = snakePartNow.getY() + parentDirection.DELTA_Y;
 
             Vector tmp = snakePartNow.direction.clone();
-            objects[snakePartNow.getY()][snakePartNow.getX()] = emptyObj;
+            field[snakePartNow.getY()][snakePartNow.getX()] = emptyObj;
             snakePartNow.direction = parentDirection;
             snakePartNow.setPosition(x, y);
-            objects[y][x] = snakePartNow;
+            field[y][x] = snakePartNow;
 
             parentDirection = tmp;
             snakePartNow = snakePartNow.child;
@@ -58,19 +58,19 @@ public class Level {
         int x = snake.head.getX() + direction.DELTA_X;
         int y = snake.head.getY() + direction.DELTA_Y;
 
-        FieldObject oldCell = objects[y][x];
+        FieldObject oldCell = field[y][x];
         if (snake.head.child == null)
-            objects[snake.head.getY()][snake.head.getX()] = new Empty();
+            field[snake.head.getY()][snake.head.getX()] = new Empty();
         snake.head.setPosition(x, y);
         snake.head.direction = direction;
-        objects[y][x] = snake.head;
+        field[y][x] = snake.head;
 
         return oldCell;
     }
 
     public void addSnakePart() {
         SnakePart tail = snake.addPartAndReturnTail();
-        objects[tail.getY()][tail.getX()] = tail;
+        field[tail.getY()][tail.getX()] = tail;
     }
 
     public boolean isOver(){

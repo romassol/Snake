@@ -3,7 +3,6 @@ package snake;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 
 import static org.junit.Assert.*;
@@ -11,14 +10,14 @@ import static org.junit.Assert.*;
 public class SnakeTest {
 
     private void fillField(Level level){
-        level.objects[0][0] = new Empty();
-        level.objects[0][1] = new Empty();
-        level.objects[0][2] = new Empty();
-        level.objects[1][0] = new Apple();
-        level.objects[1][1] = new Wall();
-        level.objects[1][2] = new Empty();
-        level.objects[2][0] = new Wall();
-        level.objects[2][1] = new Empty();
+        level.field[0][0] = new Empty();
+        level.field[0][1] = new Empty();
+        level.field[0][2] = new Empty();
+        level.field[1][0] = new Apple();
+        level.field[1][1] = new Wall();
+        level.field[1][2] = new Empty();
+        level.field[2][0] = new Wall();
+        level.field[2][1] = new Empty();
     }
 
     @Test
@@ -54,10 +53,10 @@ public class SnakeTest {
         level.addSnakePart();
         level.addSnakePart();
 
-        assertEquals(level.objects[1][2], level.snake.head.child);
-        assertEquals(level.objects[1][3], level.snake.tail);
+        assertEquals(level.field[2][1], level.snake.head.child);
+        assertEquals(level.field[3][1], level.snake.tail);
     }
-
+    
     @Test
     public void someElementsSnakeMoving() {
         Level level = new Level(
@@ -70,7 +69,7 @@ public class SnakeTest {
         assertEquals(1, level.snake.head.getY());
         assertEquals(2, level.snake.tail.getX());
         assertEquals(2, level.snake.tail.getY());
-        assertTrue(level.objects[1][2] instanceof Empty);
+        assertTrue(level.field[2][1] instanceof Empty);
     }
 
     @Test
@@ -98,7 +97,7 @@ public class SnakeTest {
 
         FieldObject oldCell = level.moveSnakeAndReturnOldCell(Direction.RIGHT);
         assertTrue(oldCell instanceof Empty);
-        assertEquals(head, level.objects[2][1]);
+        assertEquals(head, level.field[1][2]);
     }
 
     @Test

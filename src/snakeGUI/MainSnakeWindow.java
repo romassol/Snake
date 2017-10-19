@@ -78,8 +78,8 @@ class MainSnakeWindow extends JFrame
         int maxWidth = (int) (screenSize.width * 0.9);
         int maxHeight = (int) (screenSize.height * 0.9);
 
-        int fieldHeight = game.getCurrentLevel().objects.length;
-        int fieldWidth = game.getCurrentLevel().objects[0].length;
+        int fieldHeight = game.getCurrentLevel().field.length;
+        int fieldWidth = game.getCurrentLevel().field[0].length;
 
         cellSize = calculateCellSize(maxWidth, maxHeight, fieldWidth, fieldHeight);
 

@@ -1,7 +1,6 @@
 package snake;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Random;
 
 public class AppleGenerator {
@@ -27,15 +26,15 @@ public class AppleGenerator {
         Vector randomFreeCells = indexesFreeCells.get(index);
         int x = randomFreeCells.DELTA_X;
         int y = randomFreeCells.DELTA_Y;
-        level.objects[y][x] = new Apple();
+        level.field[y][x] = new Apple();
         applesCount--;
     }
 
     private ArrayList<Vector> getAllFreeCells(Level level) {
         ArrayList<Vector> indexesFreeCells = new ArrayList<>();
-        for (int i = 0; i < level.objects.length; i++){
-            for (int j = 0; j < level.objects[i].length; j++){
-                if(level.objects[i][j] instanceof Empty){
+        for (int i = 0; i < level.field.length; i++){
+            for (int j = 0; j < level.field[i].length; j++){
+                if(level.field[i][j] instanceof Empty){
                     indexesFreeCells.add(new Vector(j, i));
                 }
             }
