@@ -1,38 +1,34 @@
 package snake;
 
 public class Vector implements Cloneable{
-    final int DELTA_X;
-    final int DELTA_Y;
+    final int X;
+    final int Y;
 
-    Vector(int deltaX, int deltaY) {
-        DELTA_X = deltaX;
-        DELTA_Y = deltaY;
+    Vector(int x, int y) {
+        X = x;
+        Y = y;
     }
 
     public Vector clone() {
-        return new Vector(this.DELTA_X, this.DELTA_Y);
+        return new Vector(this.X, this.Y);
     }
 
     boolean isOpposite(Vector vector) {
         return !this.isEqualWithOther(Direction.ZERO) &&
                 !vector.isEqualWithOther(Direction.ZERO) &&
-                (Math.abs(this.DELTA_X - vector.DELTA_X) == 2 ||
-                        Math.abs(this.DELTA_Y - vector.DELTA_Y) == 2);
+                (Math.abs(this.X - vector.X) == 2 ||
+                        Math.abs(this.Y - vector.Y) == 2);
     }
 
     boolean isEqualWithOther(Vector other){
-        return DELTA_X == other.DELTA_X && DELTA_Y == other.DELTA_Y;
+        return X == other.X && Y == other.Y;
     }
 
-    Vector subtractOtherFromThis(Vector other){
-        return new Vector(
-                DELTA_X - other.DELTA_X,
-                DELTA_Y - other.DELTA_Y);
+    Vector subtract(Vector other){
+        return new Vector(X - other.X, Y - other.Y);
     }
 
-    Vector summarizeOtherWithThis(Vector other){
-        return new Vector(
-                DELTA_X + other.DELTA_X,
-                DELTA_Y + other.DELTA_Y);
+    Vector sum(Vector other){
+        return new Vector(X + other.X, Y + other.Y);
     }
 }

@@ -20,7 +20,7 @@ public class FieldReader {
         characterToFieldObject = new HashMap<>();
         characterToFieldObject.put('#',
                 (x, y, vector, parent, child) -> new Wall());
-        characterToFieldObject.put(' ',
+        characterToFieldObject.put('.',
                 (x, y, vector, parent, child) -> new Empty());
         characterToFieldObject.put('A',
                 (x, y, vector, parent, child) -> new Apple());
@@ -117,11 +117,11 @@ public class FieldReader {
 
         List<FieldObject> neighbours = new ArrayList<>();
         for (Vector anOffset : offset) {
-            Vector neighbour = center.getPosition().summarizeOtherWithThis(anOffset);
-            if (neighbour.DELTA_X >= 0 && neighbour.DELTA_Y >= 0 &&
-                    neighbour.DELTA_X <= field[0].length &&
-                    neighbour.DELTA_Y <= field.length) {
-                neighbours.add(field[neighbour.DELTA_Y][neighbour.DELTA_X]);
+            Vector neighbour = center.getPosition().sum(anOffset);
+            if (neighbour.X >= 0 && neighbour.Y >= 0 &&
+                    neighbour.X <= field[0].length &&
+                    neighbour.Y <= field.length) {
+                neighbours.add(field[neighbour.Y][neighbour.X]);
             }
         }
         return neighbours;
@@ -134,7 +134,7 @@ public class FieldReader {
             current.setDirection(
                     current
                         .getPosition()
-                        .subtractOtherFromThis(next.getPosition()));
+                        .subtract(next.getPosition()));
             current = next;
             next = current.getChild();
 

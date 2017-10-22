@@ -32,12 +32,16 @@ public class SnakePart extends FieldObject {
         position = new Vector(x, y);
     }
 
+    public void setPosition(Vector position) {
+        this.position = position;
+    }
+
     public int getX(){
-        return position.DELTA_X;
+        return position.X;
     }
 
     public int getY(){
-        return position.DELTA_Y;
+        return position.Y;
     }
 
     public Vector getDirection() {

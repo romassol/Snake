@@ -30,14 +30,15 @@ public class Level {
         Empty emptyObj = new Empty();
 
         while (snakePartNow != null) {
-            int x = snakePartNow.getX() + parentDirection.DELTA_X;
-            int y = snakePartNow.getY() + parentDirection.DELTA_Y;
+            Vector nextPosition = getCoordinates(
+                    snakePartNow.getPosition(),
+                    parentDirection);
 
             Vector tmp = snakePartNow.getDirection().clone();
             field[snakePartNow.getY()][snakePartNow.getX()] = emptyObj;
             snakePartNow.setDirection(parentDirection);
-            snakePartNow.setPosition(x, y);
-            field[y][x] = snakePartNow;
+            snakePartNow.setPosition(nextPosition);
+            field[nextPosition.Y][nextPosition.X] = snakePartNow;
 
             parentDirection = tmp;
             snakePartNow = snakePartNow.getChild();
@@ -55,15 +56,16 @@ public class Level {
         else
             direction = snakeDirection;
 
-        int x = snake.getHead().getX() + direction.DELTA_X;
-        int y = snake.getHead().getY() + direction.DELTA_Y;
+        Vector nextPosition = getCoordinates(
+                snake.getHead().getPosition(),
+                direction);
 
-        FieldObject oldCell = field[y][x];
+        FieldObject oldCell = field[nextPosition.Y][nextPosition.X];
         if (snake.getHead().getChild() == null)
             field[snake.getHead().getY()][snake.getHead().getX()] = new Empty();
-        snake.getHead().setPosition(x, y);
+        snake.getHead().setPosition(nextPosition);
         snake.getHead().setDirection(direction);
-        field[y][x] = snake.getHead();
+        field[nextPosition.Y][nextPosition.X] = snake.getHead();
 
         return oldCell;
     }
@@ -75,5 +77,13 @@ public class Level {
 
     public boolean isOver(){
         return appleGenerator.getApplesCount() == 0;
+    }
+
+    private Vector getCoordinates(Vector position, Vector direction) {
+        Vector sumVector = position.sum(direction);
+        return new Vector(
+                (sumVector.X + field[0].length) % field[0].length,
+                (sumVector.Y + field.length) % field.length
+        );
     }
 }
