@@ -19,6 +19,9 @@ public class AppleGenerator {
     }
 
     public void generate(Level level) {
+        if (applesCount <= 0)
+            return;
+
         ArrayList<Vector> freeCellsIndexes = getAllFreeCells(level);
         Random random = new Random();
         int index = random.nextInt(freeCellsIndexes.size());
@@ -26,7 +29,7 @@ public class AppleGenerator {
         int x = randomFreeCells.X;
         int y = randomFreeCells.Y;
         level.field[y][x] = new Apple();
-            applesCount--;
+        applesCount--;
     }
 
     private ArrayList<Vector> getAllFreeCells(Level level) {

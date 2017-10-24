@@ -9,10 +9,6 @@ public class Vector implements Cloneable{
         Y = y;
     }
 
-    public Vector clone() {
-        return new Vector(this.X, this.Y);
-    }
-
     boolean isOpposite(Vector vector) {
         if (this.equals(Direction.ZERO) || vector.equals(Direction.ZERO))
             return false;

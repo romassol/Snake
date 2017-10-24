@@ -24,6 +24,7 @@ public class Game {
         if (!getCurrentLevel().appleGenerator.isNeedToAdd(oldCell)) {
             return;
         }
+
         if (getCurrentLevel().isOver()) {
             if(isLevelLast()) {
                 isWin = true;
