@@ -36,11 +36,11 @@ public class SnakePart implements IFieldObject {
         this.position = position;
     }
 
-    public int getX(){
+    public int getX() {
         return position.X;
     }
 
-    public int getY(){
+    public int getY() {
         return position.Y;
     }
 

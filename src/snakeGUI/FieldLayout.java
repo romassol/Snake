@@ -32,10 +32,9 @@ public class FieldLayout implements LayoutManager {
 
     @Override
     public void layoutContainer(Container parent) {
-        Component list[] = parent.getComponents();
         int x = 0;
         int y = 0;
-        for (Component component : list) {
+        for (Component component : parent.getComponents()) {
             Dimension pref = component.getPreferredSize();
             component.setBounds(x, y, pref.width, pref.height);
             x = (x + pref.width) % width;

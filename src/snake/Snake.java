@@ -22,14 +22,14 @@ public class Snake {
         return newPart;
     }
 
-    public void addPart(SnakePart part){
+    public void addPart(SnakePart part) {
         part.setDirection(tail.getDirection());
         part.setParent(tail);
         tail.setChild(part);
         tail = part;
     }
 
-    public void removeTail(){
+    public void removeTail() {
         SnakePart futureTail = tail.getParent();
         futureTail.setChild(null);
         tail = futureTail;
