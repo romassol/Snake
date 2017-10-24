@@ -1,7 +1,7 @@
 package snake;
 
 public class Level {
-    public FieldObject[][] field;
+    public IFieldObject[][] field;
     public Snake snake;
     public AppleGenerator appleGenerator;
 
@@ -12,7 +12,7 @@ public class Level {
             int snakeX,
             int snakeY,
             Vector snakeDirection) {
-        field = new FieldObject[height][width];
+        field = new IFieldObject[height][width];
         appleGenerator = new AppleGenerator(applesCount);
         snake = new Snake(snakeX, snakeY, snakeDirection);
         field[snakeY][snakeX] = snake.getHead();
@@ -24,7 +24,7 @@ public class Level {
         appleGenerator = new AppleGenerator(applesCount);
     }
 
-    public FieldObject moveSnakeAndReturnOldCell(Vector snakeDirection) {
+    public IFieldObject moveSnakeAndReturnOldCell(Vector snakeDirection) {
         SnakePart snakePartNow = snake.getHead().getChild();
         Vector parentDirection = snake.getHead().getDirection();
         Empty emptyObj = new Empty();
@@ -47,7 +47,7 @@ public class Level {
         return moveSnakeHeadAndReturnOldCell(snakeDirection);
     }
 
-    private FieldObject moveSnakeHeadAndReturnOldCell(Vector snakeDirection) {
+    private IFieldObject moveSnakeHeadAndReturnOldCell(Vector snakeDirection) {
         Vector direction;
 
         if (snakeDirection == null ||
@@ -60,7 +60,7 @@ public class Level {
                 snake.getHead().getPosition(),
                 direction);
 
-        FieldObject oldCell = field[nextPosition.Y][nextPosition.X];
+        IFieldObject oldCell = field[nextPosition.Y][nextPosition.X];
         if (snake.getHead().getChild() == null)
             field[snake.getHead().getY()][snake.getHead().getX()] = new Empty();
         snake.getHead().setPosition(nextPosition);

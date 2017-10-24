@@ -96,15 +96,13 @@ public class SnakeTest {
         level.addSnakePart();
         SnakePart head = level.snake.getHead();
 
-        FieldObject oldCell = level.moveSnakeAndReturnOldCell(Direction.RIGHT);
+        IFieldObject oldCell = level.moveSnakeAndReturnOldCell(Direction.RIGHT);
         assertTrue(oldCell instanceof Empty);
         assertEquals(head, level.field[1][2]);
     }
 
     @Test
-    public void goToTheNextLevel() throws MakeTurnException,
-            InvocationTargetException, NoSuchMethodException,
-            InstantiationException, IOException, IllegalAccessException {
+    public void goToTheNextLevel() throws Exception {
         Level[] levels = new Level[2];
         levels[0] = new Level(new FieldReader("level5.txt"), 0);
         levels[1] = new Level(new FieldReader("level4.txt"), 1);

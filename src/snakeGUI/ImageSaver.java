@@ -32,7 +32,7 @@ public class ImageSaver {
         return imageIcon;
     }
 
-    public ImageIcon getIcon(FieldObject obj) {
+    public ImageIcon getIcon(IFieldObject obj) {
         String className = obj.getClass().getSimpleName().toLowerCase();
 
         if (images.containsKey(className))

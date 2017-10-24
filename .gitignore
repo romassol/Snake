@@ -1,1 +1,3 @@
-*.xml*.xmlSnake.iml
+/.idea/*
+Snake.iml
+/src/META-INF/*

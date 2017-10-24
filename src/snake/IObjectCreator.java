@@ -1,7 +1,7 @@
 package snake;
 
 public interface IObjectCreator {
-    FieldObject createFieldObject(
+    IFieldObject createFieldObject(
             int x,
             int y,
             Vector vector,

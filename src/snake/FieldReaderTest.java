@@ -10,30 +10,26 @@ import static org.junit.Assert.assertTrue;
 
 public class FieldReaderTest {
     @Test
-    public void snakePosition() throws InvocationTargetException,
-            NoSuchMethodException, InstantiationException,
-            IOException, IllegalAccessException {
-        FieldReader r = new FieldReader("level2.txt");
+    public void readLevelFromFile_snakeWithSomeSnakeParts() throws Exception {
+        FieldReader r = new FieldReader("level4.txt");
+        Vector[] expected = new Vector[5];
+        expected[0] = new Vector(21, 4);
+        expected[1] = new Vector(21, 5);
+        expected[2] = new Vector(22, 5);
+        expected[3] = new Vector(22, 4);
+        expected[4] = new Vector(22, 3);
         Snake snake = r.getSnake();
-        assertEquals(9, snake.getHead().getX());
-        assertEquals(2, snake.getHead().getY());
         SnakePart next = snake.getHead();
-        assertEquals(9, next.getChild().getX());
-        assertEquals(3, next.getChild().getY());
-        next = next.getChild();
-        assertEquals(10, next.getChild().getX());
-        assertEquals(3, next.getChild().getY());
-        next = next.getChild();
-        assertEquals(10, next.getChild().getX());
-        assertEquals(2, next.getChild().getY());
-        next = next.getChild();
-        assertEquals(10, next.getChild().getX());
-        assertEquals(1, next.getChild().getY());
+
+        for (int i = 0; i < expected.length; i++) {
+            assertEquals(expected[i].X, next.getX());
+            assertEquals(expected[i].Y, next.getY());
+            next = next.getChild();
+        }
+        assertTrue(next == null);
     }
     @Test
-    public void setDirection() throws InvocationTargetException, 
-            NoSuchMethodException, InstantiationException,
-            IOException, IllegalAccessException {
+    public void setDirection() throws Exception {
         FieldReader r = new FieldReader("level4.txt");
         Snake snake = r.getSnake();
         assertTrue(Direction.TOP.isEqualWithOther(

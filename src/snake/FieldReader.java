@@ -1,31 +1,33 @@
 package snake;
 
-import snakeGUI.Settings;
-
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class FieldReader {
     private String fileName;
-    private static HashMap<Character, IObjectCreator> characterToFieldObject;
-    private FieldObject[][] field;
+    private static final HashMap<Character, IObjectCreator>
+            CHARACTER_TO_FIELD_OBJECT;
+    private IFieldObject[][] field;
     private Snake snake;
 
     static {
-        characterToFieldObject = new HashMap<>();
-        characterToFieldObject.put('#',
+        CHARACTER_TO_FIELD_OBJECT = new HashMap<>();
+        CHARACTER_TO_FIELD_OBJECT.put('#',
                 (x, y, vector, parent, child) -> new Wall());
-        characterToFieldObject.put('.',
+        CHARACTER_TO_FIELD_OBJECT.put('.',
                 (x, y, vector, parent, child) -> new Empty());
-        characterToFieldObject.put('A',
+        CHARACTER_TO_FIELD_OBJECT.put('A',
                 (x, y, vector, parent, child) -> new Apple());
-        characterToFieldObject.put('S', SnakePart::new);
-        characterToFieldObject.put('H', SnakePart::new);
+        CHARACTER_TO_FIELD_OBJECT.put('S', SnakePart::new);
+        CHARACTER_TO_FIELD_OBJECT.put('H', SnakePart::new);
     }
 
     public FieldReader(String fileName) throws IllegalAccessException,
@@ -45,16 +47,16 @@ public class FieldReader {
                 StandardCharsets.UTF_8);
 
         try {
-            field = new FieldObject[lines.size()][lines.get(0).length()];
+            field = new IFieldObject[lines.size()][lines.get(0).length()];
         } catch (IndexOutOfBoundsException e){
-            throw new IllegalArgumentException("Level is incorrect");
+            throw new IllegalArgumentException("File is empty. Can't create a new level");
         }
         List<SnakePart> snakeParts = new ArrayList<>();
         SnakePart head = null;
         for(int i = 0; i < lines.size(); i++){
             for (int j = 0; j < lines.get(i).length(); j++){
                 Character symbol = lines.get(i).charAt(j);
-                field[i][j] = characterToFieldObject.get(symbol)
+                field[i][j] = CHARACTER_TO_FIELD_OBJECT.get(symbol)
                         .createFieldObject(
                                 j, i, null,null,null);
                 if(symbol == 'S'){
@@ -77,10 +79,10 @@ public class FieldReader {
     }
 
     private List<SnakePart> getNearbySnakeParts(
-            List<FieldObject> neighbours,
+            List<IFieldObject> neighbours,
             List<SnakePart> snakeParts){
         List<SnakePart> nearbySnakeParts = new ArrayList<>();
-        for (FieldObject neighbour : neighbours) {
+        for (IFieldObject neighbour : neighbours) {
             if (neighbour instanceof SnakePart && snakeParts.contains(neighbour)) {
                 nearbySnakeParts.add((SnakePart) neighbour);
             }
@@ -108,14 +110,14 @@ public class FieldReader {
         }
     }
 
-    private List<FieldObject> getNeighbours(SnakePart center){
+    private List<IFieldObject> getNeighbours(SnakePart center){
         List<Vector> offset = Arrays.asList(
                 Direction.LEFT,
                 Direction.RIGHT,
                 Direction.BOTTOM,
                 Direction.TOP);
 
-        List<FieldObject> neighbours = new ArrayList<>();
+        List<IFieldObject> neighbours = new ArrayList<>();
         for (Vector anOffset : offset) {
             Vector neighbour = center.getPosition().sum(anOffset);
             if (neighbour.X >= 0 && neighbour.Y >= 0 &&
@@ -142,7 +144,7 @@ public class FieldReader {
         current.setDirection(Direction.ZERO);
     }
 
-    public FieldObject[][] getField() {
+    public IFieldObject[][] getField() {
         return field;
     }
 

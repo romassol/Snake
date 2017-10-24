@@ -10,7 +10,7 @@ public class AppleGenerator {
         this.applesCount = applesCount;
     }
 
-    public boolean isNeedToAdd(FieldObject oldCell)
+    public boolean isNeedToAdd(IFieldObject oldCell)
     {
         return oldCell instanceof Apple;
     }
@@ -20,14 +20,14 @@ public class AppleGenerator {
     }
 
     public void generate(Level level){
-        ArrayList<Vector> indexesFreeCells = getAllFreeCells(level);
+        ArrayList<Vector> freeCellsIndexes = getAllFreeCells(level);
         Random random = new Random();
-        int index = random.nextInt(indexesFreeCells.size());
-        Vector randomFreeCells = indexesFreeCells.get(index);
+        int index = random.nextInt(freeCellsIndexes.size());
+        Vector randomFreeCells = freeCellsIndexes.get(index);
         int x = randomFreeCells.X;
         int y = randomFreeCells.Y;
         level.field[y][x] = new Apple();
-        applesCount--;
+            applesCount--;
     }
 
     private ArrayList<Vector> getAllFreeCells(Level level) {
