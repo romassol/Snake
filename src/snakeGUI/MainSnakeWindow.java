@@ -1,7 +1,7 @@
 package snakeGUI;
 
 import snake.Game;
-import snake.MakeTurnException;
+import snake.TurnException;
 import snake.Vector;
 
 import javax.swing.*;
@@ -48,7 +48,7 @@ class MainSnakeWindow extends JFrame
             game.setPlayerDirection(playerDirection);
             try {
                 game.makeTurn();
-            } catch (MakeTurnException exception) {
+            } catch (TurnException exception) {
                 exception.printStackTrace();
             }
 

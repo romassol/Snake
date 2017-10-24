@@ -36,11 +36,11 @@ public class SnakePart extends FieldObject {
         this.position = position;
     }
 
-    public int getX(){
+    public int getX() {
         return position.X;
     }
 
-    public int getY(){
+    public int getY() {
         return position.Y;
     }
 

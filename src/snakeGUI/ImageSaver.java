@@ -6,16 +6,17 @@ import snake.*;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.util.HashMap;
 import java.util.Hashtable;
 
 public class ImageSaver {
-    private Hashtable<String, ImageIcon> images;
+    private HashMap<String, ImageIcon> images;
     private static Pair<String, ImageIcon> defaultImage;
     private int cellSize;
 
     public ImageSaver(int cellSize) {
         setCellSize(cellSize);
-        images = new Hashtable<>();
+        images = new HashMap<>();
         defaultImage = new Pair<>(
             Settings.imageUrl + Settings.defaultImageFileName,
             getImageIcon(Settings.defaultImageFileName)

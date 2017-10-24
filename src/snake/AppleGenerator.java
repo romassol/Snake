@@ -10,8 +10,7 @@ public class AppleGenerator {
         this.applesCount = applesCount;
     }
 
-    public boolean isNeedToAdd(FieldObject oldCell)
-    {
+    public boolean isNeedToAdd(FieldObject oldCell) {
         return oldCell instanceof Apple;
     }
 
@@ -19,22 +18,24 @@ public class AppleGenerator {
         return applesCount;
     }
 
-    public void generate(Level level){
-        ArrayList<Vector> indexesFreeCells = getAllFreeCells(level);
-        Random random = new Random();
-        int index = random.nextInt(indexesFreeCells.size());
-        Vector randomFreeCells = indexesFreeCells.get(index);
-        int x = randomFreeCells.X;
-        int y = randomFreeCells.Y;
-        level.field[y][x] = new Apple();
-        applesCount--;
+    public void generate(Level level) {
+        if (applesCount > 0) {
+            ArrayList<Vector> indexesFreeCells = getAllFreeCells(level);
+            Random random = new Random();
+            int index = random.nextInt(indexesFreeCells.size());
+            Vector randomFreeCells = indexesFreeCells.get(index);
+            int x = randomFreeCells.X;
+            int y = randomFreeCells.Y;
+            level.field[y][x] = new Apple();
+            applesCount--;
+        }
     }
 
     private ArrayList<Vector> getAllFreeCells(Level level) {
         ArrayList<Vector> indexesFreeCells = new ArrayList<>();
-        for (int i = 0; i < level.field.length; i++){
-            for (int j = 0; j < level.field[i].length; j++){
-                if(level.field[i][j] instanceof Empty){
+        for (int i = 0; i < level.field.length; i++) {
+            for (int j = 0; j < level.field[i].length; j++) {
+                if (level.field[i][j] instanceof Empty) {
                     indexesFreeCells.add(new Vector(j, i));
                 }
             }

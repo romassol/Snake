@@ -50,7 +50,7 @@ public class SnakeTest {
     @Test
     public void level_addSnakePart() {
         Level level = new Level(
-                3, 4, 3, 1, 1, Direction.TOP);
+                3, 4, 3, new Vector(1,1), Direction.TOP);
         level.addSnakePart();
         level.addSnakePart();
 
@@ -61,7 +61,7 @@ public class SnakeTest {
     @Test
     public void someElementsSnakeMoving() {
         Level level = new Level(
-                3 ,3,1, 2, 2, Direction.RIGHT);
+                3 ,3, 1, new Vector(2, 2), Direction.RIGHT);
         fillField(level);
         level.addSnakePart();
 
@@ -76,7 +76,7 @@ public class SnakeTest {
     @Test
     public void oneElementSnakeMoving() {
         Level level = new Level(
-                3 ,3,1, 2, 2, Direction.LEFT);
+                3 ,3 ,1, new Vector(2, 2), Direction.LEFT);
         fillField(level);
 
         level.moveSnakeAndReturnOldCell(null);
@@ -87,7 +87,7 @@ public class SnakeTest {
     @Test
     public void snakeMovingInCircle() {
         Level level = new Level(
-                4 ,5,1, 1, 1, Direction.TOP);
+                4 ,5,1, new Vector(1, 1), Direction.TOP);
 
         level.addSnakePart();
         level.snake.getTail().setDirection(Direction.LEFT);
@@ -102,7 +102,7 @@ public class SnakeTest {
     }
 
     @Test
-    public void goToTheNextLevel() throws MakeTurnException,
+    public void goToTheNextLevel() throws TurnException,
             InvocationTargetException, NoSuchMethodException,
             InstantiationException, IOException, IllegalAccessException {
         Level[] levels = new Level[2];

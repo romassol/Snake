@@ -9,13 +9,12 @@ public class Level {
             int width,
             int height,
             int applesCount,
-            int snakeX,
-            int snakeY,
+            Vector snakePosition,
             Vector snakeDirection) {
         field = new FieldObject[height][width];
         appleGenerator = new AppleGenerator(applesCount);
-        snake = new Snake(snakeX, snakeY, snakeDirection);
-        field[snakeY][snakeX] = snake.getHead();
+        snake = new Snake(snakePosition.X, snakePosition.Y, snakeDirection);
+        field[snakePosition.Y][snakePosition.X] = snake.getHead();
     }
 
     public Level(FieldReader reader, int applesCount) {
@@ -25,23 +24,23 @@ public class Level {
     }
 
     public FieldObject moveSnakeAndReturnOldCell(Vector snakeDirection) {
-        SnakePart snakePartNow = snake.getHead().getChild();
+        SnakePart currentSnakePart = snake.getHead().getChild();
         Vector parentDirection = snake.getHead().getDirection();
         Empty emptyObj = new Empty();
 
-        while (snakePartNow != null) {
+        while (currentSnakePart != null) {
             Vector nextPosition = getCoordinates(
-                    snakePartNow.getPosition(),
+                    currentSnakePart.getPosition(),
                     parentDirection);
 
-            Vector tmp = snakePartNow.getDirection().clone();
-            field[snakePartNow.getY()][snakePartNow.getX()] = emptyObj;
-            snakePartNow.setDirection(parentDirection);
-            snakePartNow.setPosition(nextPosition);
-            field[nextPosition.Y][nextPosition.X] = snakePartNow;
+            Vector tmp = currentSnakePart.getDirection();
+            field[currentSnakePart.getY()][currentSnakePart.getX()] = emptyObj;
+            currentSnakePart.setDirection(parentDirection);
+            currentSnakePart.setPosition(nextPosition);
+            field[nextPosition.Y][nextPosition.X] = currentSnakePart;
 
             parentDirection = tmp;
-            snakePartNow = snakePartNow.getChild();
+            currentSnakePart = currentSnakePart.getChild();
         }
 
         return moveSnakeHeadAndReturnOldCell(snakeDirection);
@@ -51,18 +50,21 @@ public class Level {
         Vector direction;
 
         if (snakeDirection == null ||
-                snake.getHead().getDirection().isOpposite(snakeDirection))
+                snake.getHead().getDirection().isOpposite(snakeDirection)) {
             direction = snake.getHead().getDirection();
-        else
+        }
+        else {
             direction = snakeDirection;
+        }
 
         Vector nextPosition = getCoordinates(
                 snake.getHead().getPosition(),
                 direction);
 
         FieldObject oldCell = field[nextPosition.Y][nextPosition.X];
-        if (snake.getHead().getChild() == null)
+        if (snake.getHead().getChild() == null) {
             field[snake.getHead().getY()][snake.getHead().getX()] = new Empty();
+        }
         snake.getHead().setPosition(nextPosition);
         snake.getHead().setDirection(direction);
         field[nextPosition.Y][nextPosition.X] = snake.getHead();
@@ -75,7 +77,7 @@ public class Level {
         field[tail.getY()][tail.getX()] = tail;
     }
 
-    public boolean isOver(){
+    public boolean isOver() {
         return appleGenerator.getApplesCount() == 0;
     }
 
