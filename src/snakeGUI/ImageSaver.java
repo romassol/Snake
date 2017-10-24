@@ -39,11 +39,15 @@ public class ImageSaver {
             return images.get(className);
 
         ImageFileName annotation = obj.getClass().getAnnotation(ImageFileName.class);
+        ImageIcon fileImage = getFileImage(annotation);
 
-        if (annotation == null) {
-            images.put(defaultImage.getKey(), defaultImage.getValue());
+        images.put(className, fileImage);
+        return fileImage;
+    }
+
+    private ImageIcon getFileImage(ImageFileName annotation) {
+        if (annotation == null)
             return defaultImage.getValue();
-        }
 
         String fileName = annotation.fileName();
         ImageIcon fileImage;
@@ -51,8 +55,6 @@ public class ImageSaver {
             fileImage = defaultImage.getValue();
         else
             fileImage = getImageIcon(fileName);
-
-        images.put(className, fileImage);
         return fileImage;
     }
 

@@ -14,13 +14,14 @@ public class Vector implements Cloneable{
     }
 
     boolean isOpposite(Vector vector) {
-        return !this.isEqualWithOther(Direction.ZERO) &&
-                !vector.isEqualWithOther(Direction.ZERO) &&
-                (Math.abs(this.X - vector.X) == 2 ||
-                        Math.abs(this.Y - vector.Y) == 2);
+        if (this.equals(Direction.ZERO) || vector.equals(Direction.ZERO))
+            return false;
+
+        return (vector.X == this.X && Math.abs(this.Y - vector.Y) == 2) ||
+                (vector.Y == this.Y && Math.abs(this.X - vector.X) == 2);
     }
 
-    boolean isEqualWithOther(Vector other){
+    boolean equals(Vector other){
         return X == other.X && Y == other.Y;
     }
 

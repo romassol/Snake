@@ -105,7 +105,7 @@ public class SnakeTest {
     public void goToTheNextLevel() throws Exception {
         Level[] levels = new Level[2];
         levels[0] = new Level(new FieldReader("level5.txt"), 0);
-        levels[1] = new Level(new FieldReader("level4.txt"), 1);
+        levels[1] = new Level(new FieldReader("_testMap_snakeWithSomeElements.txt"), 1);
         Game game = new Game(levels);
         assertEquals(levels[0], game.getCurrentLevel());
         game.setPlayerDirection(Direction.RIGHT);

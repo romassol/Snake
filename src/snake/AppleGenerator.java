@@ -10,8 +10,7 @@ public class AppleGenerator {
         this.applesCount = applesCount;
     }
 
-    public boolean isNeedToAdd(IFieldObject oldCell)
-    {
+    public boolean isNeedToAdd(IFieldObject oldCell) {
         return oldCell instanceof Apple;
     }
 
@@ -19,7 +18,7 @@ public class AppleGenerator {
         return applesCount;
     }
 
-    public void generate(Level level){
+    public void generate(Level level) {
         ArrayList<Vector> freeCellsIndexes = getAllFreeCells(level);
         Random random = new Random();
         int index = random.nextInt(freeCellsIndexes.size());

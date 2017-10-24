@@ -2,49 +2,46 @@ package snake;
 
 import org.junit.Test;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class FieldReaderTest {
     @Test
-    public void readLevelFromFile_snakeWithSomeSnakeParts() throws Exception {
-        FieldReader r = new FieldReader("level4.txt");
+    public void readLevelFromFile_ifSnakeWithSomeSnakeParts_snakePartsCoordinatesAreSet() throws Exception {
+        FieldReader reader = new FieldReader(
+                "_testMap_snakeWithSomeElements.txt");
         Vector[] expected = new Vector[5];
         expected[0] = new Vector(21, 4);
         expected[1] = new Vector(21, 5);
         expected[2] = new Vector(22, 5);
         expected[3] = new Vector(22, 4);
         expected[4] = new Vector(22, 3);
-        Snake snake = r.getSnake();
-        SnakePart next = snake.getHead();
+        SnakePart current = reader.getSnake().getHead();
 
         for (int i = 0; i < expected.length; i++) {
-            assertEquals(expected[i].X, next.getX());
-            assertEquals(expected[i].Y, next.getY());
-            next = next.getChild();
+            assertEquals(expected[i].X, current.getX());
+            assertEquals(expected[i].Y, current.getY());
+            current = current.getChild();
         }
-        assertTrue(next == null);
+        assertNull(current);
     }
     @Test
-    public void setDirection() throws Exception {
-        FieldReader r = new FieldReader("level4.txt");
-        Snake snake = r.getSnake();
-        assertTrue(Direction.TOP.isEqualWithOther(
-                snake.getHead().getDirection()));
-        SnakePart next = snake.getHead();
-        assertTrue(Direction.LEFT.isEqualWithOther(
-                next.getChild().getDirection()));
-        next = next.getChild();
-        assertTrue(Direction.BOTTOM.isEqualWithOther(
-                next.getChild().getDirection()));
-        next = next.getChild();
-        assertTrue(Direction.BOTTOM.isEqualWithOther(
-                next.getChild().getDirection()));
-        next = next.getChild();
-        assertTrue(Direction.BOTTOM.isEqualWithOther(
-                next.getChild().getDirection()));
+    public void readLevelFromFile_ifSnakeWithSomeParts_directionsOfSnakePartsAreSet() throws Exception {
+        FieldReader reader = new FieldReader(
+                "_testMap_snakeWithSomeElements.txt");
+
+        SnakePart current = reader.getSnake().getHead();
+        Vector[] expected = new Vector[5];
+        expected[0] = Direction.TOP;
+        expected[1] = Direction.LEFT;
+        expected[2] = Direction.BOTTOM;
+        expected[3] = Direction.BOTTOM;
+        expected[4] = Direction.ZERO;
+
+        for (int i = 0; i < expected.length; i++) {
+            assertTrue(expected[i].equals(current.getDirection()));
+            current = current.getChild();
+        }
     }
 }
