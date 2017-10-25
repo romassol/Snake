@@ -1,7 +1,7 @@
 package snake;
 
 public class Level {
-    public IFieldObject[][] field;
+    private IFieldObject[][] field;
     public Snake snake;
     public AppleGenerator appleGenerator;
 
@@ -84,5 +84,25 @@ public class Level {
                 (sumVector.x + field[0].length) % field[0].length,
                 (sumVector.y + field.length) % field.length
         );
+    }
+
+    public IFieldObject getFieldObject(Vector coordinates) {
+        return field[coordinates.y][coordinates.x];
+    }
+
+    public IFieldObject getFieldObject(int x, int y) {
+        return field[y][x];
+    }
+
+    public void setObjectOnField(Vector coordinates, IFieldObject object) {
+        field[coordinates.y][coordinates.x] = object;
+    }
+
+    public void setObjectOnField(int x, int y, IFieldObject object) {
+        setObjectOnField(new Vector(x, y), object);
+    }
+
+    public Vector getLevelSize() {
+        return new Vector(field[0].length, field.length);
     }
 }

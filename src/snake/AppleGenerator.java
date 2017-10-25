@@ -26,18 +26,17 @@ public class AppleGenerator {
         Random random = new Random();
         int index = random.nextInt(freeCellsIndexes.size());
         Vector randomFreeCells = freeCellsIndexes.get(index);
-        int x = randomFreeCells.x;
-        int y = randomFreeCells.y;
-        level.field[y][x] = new Apple();
+        level.setObjectOnField(randomFreeCells, new Apple());
         applesCount--;
     }
 
     private ArrayList<Vector> getAllFreeCells(Level level) {
         ArrayList<Vector> indexesFreeCells = new ArrayList<>();
-        for (int i = 0; i < level.field.length; i++){
-            for (int j = 0; j < level.field[i].length; j++){
-                if(level.field[i][j] instanceof Empty){
-                    indexesFreeCells.add(new Vector(j, i));
+        Vector levelSize = level.getLevelSize();
+        for (int y = 0; y < levelSize.y; y++) {
+            for (int x = 0; x < levelSize.x; x++) {
+                if(level.getFieldObject(x, y) instanceof Empty) {
+                    indexesFreeCells.add(new Vector(x, y));
                 }
             }
         }
