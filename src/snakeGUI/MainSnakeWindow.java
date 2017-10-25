@@ -41,7 +41,7 @@ class MainSnakeWindow extends JFrame
     private void setStartSettings(Game game) {
         addKeyListener(new ArrowKeysListener(this));
 
-        timer = new Timer(Settings.frequency, e -> {
+        timer = new Timer(Settings.FREQUENCY, e -> {
             if (playerDirection == null)
                 return;
 

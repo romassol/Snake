@@ -1,8 +1,8 @@
 package snake;
 
-public class Vector implements Cloneable{
-    final int X;
-    final int Y;
+public class Vector{
+    public final int X;
+    public final int Y;
 
     Vector(int x, int y) {
         X = x;

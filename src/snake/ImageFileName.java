@@ -7,5 +7,5 @@ import java.lang.annotation.*;
 @Target(value=ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ImageFileName {
-    String fileName() default Settings.defaultImageFileName;
+    String fileName() default Settings.DEFAULT_IMAGE_FILE_NAME;
 }

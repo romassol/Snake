@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.HashMap;
-import java.util.Hashtable;
 
 public class ImageSaver {
     private HashMap<String, ImageIcon> images;
@@ -18,13 +17,13 @@ public class ImageSaver {
         setCellSize(cellSize);
         images = new HashMap<>();
         defaultImage = new Pair<>(
-            Settings.imageUrl + Settings.defaultImageFileName,
-            getImageIcon(Settings.defaultImageFileName)
+            Settings.IMAGE_URL + Settings.DEFAULT_IMAGE_FILE_NAME,
+            getImageIcon(Settings.DEFAULT_IMAGE_FILE_NAME)
         );
     }
 
     private ImageIcon getImageIcon(String fileName) {
-        Image img = new ImageIcon(Settings.imageUrl + fileName)
+        Image img = new ImageIcon(Settings.IMAGE_URL + fileName)
                 .getImage()
                 .getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
         ImageIcon imageIcon = new ImageIcon();
@@ -52,7 +51,7 @@ public class ImageSaver {
 
         String fileName = annotation.fileName();
         ImageIcon fileImage;
-        if (!new File(Settings.imageUrl + fileName).exists())
+        if (!new File(Settings.IMAGE_URL + fileName).exists())
             fileImage = defaultImage.getValue();
         else
             fileImage = getImageIcon(fileName);

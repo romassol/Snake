@@ -1,9 +1,9 @@
 package snakeGUI;
 
 public final class Settings {
-    static final String imageUrl =
+    static final String IMAGE_URL =
             System.getProperty("user.dir") + "/images/";
-    public static final String defaultImageFileName = "default.png";
+    public static final String DEFAULT_IMAGE_FILE_NAME = "default.png";
 
-    static final int frequency = 200;
+    static final int FREQUENCY = 200;
 }

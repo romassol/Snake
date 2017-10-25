@@ -43,7 +43,7 @@ public class FieldReader {
             InstantiationException, IOException {
 
         List<String> lines = Files.readAllLines(
-                Paths.get(Settings.levelUrl+fileName),
+                Paths.get(Settings.LEVEL_URL +fileName),
                 StandardCharsets.UTF_8);
 
         try {
