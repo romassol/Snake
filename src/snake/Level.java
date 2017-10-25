@@ -86,10 +86,6 @@ public class Level {
         );
     }
 
-    public IFieldObject getFieldObject(Vector coordinates) {
-        return field[coordinates.y][coordinates.x];
-    }
-
     public IFieldObject getFieldObject(int x, int y) {
         return field[y][x];
     }

@@ -10,7 +10,7 @@ public class Snake {
     }
 
     public Snake(SnakePart snakePart) {
-        new Snake(snakePart.getX(), snakePart.getY(), snakePart.getDirection());
+        this(snakePart.getX(), snakePart.getY(), snakePart.getDirection());
     }
 
     public SnakePart addPartAndReturnTail() {
