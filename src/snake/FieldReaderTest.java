@@ -20,8 +20,8 @@ public class FieldReaderTest {
         SnakePart current = reader.getSnake().getHead();
 
         for (int i = 0; i < expected.length; i++) {
-            assertEquals(expected[i].X, current.getX());
-            assertEquals(expected[i].Y, current.getY());
+            assertEquals(expected[i].x, current.getX());
+            assertEquals(expected[i].y, current.getY());
             current = current.getChild();
         }
         assertNull(current);

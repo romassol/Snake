@@ -37,11 +37,11 @@ public class SnakePart implements IFieldObject {
     }
 
     public int getX() {
-        return position.X;
+        return position.x;
     }
 
     public int getY() {
-        return position.Y;
+        return position.y;
     }
 
     public Vector getDirection() {

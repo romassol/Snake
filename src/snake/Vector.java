@@ -1,31 +1,31 @@
 package snake;
 
 public class Vector{
-    public final int X;
-    public final int Y;
+    public final int x;
+    public final int y;
 
     Vector(int x, int y) {
-        X = x;
-        Y = y;
+        this.x = x;
+        this.y = y;
     }
 
     boolean isOpposite(Vector vector) {
         if (this.equals(Direction.ZERO) || vector.equals(Direction.ZERO))
             return false;
 
-        return (vector.X == this.X && Math.abs(this.Y - vector.Y) == 2) ||
-                (vector.Y == this.Y && Math.abs(this.X - vector.X) == 2);
+        return (vector.x == this.x && Math.abs(this.y - vector.y) == 2) ||
+                (vector.y == this.y && Math.abs(this.x - vector.x) == 2);
     }
 
     boolean equals(Vector other){
-        return X == other.X && Y == other.Y;
+        return x == other.x && y == other.y;
     }
 
     Vector subtract(Vector other){
-        return new Vector(X - other.X, Y - other.Y);
+        return new Vector(x - other.x, y - other.y);
     }
 
     Vector sum(Vector other){
-        return new Vector(X + other.X, Y + other.Y);
+        return new Vector(x + other.x, y + other.y);
     }
 }

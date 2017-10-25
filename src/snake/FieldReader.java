@@ -120,10 +120,10 @@ public class FieldReader {
         List<IFieldObject> neighbours = new ArrayList<>();
         for (Vector anOffset : offset) {
             Vector neighbour = center.getPosition().sum(anOffset);
-            if (neighbour.X >= 0 && neighbour.Y >= 0 &&
-                    neighbour.X <= field[0].length &&
-                    neighbour.Y <= field.length) {
-                neighbours.add(field[neighbour.Y][neighbour.X]);
+            if (neighbour.x >= 0 && neighbour.y >= 0 &&
+                    neighbour.x <= field[0].length &&
+                    neighbour.y <= field.length) {
+                neighbours.add(field[neighbour.y][neighbour.x]);
             }
         }
         return neighbours;

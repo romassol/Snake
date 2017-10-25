@@ -13,8 +13,8 @@ public class Level {
             Vector snakeDirection) {
         field = new IFieldObject[height][width];
         appleGenerator = new AppleGenerator(applesCount);
-        snake = new Snake(snakePosition.X, snakePosition.Y, snakeDirection);
-        field[snakePosition.Y][snakePosition.X] = snake.getHead();
+        snake = new Snake(snakePosition.x, snakePosition.y, snakeDirection);
+        field[snakePosition.y][snakePosition.x] = snake.getHead();
     }
 
     public Level(FieldReader reader, int applesCount) {
@@ -37,7 +37,7 @@ public class Level {
             field[currentSnakePart.getY()][currentSnakePart.getX()] = emptyObj;
             currentSnakePart.setDirection(parentDirection);
             currentSnakePart.setPosition(nextPosition);
-            field[nextPosition.Y][nextPosition.X] = currentSnakePart;
+            field[nextPosition.y][nextPosition.x] = currentSnakePart;
 
             parentDirection = tmp;
             currentSnakePart = currentSnakePart.getChild();
@@ -59,12 +59,12 @@ public class Level {
                 snake.getHead().getPosition(),
                 direction);
 
-        IFieldObject oldCell = field[nextPosition.Y][nextPosition.X];
+        IFieldObject oldCell = field[nextPosition.y][nextPosition.x];
         if (snake.getHead().getChild() == null)
             field[snake.getHead().getY()][snake.getHead().getX()] = new Empty();
         snake.getHead().setPosition(nextPosition);
         snake.getHead().setDirection(direction);
-        field[nextPosition.Y][nextPosition.X] = snake.getHead();
+        field[nextPosition.y][nextPosition.x] = snake.getHead();
 
         return oldCell;
     }
@@ -81,8 +81,8 @@ public class Level {
     private Vector getCoordinates(Vector position, Vector direction) {
         Vector sumVector = position.sum(direction);
         return new Vector(
-                (sumVector.X + field[0].length) % field[0].length,
-                (sumVector.Y + field.length) % field.length
+                (sumVector.x + field[0].length) % field[0].length,
+                (sumVector.y + field.length) % field.length
         );
     }
 }

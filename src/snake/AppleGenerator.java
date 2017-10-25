@@ -26,8 +26,8 @@ public class AppleGenerator {
         Random random = new Random();
         int index = random.nextInt(freeCellsIndexes.size());
         Vector randomFreeCells = freeCellsIndexes.get(index);
-        int x = randomFreeCells.X;
-        int y = randomFreeCells.Y;
+        int x = randomFreeCells.x;
+        int y = randomFreeCells.y;
         level.field[y][x] = new Apple();
         applesCount--;
     }
