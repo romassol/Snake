@@ -2,10 +2,10 @@ package snake;
 
 public class Snake {
     private SnakePart tail;
-    private SnakePart head;
+    private SnakeHead head;
 
     public Snake(int x, int y, Vector direction) {
-        head = new SnakePart(x, y, direction, null, null);
+        head = new SnakeHead(x, y, direction, null, null);
         tail = head;
     }
 
@@ -35,7 +35,7 @@ public class Snake {
         tail = futureTail;
     }
 
-    public SnakePart getHead() {
+    public SnakeHead getHead() {
         return head;
     }
 

@@ -51,8 +51,8 @@ public class SnakeTest {
         level.addSnakePart();
         level.addSnakePart();
 
-        assertEquals(level.getFieldObject(2, 1), level.snake.getHead().getChild());
-        assertEquals(level.getFieldObject(3, 1), level.snake.getTail());
+        assertEquals(level.getFieldObject(1, 2), level.snake.getHead().getChild());
+        assertEquals(level.getFieldObject(1, 3), level.snake.getTail());
     }
     
     @Test
@@ -67,7 +67,7 @@ public class SnakeTest {
         assertEquals(1, level.snake.getHead().getY());
         assertEquals(2, level.snake.getTail().getX());
         assertEquals(2, level.snake.getTail().getY());
-        assertTrue(level.getFieldObject(2, 1) instanceof Empty);
+        assertTrue(level.getFieldObject(1, 2) instanceof Empty);
     }
 
     @Test
@@ -91,11 +91,11 @@ public class SnakeTest {
         level.addSnakePart();
         level.snake.getTail().setDirection(Direction.BOTTOM);
         level.addSnakePart();
-        SnakePart head = level.snake.getHead();
+        SnakeHead head = level.snake.getHead();
 
         IFieldObject oldCell = level.moveSnakeAndReturnOldCell(Direction.RIGHT);
         assertTrue(oldCell instanceof Empty);
-        assertEquals(head, level.getFieldObject(1, 2));
+        assertEquals(head, level.getFieldObject(2, 1));
     }
 
     @Test

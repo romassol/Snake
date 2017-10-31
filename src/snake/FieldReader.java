@@ -27,7 +27,7 @@ public class FieldReader {
         CHARACTER_TO_FIELD_OBJECT.put('A',
                 (x, y, vector, parent, child) -> new Apple());
         CHARACTER_TO_FIELD_OBJECT.put('S', SnakePart::new);
-        CHARACTER_TO_FIELD_OBJECT.put('H', SnakePart::new);
+        CHARACTER_TO_FIELD_OBJECT.put('H', SnakeHead::new);
     }
 
     public FieldReader(String fileName) throws IllegalAccessException,
@@ -52,7 +52,7 @@ public class FieldReader {
             throw new IllegalArgumentException("File is empty. Can't create a new level");
         }
         List<SnakePart> snakeParts = new ArrayList<>();
-        SnakePart head = null;
+        SnakeHead head = null;
         for(int i = 0; i < lines.size(); i++){
             for (int j = 0; j < lines.get(i).length(); j++){
                 Character symbol = lines.get(i).charAt(j);
@@ -63,14 +63,14 @@ public class FieldReader {
                     snakeParts.add((SnakePart) field[i][j]);
                 }
                 if(symbol == 'H'){
-                    head = (SnakePart) field[i][j];
+                    head = (SnakeHead) field[i][j];
                 }
             }
         }
         createSnake(head,snakeParts);
     }
 
-    private void createSnake(SnakePart head, List<SnakePart> snakeParts){
+    private void createSnake(SnakeHead head, List<SnakePart> snakeParts){
         Snake snake = new Snake(head);
         List<SnakePart> neighbors =
                 getNearbySnakeParts(getNeighbours(head), snakeParts);
