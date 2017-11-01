@@ -1,6 +1,6 @@
 package snake;
 
-@ImageFileName(fileName = "empty.jpg")
+@ImageFileName(fileNames = "empty.jpg")
 public class Empty implements IFieldObject {
     @Override
     public void intersectWithSnake(Game game) {

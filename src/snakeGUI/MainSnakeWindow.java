@@ -6,6 +6,7 @@ import snake.Vector;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 class MainSnakeWindow extends JFrame
 {
@@ -41,7 +42,18 @@ class MainSnakeWindow extends JFrame
     private void setStartSettings(Game game) {
         addKeyListener(new ArrowKeysListener(this));
 
-        timer = new Timer(Settings.FREQUENCY, e -> {
+        timer = new Timer(Settings.FREQUENCY, timerTick(game));
+        timer.start();
+
+        setSize(sizeWidth, sizeHeight);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        setResizable(false);
+        setVisible(true);
+    }
+
+    private ActionListener timerTick(Game game) {
+        return e -> {
             if (playerDirection == null)
                 return;
 
@@ -61,14 +73,7 @@ class MainSnakeWindow extends JFrame
 
             fieldPanel.updateLabels();
 
-        });
-        timer.start();
-
-        setSize(sizeWidth, sizeHeight);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-        setResizable(false);
-        setVisible(true);
+        };
     }
 
     private void setWindowSizeConstants(Game game) {

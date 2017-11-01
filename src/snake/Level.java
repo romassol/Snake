@@ -2,7 +2,7 @@ package snake;
 
 public class Level {
     private IFieldObject[][] field;
-    public Snake snake;
+    private Snake snake;
     public AppleGenerator appleGenerator;
 
     public Level(
@@ -70,7 +70,7 @@ public class Level {
     }
 
     public void addSnakePart() {
-        SnakePart tail = snake.addPartAndReturnTail();
+        SnakePart tail = snake.addPartAndReturnTail(getLevelSize());
         field[tail.getY()][tail.getX()] = tail;
     }
 
@@ -100,5 +100,9 @@ public class Level {
 
     public Vector getLevelSize() {
         return new Vector(field[0].length, field.length);
+    }
+
+    public Snake getSnake() {
+        return snake;
     }
 }

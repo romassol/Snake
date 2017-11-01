@@ -22,7 +22,7 @@ public class SnakeTest {
         Snake snake = new Snake(2, 0, Direction.RIGHT);
         SnakePart head = snake.getHead();
 
-        SnakePart tail = snake.addPartAndReturnTail();
+        SnakePart tail = snake.addPartAndReturnTail(new Vector(10, 10));
 
         assertEquals(head, snake.getHead());
         assertEquals(tail, snake.getTail());
@@ -35,9 +35,10 @@ public class SnakeTest {
 
     @Test
     public void snake_addPartAndReturnTail_notEmptySnake() {
+        Vector levelSize = new Vector(30, 30);
         Snake snake = new Snake(2, 2, Direction.BOTTOM);
-        snake.addPartAndReturnTail();
-        SnakePart tail = snake.addPartAndReturnTail();
+        snake.addPartAndReturnTail(levelSize);
+        SnakePart tail = snake.addPartAndReturnTail(levelSize);
 
         assertEquals(snake.getHead().getChild().getChild(), tail);
         assertEquals(snake.getHead().getChild(), tail.getParent());
@@ -51,8 +52,8 @@ public class SnakeTest {
         level.addSnakePart();
         level.addSnakePart();
 
-        assertEquals(level.getFieldObject(1, 2), level.snake.getHead().getChild());
-        assertEquals(level.getFieldObject(1, 3), level.snake.getTail());
+        assertEquals(level.getFieldObject(1, 2), level.getSnake().getHead().getChild());
+        assertEquals(level.getFieldObject(1, 3), level.getSnake().getTail());
     }
     
     @Test
@@ -63,10 +64,10 @@ public class SnakeTest {
         level.addSnakePart();
 
         level.moveSnakeAndReturnOldCell(Direction.TOP);
-        assertEquals(2, level.snake.getHead().getX());
-        assertEquals(1, level.snake.getHead().getY());
-        assertEquals(2, level.snake.getTail().getX());
-        assertEquals(2, level.snake.getTail().getY());
+        assertEquals(2, level.getSnake().getHead().getX());
+        assertEquals(1, level.getSnake().getHead().getY());
+        assertEquals(2, level.getSnake().getTail().getX());
+        assertEquals(2, level.getSnake().getTail().getY());
         assertTrue(level.getFieldObject(1, 2) instanceof Empty);
     }
 
@@ -77,8 +78,8 @@ public class SnakeTest {
         fillField(level);
 
         level.moveSnakeAndReturnOldCell(null);
-        assertEquals(1, level.snake.getHead().getX());
-        assertEquals(2, level.snake.getHead().getY());
+        assertEquals(1, level.getSnake().getHead().getX());
+        assertEquals(2, level.getSnake().getHead().getY());
     }
 
     @Test
@@ -87,11 +88,11 @@ public class SnakeTest {
                 4 ,5,1, new Vector(1, 1), Direction.TOP);
 
         level.addSnakePart();
-        level.snake.getTail().setDirection(Direction.LEFT);
+        level.getSnake().getTail().setDirection(Direction.LEFT);
         level.addSnakePart();
-        level.snake.getTail().setDirection(Direction.BOTTOM);
+        level.getSnake().getTail().setDirection(Direction.BOTTOM);
         level.addSnakePart();
-        SnakeHead head = level.snake.getHead();
+        SnakeHead head = level.getSnake().getHead();
 
         IFieldObject oldCell = level.moveSnakeAndReturnOldCell(Direction.RIGHT);
         assertTrue(oldCell instanceof Empty);
@@ -109,5 +110,30 @@ public class SnakeTest {
         game.makeTurn();
         System.out.println(game.getCurrentLevel().isOver());
         assertEquals(levels[1], game.getCurrentLevel());
+    }
+
+    @Test
+    public void isOpposite_ifOppositeNotZeroVectors_True() {
+        Vector first = new Vector(1, 1);
+        Vector second = new Vector(-1, -1);
+
+        assertTrue(first.isOpposite(second));
+    }
+
+    @Test
+    public void isOpposite_ifOneOfVectorsIsZero_False() {
+        Vector first = new Vector(4, 5);
+        Vector second = Direction.ZERO;
+
+        assertFalse(first.isOpposite(second));
+        assertFalse(second.isOpposite(first));
+    }
+
+    @Test
+    public void isOpposite_ifNotOppositeVectors_False() {
+        Vector first = new Vector(4, 5);
+        Vector second = new Vector(4, 26);
+
+        assertFalse(first.isOpposite(second));
     }
 }

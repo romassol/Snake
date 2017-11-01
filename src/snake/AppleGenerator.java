@@ -25,8 +25,8 @@ public class AppleGenerator {
         ArrayList<Vector> freeCellsIndexes = getAllFreeCells(level);
         Random random = new Random();
         int index = random.nextInt(freeCellsIndexes.size());
-        Vector randomFreeCells = freeCellsIndexes.get(index);
-        level.setObjectOnField(randomFreeCells, new Apple());
+        Vector randomFreeCell = freeCellsIndexes.get(index);
+        level.setObjectOnField(randomFreeCell, new Apple());
         applesCount--;
     }
 

@@ -1,10 +1,10 @@
 package snakeGUI;
 
-import snake.Level;
-import snake.Vector;
+import snake.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 class FieldPanel extends JPanel {
@@ -12,6 +12,7 @@ class FieldPanel extends JPanel {
     private Level level;
     private HashSet<FieldObjectImage> labels;
     private ImageSaver imageSaver;
+
 
     FieldPanel(Level level, int cellSize) {
         super();
@@ -38,7 +39,6 @@ class FieldPanel extends JPanel {
             removeLabels();
 
         labels = new HashSet<>();
-
         Vector levelSize = level.getLevelSize();
         for (int y = 0; y < levelSize.y; y++) {
             for (int x = 0; x < levelSize.x; x++) {

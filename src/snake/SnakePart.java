@@ -1,7 +1,10 @@
 package snake;
 
-@ImageFileName(fileName = "snakepart.jpg")
-public class SnakePart implements IFieldObject {
+import snakeGUI.TypeOfElement;
+
+@ImageFileName(type = TypeOfElement.CHAIN,
+        fileNames = {"snakepart-left.jpg", "snakepart-right.jpg"})
+public class SnakePart extends IListedFieldObject {
     private Vector direction;
     private SnakePart parent;
     private SnakePart child;

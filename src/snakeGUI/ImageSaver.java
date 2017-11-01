@@ -6,18 +6,24 @@ import snake.*;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.util.HashMap;
+import java.util.*;
+import java.util.List;
 
 public class ImageSaver {
     private HashMap<String, ImageIcon> images;
-    private static Pair<String, ImageIcon> defaultImage;
+    private static Pair<String[], ImageIcon> defaultImage;
+    private HashMap<Class, AnimationObject> animations;
     private int cellSize;
 
     public ImageSaver(int cellSize) {
         setCellSize(cellSize);
         images = new HashMap<>();
+        animations = new HashMap<>();
+
+        String[] defaultImages = new String[1];
+        defaultImages[0] = Settings.IMAGE_URL + Settings.DEFAULT_IMAGE_FILE_NAME;
         defaultImage = new Pair<>(
-            Settings.IMAGE_URL + Settings.DEFAULT_IMAGE_FILE_NAME,
+            defaultImages,
             getImageIcon(Settings.DEFAULT_IMAGE_FILE_NAME)
         );
     }
@@ -33,29 +39,47 @@ public class ImageSaver {
     }
 
     public ImageIcon getIcon(IFieldObject obj) {
-        String className = obj.getClass().getSimpleName().toLowerCase();
+        if (!animations.containsKey(obj.getClass())) {
+            saveClassImages(obj);
+        }
 
-        if (images.containsKey(className))
-            return images.get(className);
-
-        ImageFileName annotation = obj.getClass().getAnnotation(ImageFileName.class);
-        ImageIcon fileImage = getFileImage(annotation);
-
-        images.put(className, fileImage);
-        return fileImage;
+        String fileName = animations.get(obj.getClass()).getImageFileName(obj);
+        return images.get(fileName);
     }
 
-    private ImageIcon getFileImage(ImageFileName annotation) {
-        if (annotation == null)
-            return defaultImage.getValue();
+    private void saveClassImages(IFieldObject obj) {
+        Class objClass = obj.getClass();
+        ImageFileName annotation = obj.getClass().getAnnotation(ImageFileName.class);
 
-        String fileName = annotation.fileName();
-        ImageIcon fileImage;
-        if (!new File(Settings.IMAGE_URL + fileName).exists())
-            fileImage = defaultImage.getValue();
-        else
-            fileImage = getImageIcon(fileName);
-        return fileImage;
+        if (annotation == null) {
+            animations.put(objClass, new ElementAnimationObject(defaultImage.getKey()));
+        }
+
+        String[] fileNames = annotation.fileNames();
+        animations.put(objClass,
+                AnimationType.getAnimationClass.get(
+                        annotation.type()).createFieldObject(fileNames));
+
+        HashMap<String, ImageIcon> fileImages = getFileImages(fileNames);
+
+        for (Map.Entry<String, ImageIcon> fileImage : fileImages.entrySet()) {
+            images.put(fileImage.getKey(), fileImage.getValue());
+        }
+    }
+
+    private HashMap<String, ImageIcon> getFileImages(String[] fileNames) {
+        HashMap<String, ImageIcon> result = new HashMap<>();
+
+        for (String fileName : fileNames) {
+            ImageIcon fileImage;
+            if (!new File(Settings.IMAGE_URL + fileName).exists())
+                fileImage = defaultImage.getValue();
+            else
+                fileImage = getImageIcon(fileName);
+            result.put(fileName, fileImage);
+        }
+
+        return result;
     }
 
     private void setCellSize(int cellSize) {

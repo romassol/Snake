@@ -4,28 +4,33 @@ public class Vector{
     public final int x;
     public final int y;
 
-    Vector(int x, int y) {
+    public Vector(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    boolean isOpposite(Vector vector) {
+    public boolean isOpposite(Vector vector) {
         if (this.equals(Direction.ZERO) || vector.equals(Direction.ZERO))
             return false;
 
-        return (vector.x == this.x && Math.abs(this.y - vector.y) == 2) ||
-                (vector.y == this.y && Math.abs(this.x - vector.x) == 2);
+        double scalarProduct = vector.x * this.x + vector.y * this.y;
+        double cosOfAngle = scalarProduct / getLength(this) / getLength(vector);
+        return cosOfAngle - (-1) < 1e-5;
     }
 
-    boolean equals(Vector other){
+    private double getLength(Vector vector) {
+        return Math.sqrt(vector.x * vector.x + vector.y * vector.y);
+    }
+
+    public boolean equals(Vector other){
         return x == other.x && y == other.y;
     }
 
-    Vector subtract(Vector other){
+    public Vector subtract(Vector other){
         return new Vector(x - other.x, y - other.y);
     }
 
-    Vector sum(Vector other){
+    public Vector sum(Vector other){
         return new Vector(x + other.x, y + other.y);
     }
 }

@@ -13,9 +13,9 @@ public class Snake {
         this(snakePart.getX(), snakePart.getY(), snakePart.getDirection());
     }
 
-    public SnakePart addPartAndReturnTail() {
-        int x = tail.getX() + tail.getDirection().x * (-1);
-        int y = tail.getY() + tail.getDirection().y * (-1);
+    public SnakePart addPartAndReturnTail(Vector levelSize) {
+        int x = (tail.getX() + tail.getDirection().x * (-1)) % levelSize.x;
+        int y = (tail.getY() + tail.getDirection().y * (-1)) % levelSize.y;
         SnakePart newPart = new SnakePart(x, y, tail.getDirection(), tail, null);
         tail.setChild(newPart);
         tail = newPart;
