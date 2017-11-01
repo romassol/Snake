@@ -5,13 +5,11 @@ import java.awt.*;
 public class FieldLayout implements LayoutManager {
     private int width;
     private int height;
-    private int cellSize;
 
-    FieldLayout(int width, int height, int cellSize) {
+    FieldLayout(int width, int height) {
         super();
         this.width = width;
         this.height = height;
-        this.cellSize = cellSize;
     }
 
     @Override

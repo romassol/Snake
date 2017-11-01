@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.*;
-import java.util.List;
 
 public class ImageSaver {
     private HashMap<String, ImageIcon> images;
@@ -50,15 +49,18 @@ public class ImageSaver {
     private void saveClassImages(IFieldObject obj) {
         Class objClass = obj.getClass();
         ImageFileName annotation = obj.getClass().getAnnotation(ImageFileName.class);
+        String[] fileNames;
 
         if (annotation == null) {
             animations.put(objClass, new ElementAnimationObject(defaultImage.getKey()));
+            fileNames = defaultImage.getKey();
         }
-
-        String[] fileNames = annotation.fileNames();
-        animations.put(objClass,
-                AnimationType.getAnimationClass.get(
-                        annotation.type()).createFieldObject(fileNames));
+        else {
+            fileNames = annotation.fileNames();
+            animations.put(objClass,
+                    AnimationType.getAnimationClass.get(
+                            annotation.type()).createFieldObject(fileNames));
+        }
 
         HashMap<String, ImageIcon> fileImages = getFileImages(fileNames);
 

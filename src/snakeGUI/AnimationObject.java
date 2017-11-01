@@ -2,9 +2,6 @@ package snakeGUI;
 
 import snake.IFieldObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class AnimationObject {
     protected String[] fileImages;
 

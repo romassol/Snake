@@ -4,7 +4,6 @@ import snake.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashSet;
 
 class FieldPanel extends JPanel {
@@ -26,7 +25,7 @@ class FieldPanel extends JPanel {
         int height = cellSize * levelSize.y;
 
         setPreferredSize(new Dimension(width, height));
-        setLayout(new FieldLayout(width, height, cellSize));
+        setLayout(new FieldLayout(width, height));
 
         this.level = level;
 
