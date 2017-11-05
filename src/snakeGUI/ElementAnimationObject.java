@@ -1,7 +1,6 @@
 package snakeGUI;
 
 import snake.IFieldObject;
-
 import java.util.HashMap;
 
 public class ElementAnimationObject extends AnimationObject {
@@ -14,10 +13,7 @@ public class ElementAnimationObject extends AnimationObject {
 
     @Override
     public String getImageFileName(IFieldObject obj) {
-        if (!indexes.containsKey(obj))
-            indexes.put(obj, 0);
-
-        Integer result = indexes.get(obj);
+        Integer result = indexes.computeIfAbsent(obj, a -> 0);
         Integer nextValue = (result + 1) % fileImages.length;
         indexes.put(obj, nextValue);
 

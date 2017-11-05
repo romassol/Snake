@@ -26,11 +26,11 @@ public class Vector{
         return x == other.x && y == other.y;
     }
 
-    public Vector subtract(Vector other){
+    public Vector subtract(Vector other) {
         return new Vector(x - other.x, y - other.y);
     }
 
-    public Vector sum(Vector other){
+    public Vector sum(Vector other) {
         return new Vector(x + other.x, y + other.y);
     }
 }

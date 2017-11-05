@@ -31,7 +31,7 @@ public class ChainAnimationObject extends AnimationObject {
 
         isTakeImage.put(listedObj, Boolean.TRUE);
         int indexOfObjOrder = elementsOrder.indexOf(obj);
-        int indexOfImage =  (firstChildImageIndex + indexOfObjOrder)
+        int indexOfImage = (firstChildImageIndex + indexOfObjOrder)
                 % fileImages.length;
 
         shiftAnimationIfNeed(listedObj);

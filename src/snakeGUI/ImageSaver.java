@@ -39,14 +39,14 @@ public class ImageSaver {
 
     public ImageIcon getIcon(IFieldObject obj) {
         if (!animations.containsKey(obj.getClass())) {
-            saveClassImages(obj);
+            addInformationAboutClass(obj);
         }
 
         String fileName = animations.get(obj.getClass()).getImageFileName(obj);
         return images.get(fileName);
     }
 
-    private void saveClassImages(IFieldObject obj) {
+    private void addInformationAboutClass(IFieldObject obj) {
         Class objClass = obj.getClass();
         ImageFileName annotation = obj.getClass().getAnnotation(ImageFileName.class);
         String[] fileNames;
