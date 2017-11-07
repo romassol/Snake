@@ -1,6 +1,6 @@
-package snake;
-
 import org.junit.Test;
+import snake.*;
+
 
 import static org.junit.Assert.*;
 
