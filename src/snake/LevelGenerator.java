@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -45,9 +46,11 @@ public class LevelGenerator {
     private String[][] getStringField(int fieldHeight, int fieldWidth){
         String[][] field = new String[fieldHeight][fieldWidth];
         List<Cell> cells = new ArrayList<>();
-        fillCells(fieldWidth, fieldHeight, cells);
+        int cellSize = random.nextInt(min(fieldWidth, fieldHeight)) + 5;
+        fillCells(fieldWidth, fieldHeight, cellSize, cells);
         setInternalCell(cells);
         fillField(field, cells);
+        makeHoles(field, cellSize, fieldHeight, fieldWidth);
         return field;
     }
 
@@ -65,8 +68,26 @@ public class LevelGenerator {
         }
     }
 
-    private void fillCells(int fieldWidth, int fieldHeight, List<Cell> cells){
-        int cellSize = random.nextInt(min(fieldWidth, fieldHeight)) + 5;
+    private void makeHoles(String[][] field, int cellsize, int fieldHeight, int fieldWidth){
+        // режем дырки горизонтально
+        for (int x = 0; x < fieldHeight / cellsize; x++){
+            int holeMark = random.nextInt(cellsize) + 1 + cellsize * x;
+            int xLayer = x * cellsize + holeMark;
+            for (int y = 1; y < fieldWidth - 1; y++){
+                field[xLayer][y] = " ";
+            }
+        }
+        // режем дырки вертикально
+        for (int y = 0; y < fieldWidth / cellsize; y++){
+            int holeMark = random.nextInt(cellsize) + 1 + cellsize * y;
+            int yLayer = y * cellsize + holeMark;
+            for (int x = 1; x < fieldHeight - 1; x++){
+                field[x][yLayer] = " ";
+            }
+        }
+    }
+
+    private void fillCells(int fieldWidth, int fieldHeight, int cellSize, List<Cell> cells){
         int numberOfCellsVertically = fieldHeight / cellSize;
         int remainder = fieldHeight % cellSize;
         for (int i = 0; i < numberOfCellsVertically; i++){
