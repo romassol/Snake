@@ -10,24 +10,25 @@ import java.util.Random;
 public class Cell {
     private Vector topLeft;
     private Vector bottomRight;
-    public Cell internalCell;
+    private Cell internalCell;
     public int height;
     public int width;
 
 
-    public Cell(Vector topLeft, Vector bottomRight, Cell internalCell){
+    public Cell(Vector topLeft, Vector bottomRight){
         this.topLeft = topLeft;
         this.bottomRight = bottomRight;
-        this.internalCell = internalCell;
-        if(internalCell!=null) {
-            this.internalCell.recalculateSize();
-        }
+        this.internalCell = null;
+//        this.internalCell.recalculateSize();
+//        if(internalCell!=null) {
+//            this.internalCell.recalculateSize();
+//        }
         recalculateSize();
     }
 
     private void recalculateSize(){
-        width = bottomRight.x - topLeft.x;
-        height = bottomRight.y - topLeft.y;
+        width = bottomRight.x - topLeft.x + 1;
+        height = bottomRight.y - topLeft.y + 1;
     }
 
     public Vector getTopLeft() {
@@ -46,5 +47,14 @@ public class Cell {
     public void setBottomRight(Vector bottomRight) {
         this.bottomRight = bottomRight;
         recalculateSize();
+    }
+
+    public void setInternalCell(Cell internallCell){
+        this.internalCell = internallCell;
+        this.internalCell.recalculateSize();
+    }
+
+    public Cell getInternalCell(){
+        return internalCell;
     }
 }

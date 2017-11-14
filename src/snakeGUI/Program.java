@@ -8,7 +8,9 @@ import java.lang.reflect.InvocationTargetException;
 public class Program {
     public static void main(String[] args) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IOException, IllegalAccessException {
         Level[] levels = new Level[1];
-        levels[0] = new Level(new FieldReader("level6.txt"), 20);
+        LevelGenerator level = new LevelGenerator();
+        Level newLevel = level.createAndGetLevel("level8.txt", 8);
+        levels[0] = newLevel;
         Game game = new Game(levels);
         MainSnakeWindow window = new MainSnakeWindow(game);
     }

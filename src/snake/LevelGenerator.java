@@ -4,14 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-
+import java.util.*;
 import static java.lang.Math.min;
 
 public class LevelGenerator {
@@ -28,6 +21,7 @@ public class LevelGenerator {
         int fieldHeight = random.nextInt(40) + 10;
         int fieldWidth = random.nextInt(40) + 10;
         String[][] field = getStringField(fieldHeight, fieldWidth);
+        generateSnakeAndApple(field);
         createLevelFile(fileName, field);
         return new Level(new FieldReader(fileName), applesCount);
     }
@@ -35,54 +29,122 @@ public class LevelGenerator {
     private void createLevelFile(String fileName, String[][] field) throws IOException {
         File levelFile = new File(Settings.LEVEL_URL +fileName);
         FileWriter writeFile = new FileWriter(levelFile);
-        String strField = "";
+        StringBuilder strField = new StringBuilder();
         for (String[] line : field){
-            strField += String.join("", line);
-            strField += '\n';
+            strField.append(String.join("", line));
+            strField.append('\n');
         }
-        writeFile.append(strField);
+        writeFile.write(strField.toString());
+        writeFile.close();
     }
 
     private String[][] getStringField(int fieldHeight, int fieldWidth){
         String[][] field = new String[fieldHeight][fieldWidth];
+        fillFieldOfStartingParameters(fieldHeight, fieldWidth, field);
         List<Cell> cells = new ArrayList<>();
-        int cellSize = random.nextInt(min(fieldWidth, fieldHeight)) + 5;
+        int cellSize = random.nextInt(min(fieldWidth/2, fieldHeight/2)) + 5;
         fillCells(fieldWidth, fieldHeight, cellSize, cells);
         setInternalCell(cells);
         fillField(field, cells);
-        makeHoles(field, cellSize, fieldHeight, fieldWidth);
+        List<Integer> minSize = getMinSizeOfInternalCell(cells, fieldWidth, fieldHeight);
+        makeHoles(field, minSize, fieldHeight, fieldWidth);
         return field;
+    }
+
+    private List<Integer> getMinSizeOfInternalCell(List<Cell> cells, int fieldWidth, int fieldHeight){
+        int minWidth = fieldWidth;
+        int minHeight = fieldHeight;
+        for(Cell cell:cells){
+            minWidth = setMin(minWidth, cell.getInternalCell().width);
+            minHeight = setMin(minHeight, cell.getInternalCell().width);
+        }
+        List<Integer> result = new ArrayList<>();
+        result.add(minWidth);
+        result.add(minHeight);
+        return result;
+    }
+
+    private int setMin(int minValue, int internalCellWidth) {
+        if(minValue > internalCellWidth){
+            minValue = internalCellWidth;
+        }
+        return minValue;
+    }
+
+    private void fillFieldOfStartingParameters(int fieldHeight, int fieldWidth, String[][] field) {
+        for(int x=0; x<fieldWidth; x++){
+            for(int y=0; y<fieldHeight; y++){
+                field[y][x] = ".";
+            }
+        }
     }
 
     private void fillField(String[][] field, List<Cell> cells){
         for (Cell cell : cells){
-            Cell room = cell.internalCell;
-            for (int x = room.getTopLeft().x; x <= room.getBottomRight().x; x++){
-                field[x][room.getTopLeft().y] = "#";
-                field[x][room.getBottomRight().y] = "#";
+            Cell room = cell.getInternalCell();
+            createHorizontalWalls(field, room);
+            createVerticalWalls(field, room);
+        }
+    }
+
+    private void createVerticalWalls(String[][] field, Cell room) {
+        for (int y = room.getTopLeft().y; y < room.getBottomRight().y; y++){
+            field[y][room.getTopLeft().x] = "#";
+            field[y][room.getBottomRight().x] = "#";
+        }
+    }
+
+    private void createHorizontalWalls(String[][] field, Cell room) {
+        for (int x = room.getTopLeft().x; x <= room.getBottomRight().x; x++){
+            field[room.getTopLeft().y][x] = "#";
+            field[room.getBottomRight().y][x] = "#";
+        }
+    }
+
+    private void generateSnakeAndApple(String[][] field){
+        ArrayList<Vector> indexesFreeCells = getIndexesFreeCells(field);
+        setParameterInFreeCell(field, indexesFreeCells, "H");
+        setParameterInFreeCell(field, indexesFreeCells, "A");
+    }
+
+    private void setParameterInFreeCell(String[][] field, ArrayList<Vector> indexesFreeCells, String parameter) {
+        int snakeIndex = random.nextInt(indexesFreeCells.size());
+        Vector randomFreeCell = indexesFreeCells.get(snakeIndex);
+        field[randomFreeCell.y][randomFreeCell.x] = parameter;
+    }
+
+    private ArrayList<Vector> getIndexesFreeCells(String[][] field) {
+        ArrayList<Vector> indexesFreeCells = new ArrayList<>();
+        for(int y = 0; y < field.length; y++){
+            for (int x = 0; x < field[y].length; x++){
+                if(Objects.equals(field[y][x], ".")){
+                    indexesFreeCells.add(new Vector(x,y));
+                }
             }
-            for (int y = room.getTopLeft().y; y < room.getBottomRight().y; y++){
-                field[room.getTopLeft().x][y] = "#";
-                field[room.getBottomRight().x][y] = "#";
+        }
+        return indexesFreeCells;
+    }
+
+    private void makeHoles(String[][] field, List<Integer> minsize, int fieldHeight, int fieldWidth){
+        createHolesVertically(field, minsize, fieldHeight, fieldWidth);
+        createHolesHorizontally(field, minsize, fieldHeight, fieldWidth);
+    }
+
+    private void createHolesHorizontally(String[][] field, List<Integer> minsize, int fieldHeight, int fieldWidth) {
+        for (int y = 0; y < fieldHeight / minsize.get(1); y++){
+            int holeMark = random.nextInt(minsize.get(1)) + 1 + minsize.get(1) * y;
+            for (int x = 1; x < fieldWidth - 1; x++){
+                field[holeMark][x] = ".";
             }
         }
     }
 
-    private void makeHoles(String[][] field, int cellsize, int fieldHeight, int fieldWidth){
-        // режем дырки горизонтально
-        for (int x = 0; x < fieldHeight / cellsize; x++){
-            int holeMark = random.nextInt(cellsize) + 1 + cellsize * x;
-            int xLayer = x * cellsize + holeMark;
-            for (int y = 1; y < fieldWidth - 1; y++){
-                field[xLayer][y] = " ";
-            }
-        }
-        // режем дырки вертикально
-        for (int y = 0; y < fieldWidth / cellsize; y++){
-            int holeMark = random.nextInt(cellsize) + 1 + cellsize * y;
-            int yLayer = y * cellsize + holeMark;
-            for (int x = 1; x < fieldHeight - 1; x++){
-                field[x][yLayer] = " ";
+    private void createHolesVertically(String[][] field, List<Integer> minsize,
+            int fieldHeight, int fieldWidth) {
+        for (int x = 0; x < fieldWidth / minsize.get(0); x++){
+            int holeMark = random.nextInt(minsize.get(0)) + 1 + minsize.get(0) * x;
+            for (int y = 1; y < fieldHeight - 1; y++){
+                field[y][holeMark] = ".";
             }
         }
     }
@@ -106,21 +168,23 @@ public class LevelGenerator {
             Vector bottomRight = topLeft.sum(new Vector(widthOfCell - 1, heightOfCell - 1));
             if (j == numberOfCellsHorizontally - 1)
                 bottomRight = topLeft.sum(new Vector(widthOfCell + remainder - 1, heightOfCell - 1));
-            cells.add(new Cell(topLeft, bottomRight, null));
+            cells.add(new Cell(topLeft, bottomRight));
         }
     }
 
-    private void setInternalCell(List<Cell> cells){
-        for (int i = 0; i < cells.size(); i++){
-            if (cells.get(i).height >= 4 && cells.get(i).width >= 4) {
+    private void setInternalCell(List<Cell> cells) {
+        for (Cell cell : cells) {
+            if (cell.height > 4 && cell.width > 4) {
                 boolean room = random.nextBoolean();
-                if(room) {
-                    int horizontallyShift = random.nextInt(cells.get(i).width - 4);
-                    int verticallyShift = random.nextInt(cells.get(i).height - 4);
+                if (room) {
+                    int horizontallyShift = random.nextInt(cell.width - 4);
+                    int verticallyShift = random.nextInt(cell.height - 4);
                     Vector shift = new Vector(-horizontallyShift, -verticallyShift);
-                    cells.get(i).internalCell.setTopLeft(cells.get(i).getTopLeft());
-                    cells.get(i).internalCell.setBottomRight(cells.get(i).getBottomRight().sum(shift));
+                    cell.setInternalCell(new Cell(cell.getTopLeft(), cell.getBottomRight().sum(shift)));
                 }
+            }
+            if (cell.getInternalCell() == null) {
+                cell.setInternalCell(new Cell(cell.getTopLeft(), cell.getBottomRight()));
             }
         }
     }
