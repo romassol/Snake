@@ -104,6 +104,7 @@ public class LevelGenerator {
     private void generateSnakeAndApple(String[][] field){
         ArrayList<Vector> indexesFreeCells = getIndexesFreeCells(field);
         setParameterInFreeCell(field, indexesFreeCells, "H");
+        indexesFreeCells = getIndexesFreeCells(field);
         setParameterInFreeCell(field, indexesFreeCells, "A");
     }
 
