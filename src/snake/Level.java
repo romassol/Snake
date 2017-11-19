@@ -1,8 +1,11 @@
 package snake;
 
+import java.util.HashMap;
+
 public class Level {
     private IFieldObject[][] field;
     private Snake snake;
+    private HashMap<Teleport, Vector> teleports;
     public AppleGenerator appleGenerator;
 
     public Level(
@@ -20,7 +23,12 @@ public class Level {
     public Level(FieldReader reader, int applesCount) {
         field = reader.getField();
         snake = reader.getSnake();
+        teleports = reader.getTeleports();
         appleGenerator = new AppleGenerator(applesCount);
+    }
+
+    public HashMap<Teleport, Vector> getTeleports() {
+        return teleports;
     }
 
     public IFieldObject moveSnakeAndReturnOldCell(Vector snakeDirection) {

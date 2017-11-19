@@ -26,6 +26,8 @@ public class FieldReader {
                 (x, y, vector, parent, child) -> new Empty());
         CHARACTER_TO_FIELD_OBJECT.put('A',
                 (x, y, vector, parent, child) -> new Apple());
+        CHARACTER_TO_FIELD_OBJECT.put('T',
+                (x, y, vector, parent, child) -> new Teleport());
         CHARACTER_TO_FIELD_OBJECT.put('S', SnakePart::new);
         CHARACTER_TO_FIELD_OBJECT.put('H', SnakeHead::new);
     }
@@ -150,5 +152,20 @@ public class FieldReader {
 
     public Snake getSnake() {
         return snake;
+    }
+
+    public HashMap<Teleport, Vector> getTeleports() {
+        HashMap<Teleport, Vector> teleportsPositions = new HashMap<>();
+        for (int y = 0; y < field.length; y++){
+            for (int x = 0; x < field[y].length; x++){
+                if (field[y][x] instanceof Teleport){
+                    teleportsPositions.put((Teleport) field[y][x], new Vector(x, y));
+                }
+            }
+        }
+        if (teleportsPositions.size() % 2 != 0){
+            throw new IllegalArgumentException("Teleports should be an even number");
+        }
+        return teleportsPositions;
     }
 }

@@ -1,5 +1,7 @@
 package snake;
 
+import static java.lang.Math.abs;
+
 public class Vector{
     public final int x;
     public final int y;
