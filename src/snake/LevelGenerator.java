@@ -26,7 +26,7 @@ public class LevelGenerator {
         return new Level(new FieldReader(fileName), applesCount);
     }
 
-    private void createLevelFile(String fileName, String[][] field) throws IOException {
+    protected void createLevelFile(String fileName, String[][] field) throws IOException {
         File levelFile = new File(Settings.LEVEL_URL +fileName);
         FileWriter writeFile = new FileWriter(levelFile);
         StringBuilder strField = new StringBuilder();
@@ -38,7 +38,7 @@ public class LevelGenerator {
         writeFile.close();
     }
 
-    private String[][] getStringField(int fieldHeight, int fieldWidth){
+    protected String[][] getStringField(int fieldHeight, int fieldWidth){
         String[][] field = new String[fieldHeight][fieldWidth];
         fillFieldOfStartingParameters(fieldHeight, fieldWidth, field);
         List<Cell> cells = new ArrayList<>();
@@ -51,12 +51,12 @@ public class LevelGenerator {
         return field;
     }
 
-    private List<Integer> getMinSizeOfInternalCell(List<Cell> cells, int fieldWidth, int fieldHeight){
+    protected List<Integer> getMinSizeOfInternalCell(List<Cell> cells, int fieldWidth, int fieldHeight){
         int minWidth = fieldWidth;
         int minHeight = fieldHeight;
         for(Cell cell:cells){
             minWidth = setMin(minWidth, cell.getInternalCell().width);
-            minHeight = setMin(minHeight, cell.getInternalCell().width);
+            minHeight = setMin(minHeight, cell.getInternalCell().height);
         }
         List<Integer> result = new ArrayList<>();
         result.add(minWidth);
@@ -64,14 +64,14 @@ public class LevelGenerator {
         return result;
     }
 
-    private int setMin(int minValue, int internalCellWidth) {
+    protected int setMin(int minValue, int internalCellWidth) {
         if(minValue > internalCellWidth){
             minValue = internalCellWidth;
         }
         return minValue;
     }
 
-    private void fillFieldOfStartingParameters(int fieldHeight, int fieldWidth, String[][] field) {
+    protected void fillFieldOfStartingParameters(int fieldHeight, int fieldWidth, String[][] field) {
         for(int x=0; x<fieldWidth; x++){
             for(int y=0; y<fieldHeight; y++){
                 field[y][x] = ".";
@@ -79,7 +79,7 @@ public class LevelGenerator {
         }
     }
 
-    private void fillField(String[][] field, List<Cell> cells){
+    protected void fillField(String[][] field, List<Cell> cells){
         for (Cell cell : cells){
             Cell room = cell.getInternalCell();
             createHorizontalWalls(field, room);
@@ -87,34 +87,36 @@ public class LevelGenerator {
         }
     }
 
-    private void createVerticalWalls(String[][] field, Cell room) {
+    protected void createVerticalWalls(String[][] field, Cell room) {
         for (int y = room.getTopLeft().y; y < room.getBottomRight().y; y++){
             field[y][room.getTopLeft().x] = "#";
             field[y][room.getBottomRight().x] = "#";
         }
     }
 
-    private void createHorizontalWalls(String[][] field, Cell room) {
+    protected void createHorizontalWalls(String[][] field, Cell room) {
         for (int x = room.getTopLeft().x; x <= room.getBottomRight().x; x++){
             field[room.getTopLeft().y][x] = "#";
             field[room.getBottomRight().y][x] = "#";
         }
     }
 
-    private void generateSnakeAndApple(String[][] field){
+    protected void generateSnakeAndApple(String[][] field){
         ArrayList<Vector> indexesFreeCells = getIndexesFreeCells(field);
         setParameterInFreeCell(field, indexesFreeCells, "H");
         indexesFreeCells = getIndexesFreeCells(field);
         setParameterInFreeCell(field, indexesFreeCells, "A");
+        indexesFreeCells = getIndexesFreeCells(field);
+        setParameterInFreeCell(field, indexesFreeCells, "J");
     }
 
-    private void setParameterInFreeCell(String[][] field, ArrayList<Vector> indexesFreeCells, String parameter) {
+    protected void setParameterInFreeCell(String[][] field, ArrayList<Vector> indexesFreeCells, String parameter) {
         int snakeIndex = random.nextInt(indexesFreeCells.size());
         Vector randomFreeCell = indexesFreeCells.get(snakeIndex);
         field[randomFreeCell.y][randomFreeCell.x] = parameter;
     }
 
-    private ArrayList<Vector> getIndexesFreeCells(String[][] field) {
+    protected ArrayList<Vector> getIndexesFreeCells(String[][] field) {
         ArrayList<Vector> indexesFreeCells = new ArrayList<>();
         for(int y = 0; y < field.length; y++){
             for (int x = 0; x < field[y].length; x++){
@@ -126,21 +128,25 @@ public class LevelGenerator {
         return indexesFreeCells;
     }
 
-    private void makeHoles(String[][] field, List<Integer> minsize, int fieldHeight, int fieldWidth){
+    protected void makeHoles(String[][] field, List<Integer> minsize, int fieldHeight, int fieldWidth){
         createHolesVertically(field, minsize, fieldHeight, fieldWidth);
         createHolesHorizontally(field, minsize, fieldHeight, fieldWidth);
     }
 
-    private void createHolesHorizontally(String[][] field, List<Integer> minsize, int fieldHeight, int fieldWidth) {
-        for (int y = 0; y < fieldHeight / minsize.get(1); y++){
-            int holeMark = random.nextInt(minsize.get(1)) + 1 + minsize.get(1) * y;
+    protected void createHolesHorizontally(String[][] field,
+                                           List<Integer> minsize,
+                                           int fieldHeight,
+                                           int fieldWidth) {
+        int min_v=minsize.get(1);
+        for (int y = 0; y < fieldHeight / min_v; y++){
+            int holeMark = random.nextInt(min_v) + 1 + min_v * y;
             for (int x = 1; x < fieldWidth - 1; x++){
                 field[holeMark][x] = ".";
             }
         }
     }
 
-    private void createHolesVertically(String[][] field, List<Integer> minsize,
+    protected void createHolesVertically(String[][] field, List<Integer> minsize,
             int fieldHeight, int fieldWidth) {
         for (int x = 0; x < fieldWidth / minsize.get(0); x++){
             int holeMark = random.nextInt(minsize.get(0)) + 1 + minsize.get(0) * x;
@@ -150,7 +156,7 @@ public class LevelGenerator {
         }
     }
 
-    private void fillCells(int fieldWidth, int fieldHeight, int cellSize, List<Cell> cells){
+    protected void fillCells(int fieldWidth, int fieldHeight, int cellSize, List<Cell> cells){
         int numberOfCellsVertically = fieldHeight / cellSize;
         int remainder = fieldHeight % cellSize;
         for (int i = 0; i < numberOfCellsVertically; i++){
@@ -161,7 +167,7 @@ public class LevelGenerator {
         }
     }
 
-    private void fillHorizontal(int numberOfRow, int heightOfCell, int widthOfCell, int fieldWidth, List<Cell> cells) {
+    protected void fillHorizontal(int numberOfRow, int heightOfCell, int widthOfCell, int fieldWidth, List<Cell> cells) {
         int numberOfCellsHorizontally = fieldWidth / widthOfCell;
         int remainder = fieldWidth % widthOfCell;
         for (int j = 0; j < numberOfCellsHorizontally; j++){
@@ -173,13 +179,15 @@ public class LevelGenerator {
         }
     }
 
-    private void setInternalCell(List<Cell> cells) {
+    protected void setInternalCell(List<Cell> cells) {
         for (Cell cell : cells) {
             if (cell.height > 4 && cell.width > 4) {
                 boolean room = random.nextBoolean();
                 if (room) {
                     int horizontallyShift = random.nextInt(cell.width - 4);
+                    horizontallyShift += horizontallyShift == 1 ? 1 : 0;
                     int verticallyShift = random.nextInt(cell.height - 4);
+                    verticallyShift += verticallyShift == 1 ? 1 : 0;
                     Vector shift = new Vector(-horizontallyShift, -verticallyShift);
                     cell.setInternalCell(new Cell(cell.getTopLeft(), cell.getBottomRight().sum(shift)));
                 }

@@ -1,12 +1,16 @@
 package snake;
 
+import snakeGUI.Settings;
+
 public class Snake {
     private SnakePart tail;
     private SnakeHead head;
+    private int juggernautTime;
 
     public Snake(int x, int y, Vector direction) {
         head = new SnakeHead(x, y, direction, null, null);
         tail = head;
+        this.juggernautTime = 0;
     }
 
     public Snake(SnakePart snakePart) {
@@ -33,6 +37,19 @@ public class Snake {
         SnakePart futureTail = tail.getParent();
         futureTail.setChild(null);
         tail = futureTail;
+    }
+
+    public void changeJuggernautTime(int value){
+        if (this.juggernautTime != 0)
+            this.juggernautTime -= value;
+    }
+
+    public Boolean isJuggernaut(){
+        return this.juggernautTime != 0;
+    }
+
+    public void setJuggernautTime(int millisecTime){
+        this.juggernautTime = millisecTime;
     }
 
     public SnakeHead getHead() {

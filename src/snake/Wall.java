@@ -4,6 +4,8 @@ package snake;
 public class Wall implements IFieldObject {
     @Override
     public void intersectWithSnake(Game game) {
-        game.isGameOver = true;
+        if (!game.getCurrentLevel().getSnake().isJuggernaut()){
+            game.isGameOver = true;
+        }
     }
 }

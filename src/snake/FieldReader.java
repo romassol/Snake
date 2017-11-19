@@ -26,6 +26,8 @@ public class FieldReader {
                 (x, y, vector, parent, child) -> new Empty());
         CHARACTER_TO_FIELD_OBJECT.put('A',
                 (x, y, vector, parent, child) -> new Apple());
+        CHARACTER_TO_FIELD_OBJECT.put('J',
+                (x, y, vector, parent, child) -> new Juggernaut());
         CHARACTER_TO_FIELD_OBJECT.put('S', SnakePart::new);
         CHARACTER_TO_FIELD_OBJECT.put('H', SnakeHead::new);
     }
