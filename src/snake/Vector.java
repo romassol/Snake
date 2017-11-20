@@ -35,4 +35,7 @@ public class Vector{
     public Vector sum(Vector other) {
         return new Vector(x + other.x, y + other.y);
     }
+
+    public Vector looping(int width, int height) {
+        return new Vector((x + width) % width, (y + height) % height);}
 }

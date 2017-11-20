@@ -60,6 +60,7 @@ class MainSnakeWindow extends JFrame
             game.setPlayerDirection(playerDirection);
             try {
                 game.makeTurn();
+                game.getCurrentLevel().getSnake().changeJuggernautTime(Settings.FREQUENCY);
             } catch (TurnException exception) {
                 exception.printStackTrace();
             }
