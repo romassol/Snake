@@ -1,3 +1,5 @@
+package snake.tests;
+
 import org.junit.Test;
 import snake.*;
 

@@ -10,7 +10,7 @@ public class Program {
         Level[] levels = new Level[1];
 
         LevelGenerator level = new LevelGenerator();
-        Level newLevel = new Level(new FieldReader("level7.txt"), 7);
+        Level newLevel = new Level(new FieldReader("level9.txt"), 7);
 //        Level newLevel = level.createAndGetLevel("level8.txt", 8);
         levels[0] = newLevel;
         Game game = new Game(levels);

@@ -20,6 +20,8 @@ public class FieldReader {
 
     static {
         CHARACTER_TO_FIELD_OBJECT = new HashMap<>();
+        CHARACTER_TO_FIELD_OBJECT.put('J',
+                (x, y, vector, parent, child) -> new Juggernaut());
         CHARACTER_TO_FIELD_OBJECT.put('#',
                 (x, y, vector, parent, child) -> new Wall());
         CHARACTER_TO_FIELD_OBJECT.put('.',
@@ -123,8 +125,8 @@ public class FieldReader {
         for (Vector anOffset : offset) {
             Vector neighbour = center.getPosition().sum(anOffset);
             if (neighbour.x >= 0 && neighbour.y >= 0 &&
-                    neighbour.x <= field[0].length &&
-                    neighbour.y <= field.length) {
+                    neighbour.x < field[0].length &&
+                    neighbour.y < field.length) {
                 neighbours.add(field[neighbour.y][neighbour.x]);
             }
         }

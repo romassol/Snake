@@ -1,3 +1,5 @@
+package snake.tests;
+
 import org.junit.Test;
 import snake.*;
 
@@ -9,7 +11,7 @@ import static org.junit.Assert.*;
 public class LevelGeneratorTest {
     @Test
     public void createAndGetLevel1() throws Exception {
-        for (int x = 0; x < 100; x++){
+        for (int x = 0; x < 1000; x++){
             createLevelFile();
         }
     }
