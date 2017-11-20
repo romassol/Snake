@@ -71,7 +71,7 @@ public class LevelGenerator {
         return minValue;
     }
 
-    protected void fillFieldOfStartingParameters(int fieldHeight, int fieldWidth, String[][] field) {
+    private void fillFieldOfStartingParameters(int fieldHeight, int fieldWidth, String[][] field) {
         for(int x=0; x<fieldWidth; x++){
             for(int y=0; y<fieldHeight; y++){
                 field[y][x] = ".";
