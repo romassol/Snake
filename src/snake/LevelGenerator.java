@@ -12,7 +12,7 @@ public class LevelGenerator {
     private Random random = new Random();
 
 
-    public Level createAndGetLevel(String fileName, int applesCount)
+    public Level createAndGetLevel(String fileName, int applesCount, int teleportCount)
             throws InvocationTargetException,
             NoSuchMethodException,
             InstantiationException,
@@ -21,7 +21,7 @@ public class LevelGenerator {
         int fieldHeight = random.nextInt(40) + 10;
         int fieldWidth = random.nextInt(40) + 10;
         String[][] field = getStringField(fieldHeight, fieldWidth);
-        generateSnakeAndApple(field);
+        generateAllParameters(field, teleportCount);
         createLevelFile(fileName, field);
         return new Level(new FieldReader(fileName), applesCount);
     }
@@ -101,13 +101,21 @@ public class LevelGenerator {
         }
     }
 
-    private void generateSnakeAndApple(String[][] field){
+    private void generateAllParameters(String[][] field, int teleportCount){
         ArrayList<Vector> indexesFreeCells = getIndexesFreeCells(field);
         setParameterInFreeCell(field, indexesFreeCells, "H");
-        indexesFreeCells = getIndexesFreeCells(field);
-        setParameterInFreeCell(field, indexesFreeCells, "A");
-        indexesFreeCells = getIndexesFreeCells(field);
-        setParameterInFreeCell(field, indexesFreeCells, "J");
+
+        createParameters(field, 1, "A");
+        createParameters(field, 1, "J");
+        createParameters(field, teleportCount, "T");
+    }
+
+    private void createParameters(String[][] field, int count, String parameter) {
+        ArrayList<Vector> indexesFreeCells;
+        for (int i = 0; i < count; i++) {
+            indexesFreeCells = getIndexesFreeCells(field);
+            setParameterInFreeCell(field, indexesFreeCells, parameter);
+        }
     }
 
     private void setParameterInFreeCell(String[][] field, ArrayList<Vector> indexesFreeCells, String parameter) {
@@ -136,7 +144,7 @@ public class LevelGenerator {
     private void createHolesHorizontally(String[][] field,
             List<Integer> minsize,
             int fieldWidth, int fieldHeight, int cellSize) {
-        int min_v=minsize.get(1) - 2;
+        int min_v = minsize.get(1) - 2;
         int countOfCells = fieldHeight/cellSize;
         for (int y = 0; y < countOfCells; y++){
             int holeMark = random.nextInt(min_v) + 1 + cellSize * y;
@@ -148,7 +156,7 @@ public class LevelGenerator {
 
     private void createHolesVertically(String[][] field, List<Integer> minsize, int fieldWidth,
             int fieldHeight, int cellSize) {
-        int min_v=minsize.get(0) - 2;
+        int min_v = minsize.get(0) - 2;
         int countOfCells = fieldWidth/cellSize;
         for (int x = 0; x < countOfCells; x++){
             int holeMark = random.nextInt(min_v) + 1 + cellSize * x;
