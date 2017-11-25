@@ -7,24 +7,28 @@ public class Level {
     private Snake snake;
     private HashMap<Teleport, Vector> teleports;
     public AppleGenerator appleGenerator;
+    public JuggernautGenerator juggernautGenerator;
 
     public Level(
             int width,
             int height,
             int applesCount,
+            int juggernautCount,
             Vector snakePosition,
             Vector snakeDirection) {
         field = new IFieldObject[height][width];
         appleGenerator = new AppleGenerator(applesCount);
+        juggernautGenerator = new JuggernautGenerator(juggernautCount);
         snake = new Snake(snakePosition.x, snakePosition.y, snakeDirection);
         field[snakePosition.y][snakePosition.x] = snake.getHead();
     }
 
-    public Level(FieldReader reader, int applesCount) {
+    public Level(FieldReader reader, int applesCount, int juggernautCount) {
         field = reader.getField();
         snake = reader.getSnake();
         teleports = reader.getTeleports();
         appleGenerator = new AppleGenerator(applesCount);
+        juggernautGenerator = new JuggernautGenerator(juggernautCount);
     }
 
     public HashMap<Teleport, Vector> getTeleports() {
@@ -80,6 +84,10 @@ public class Level {
     public void addSnakePart() {
         SnakePart tail = snake.addPartAndReturnTail(getLevelSize());
         field[tail.getY()][tail.getX()] = tail;
+    }
+
+    public JuggernautGenerator getJuggernautGenerator() {
+        return juggernautGenerator;
     }
 
     public boolean isOver(){

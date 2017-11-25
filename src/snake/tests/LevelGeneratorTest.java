@@ -19,7 +19,7 @@ public class LevelGeneratorTest {
     public void createLevelFile() throws Exception {
         LevelGenerator generator = new LevelGenerator();
         int deadlockCount = 0;
-        Level testLevel = generator.createAndGetLevel("fortest.txt", 8);
+        Level testLevel = generator.createAndGetLevel("fortest.txt", 8, 0);
         for (int x = 0; x < testLevel.getLevelSize().x; x++){
             for (int y = 0; y < testLevel.getLevelSize().y; y++){
                 if (!(testLevel.getFieldObject(x, y) instanceof Wall)){
@@ -58,7 +58,7 @@ public class LevelGeneratorTest {
     @Test
     public void checkLevelClosedRooms() throws Exception{
         LevelGenerator generator = new LevelGenerator();
-        Level testLevel = generator.createAndGetLevel("fortest.txt", 8);
+        Level testLevel = generator.createAndGetLevel("fortest.txt", 8, 0);
         ArrayList<Vector> empties = new ArrayList();
         for (int x = 0; x < testLevel.getLevelSize().x; x++) {
             for (int y = 0; y < testLevel.getLevelSize().y; y++) {
@@ -117,5 +117,26 @@ public class LevelGeneratorTest {
             }
         }
         assertEquals(empties.size(), passed.size());
+    }
+
+    @Test
+    public void testSnakeOnFields() throws Exception{
+        for (int x = 0; x < 1000; x++){
+            testSnakeOnField();
+        }
+    }
+
+    @Test
+    public void testSnakeOnField() throws Exception {
+        LevelGenerator generator = new LevelGenerator();
+        Level testLevel = generator.createAndGetLevel("fortest.txt", 8, 0);
+        boolean snakeOnField = false;
+        for (int y = 0; y < testLevel.getLevelSize().y; y++) {
+            for (int x = 0; x < testLevel.getLevelSize().x; x++) {
+                if (testLevel.getFieldObject(x, y) instanceof SnakeHead)
+                    snakeOnField = true;
+            }
+        }
+        assertEquals(true, snakeOnField);
     }
 }

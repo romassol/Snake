@@ -11,7 +11,7 @@ public class Program {
 
         LevelGenerator level = new LevelGenerator();
         //Level newLevel = new Level(new FieldReader("fortest.txt"), 4);
-        Level newLevel = level.createAndGetLevel("level8.txt", 8);
+        Level newLevel = level.createAndGetLevel("level8.txt", 8, 2);
         levels[0] = newLevel;
         Game game = new Game(levels);
         MainSnakeWindow window = new MainSnakeWindow(game);
