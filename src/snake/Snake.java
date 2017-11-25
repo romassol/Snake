@@ -40,8 +40,7 @@ public class Snake {
     }
 
     public void changeJuggernautTime(int value){
-        if (this.juggernautTime > 0)
-            this.juggernautTime -= value;
+        this.juggernautTime -= value;
     }
 
     public Boolean isJuggernaut(){

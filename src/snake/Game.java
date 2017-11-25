@@ -34,6 +34,11 @@ public class Game {
             currentLevelIndex++;
         }
         getCurrentLevel().appleGenerator.generate(getCurrentLevel());
+
+        if (!getCurrentLevel().juggernautGenerator.isNeedToAdd()) {
+            return;
+        }
+        getCurrentLevel().juggernautGenerator.generate(getCurrentLevel());
     }
 
     public Game(Level[] levels) {
