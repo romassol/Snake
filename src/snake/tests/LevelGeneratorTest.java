@@ -3,7 +3,6 @@ package snake.tests;
 import org.junit.Test;
 import snake.*;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -47,7 +46,6 @@ public class LevelGeneratorTest {
             }
         }
         assertEquals(0, deadlockCount);
-
     }
 
     @Test
@@ -61,17 +59,17 @@ public class LevelGeneratorTest {
     public void checkLevelClosedRooms() throws Exception{
         LevelGenerator generator = new LevelGenerator();
         Level testLevel = generator.createAndGetLevel("fortest.txt", 8);
-        ArrayList<Vector> emptys = new ArrayList();
+        ArrayList<Vector> empties = new ArrayList();
         for (int x = 0; x < testLevel.getLevelSize().x; x++) {
             for (int y = 0; y < testLevel.getLevelSize().y; y++) {
                 if (!(testLevel.getFieldObject(x, y) instanceof Wall))
-                    emptys.add(new Vector(x, y));
+                    empties.add(new Vector(x, y));
             }
         }
         ArrayList<Vector> passed = new ArrayList<>();
         ArrayList<Vector> queue = new ArrayList<>();
-        passed.add(emptys.get(0));
-        queue.add(emptys.get(0));
+        passed.add(empties.get(0));
+        queue.add(empties.get(0));
         while (queue.size() != 0)
         {
             Vector point = queue.get(queue.size() - 1);
@@ -105,19 +103,19 @@ public class LevelGeneratorTest {
                 }
             }
         }
-        String strField = "";
-        if (emptys.size() != passed.size()) {
+        StringBuilder strField = new StringBuilder();
+        if (empties.size() != passed.size()) {
             for (int y = 0; y < testLevel.getLevelSize().y; y++) {
                 for (int x = 0; x < testLevel.getLevelSize().x; x++) {
                     if (!(testLevel.getFieldObject(x, y) instanceof Wall))
-                        strField += "#";
+                        strField.append("#");
                     else
-                        strField += ".";
+                        strField.append(".");
                 }
                 System.out.println(strField);
-                strField = "";
+                strField = new StringBuilder();
             }
         }
-        assertEquals(emptys.size(), passed.size());
+        assertEquals(empties.size(), passed.size());
     }
 }

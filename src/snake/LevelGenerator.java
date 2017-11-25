@@ -47,7 +47,7 @@ public class LevelGenerator {
         setInternalCell(cells);
         fillField(field, cells);
         List<Integer> minSize = getMinSizeOfInternalCell(cells, fieldWidth, fieldHeight);
-        makeHoles(field, minSize, fieldHeight, fieldWidth);
+        makeHoles(field, minSize, fieldHeight, fieldWidth, cellSize);
         return field;
     }
 
@@ -128,28 +128,30 @@ public class LevelGenerator {
         return indexesFreeCells;
     }
 
-    private void makeHoles(String[][] field, List<Integer> minsize, int fieldHeight, int fieldWidth){
-        createHolesVertically(field, minsize, fieldHeight, fieldWidth);
-        createHolesHorizontally(field, minsize, fieldHeight, fieldWidth);
+    private void makeHoles(String[][] field, List<Integer> minsize, int fieldHeight, int fieldWidth, int cellSize){
+        createHolesVertically(field, minsize, fieldWidth, fieldHeight, cellSize);
+        createHolesHorizontally(field, minsize, fieldWidth, fieldHeight, cellSize);
     }
 
     private void createHolesHorizontally(String[][] field,
             List<Integer> minsize,
-            int fieldHeight,
-            int fieldWidth) {
-        int min_v=minsize.get(1);
-        for (int y = 0; y < fieldHeight / min_v; y++){
-            int holeMark = random.nextInt(min_v) + min_v * y;
+            int fieldWidth, int fieldHeight, int cellSize) {
+        int min_v=minsize.get(1) - 2;
+        int countOfCells = fieldHeight/cellSize;
+        for (int y = 0; y < countOfCells; y++){
+            int holeMark = random.nextInt(min_v) + 1 + cellSize * y;
             for (int x = 1; x < fieldWidth - 1; x++){
                 field[holeMark][x] = ".";
             }
         }
     }
 
-    private void createHolesVertically(String[][] field, List<Integer> minsize,
-            int fieldHeight, int fieldWidth) {
-        for (int x = 0; x < fieldWidth / minsize.get(0); x++){
-            int holeMark = random.nextInt(minsize.get(0)) + minsize.get(0) * x;
+    private void createHolesVertically(String[][] field, List<Integer> minsize, int fieldWidth,
+            int fieldHeight, int cellSize) {
+        int min_v=minsize.get(0) - 2;
+        int countOfCells = fieldWidth/cellSize;
+        for (int x = 0; x < countOfCells; x++){
+            int holeMark = random.nextInt(min_v) + 1 + cellSize * x;
             for (int y = 1; y < fieldHeight - 1; y++){
                 field[y][holeMark] = ".";
             }
