@@ -23,7 +23,8 @@ public class JuggernautGenerator {
         if (juggernautesCount <= 0)
             return;
 
-        ArrayList<Vector> freeCellsIndexes = getAllFreeCells(level);
+        ArrayList<Vector> freeCellsIndexes;
+        freeCellsIndexes = getAllFreeCells(level);
         Random random = new Random();
         int index = random.nextInt(freeCellsIndexes.size());
         Vector randomFreeCell = freeCellsIndexes.get(index);

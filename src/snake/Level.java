@@ -2,33 +2,39 @@ package snake;
 
 import java.util.HashMap;
 
+import static java.lang.Math.abs;
+
 public class Level {
     private IFieldObject[][] field;
     private Snake snake;
     private HashMap<Teleport, Vector> teleports;
     public AppleGenerator appleGenerator;
-    public JuggernautGenerator juggernautGenerator;
+    private JuggernautGenerator juggernautGenerator;
+    private TeleportGenerator teleportGenerator;
 
     public Level(
             int width,
             int height,
             int applesCount,
             int juggernautCount,
+            int teleportsPairCount,
             Vector snakePosition,
             Vector snakeDirection) {
         field = new IFieldObject[height][width];
         appleGenerator = new AppleGenerator(applesCount);
         juggernautGenerator = new JuggernautGenerator(juggernautCount);
+        teleportGenerator = new TeleportGenerator(teleportsPairCount);
         snake = new Snake(snakePosition.x, snakePosition.y, snakeDirection);
         field[snakePosition.y][snakePosition.x] = snake.getHead();
     }
 
-    public Level(FieldReader reader, int applesCount, int juggernautCount) {
+    public Level(FieldReader reader, int applesCount, int juggernautCount, int teleportsPairCount) {
         field = reader.getField();
         snake = reader.getSnake();
         teleports = reader.getTeleports();
         appleGenerator = new AppleGenerator(applesCount);
         juggernautGenerator = new JuggernautGenerator(juggernautCount);
+        teleportGenerator = new TeleportGenerator(teleportsPairCount);
     }
 
     public HashMap<Teleport, Vector> getTeleports() {
@@ -41,7 +47,7 @@ public class Level {
         Empty emptyObj = new Empty();
 
         while (currentSnakePart != null) {
-            Vector nextPosition = getCoordinates(
+            Vector nextPosition= getCoordinates(
                     currentSnakePart.getPosition(),
                     parentDirection);
 
@@ -60,14 +66,15 @@ public class Level {
 
     private IFieldObject moveSnakeHeadAndReturnOldCell(Vector snakeDirection) {
         Vector direction;
-
-        if (snakeDirection == null ||
-                snake.getHead().getDirection().isOpposite(snakeDirection))
+        Vector nextPosition;
+        if ((snakeDirection == null ||
+                snake.getHead().getDirection().isOpposite(snakeDirection)) &&
+                checkIsInstanceOfDirection(snakeDirection))
             direction = snake.getHead().getDirection();
         else
             direction = snakeDirection;
 
-        Vector nextPosition = getCoordinates(
+        nextPosition = getCoordinates(
                 snake.getHead().getPosition(),
                 direction);
 
@@ -79,6 +86,13 @@ public class Level {
         field[nextPosition.y][nextPosition.x] = snake.getHead();
 
         return oldCell;
+    }
+
+    private boolean checkIsInstanceOfDirection(Vector snakeDirection) {
+        return (snake.getHead().getDirection().x == 0 || abs(snake.getHead().getDirection().x) == 1) &&
+                (snake.getHead().getDirection().y == 0 || abs(snake.getHead().getDirection().y) == 1) &&
+                (snakeDirection.x == 0 || abs(snakeDirection.x) == 1) &&
+                (snakeDirection.y == 0 || abs(snakeDirection.y) == 1);
     }
 
     public void addSnakePart() {
@@ -120,5 +134,9 @@ public class Level {
 
     public Snake getSnake() {
         return snake;
+    }
+
+    public TeleportGenerator getTeleportGenerator() {
+        return teleportGenerator;
     }
 }

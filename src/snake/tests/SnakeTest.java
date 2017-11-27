@@ -50,7 +50,7 @@ public class SnakeTest {
     @Test
     public void level_addSnakePart() {
         Level level = new Level(
-                3, 4, 3,0, new Vector(1, 1), Direction.TOP);
+                3, 4, 3,0,0, new Vector(1, 1), Direction.TOP);
         level.addSnakePart();
         level.addSnakePart();
 
@@ -61,7 +61,7 @@ public class SnakeTest {
     @Test
     public void someElementsSnakeMoving() {
         Level level = new Level(
-                3 ,3,1,0, new Vector(2, 2), Direction.RIGHT);
+                3 ,3,1,0,0, new Vector(2, 2), Direction.RIGHT);
         fillField(level);
         level.addSnakePart();
 
@@ -76,7 +76,7 @@ public class SnakeTest {
     @Test
     public void oneElementSnakeMoving() {
         Level level = new Level(
-                3 ,3,1,0, new Vector(2, 2), Direction.LEFT);
+                3 ,3,1,0,0, new Vector(2, 2), Direction.LEFT);
         fillField(level);
 
         level.moveSnakeAndReturnOldCell(null);
@@ -87,7 +87,7 @@ public class SnakeTest {
     @Test
     public void snakeMovingInCircle() {
         Level level = new Level(
-                4 ,5,1,0, new Vector(1, 1), Direction.TOP);
+                4 ,5,1,0,0, new Vector(1, 1), Direction.TOP);
 
         level.addSnakePart();
         level.getSnake().getTail().setDirection(Direction.LEFT);
@@ -104,8 +104,8 @@ public class SnakeTest {
     @Test
     public void goToTheNextLevel() throws Exception {
         Level[] levels = new Level[2];
-        levels[0] = new Level(new FieldReader("level5.txt"), 0, 0);
-        levels[1] = new Level(new FieldReader("_testMap_snakeWithSomeElements.txt"), 1, 0);
+        levels[0] = new Level(new FieldReader("level5.txt"), 0, 0, 0);
+        levels[1] = new Level(new FieldReader("_testMap_snakeWithSomeElements.txt"), 1, 0, 0);
         Game game = new Game(levels);
         assertEquals(levels[0], game.getCurrentLevel());
         game.setPlayerDirection(Direction.RIGHT);

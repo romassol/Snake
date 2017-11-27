@@ -23,7 +23,7 @@ public class LevelGenerator {
         String[][] field = getStringField(fieldHeight, fieldWidth);
         generateAllParameters(field, teleportCount);
         createLevelFile(fileName, field);
-        return new Level(new FieldReader(fileName), applesCount);
+        return new Level(new FieldReader(fileName), applesCount, 5, 2);
     }
 
     private void createLevelFile(String fileName, String[][] field) throws IOException {

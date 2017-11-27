@@ -1,6 +1,8 @@
 package snake;
 
 
+import javax.xml.stream.FactoryConfigurationError;
+
 public class Game {
     private Level[] levels;
     private int currentLevelIndex;
@@ -20,6 +22,13 @@ public class Game {
         if(isGameOver) {
             return;
         }
+        if (getCurrentLevel().getTeleportGenerator().isNeedToAdd(oldCell)) {
+            getCurrentLevel().getTeleportGenerator().generate(getCurrentLevel());
+        }
+
+        if (getCurrentLevel().getJuggernautGenerator().isNeedToAdd()) {
+            getCurrentLevel().getJuggernautGenerator().generate(getCurrentLevel());
+        }
 
         if (!getCurrentLevel().appleGenerator.isNeedToAdd(oldCell)) {
             return;
@@ -34,11 +43,6 @@ public class Game {
             currentLevelIndex++;
         }
         getCurrentLevel().appleGenerator.generate(getCurrentLevel());
-
-        if (!getCurrentLevel().juggernautGenerator.isNeedToAdd()) {
-            return;
-        }
-        getCurrentLevel().juggernautGenerator.generate(getCurrentLevel());
     }
 
     public Game(Level[] levels) {

@@ -11,13 +11,20 @@ public class Teleport implements IFieldObject {
         Random random = new Random();
         List<Teleport> teleports = new ArrayList<>(game.getCurrentLevel().getTeleports().keySet());
         int index = random.nextInt(game.getCurrentLevel().getTeleports().size());
+
         Vector futureTeleportPosition = game.getCurrentLevel().getTeleports().get(teleports.get(index));
-        Vector direction = futureTeleportPosition.subtract(game.getCurrentLevel().getSnake().getHead().getPosition());
-        Vector playerDirection = game.getCurrentLevel().getSnake().getHead().getDirection();
-        game.getCurrentLevel().getSnake().getHead().setDirection(Direction.ZERO);
-        IFieldObject oldObject = game.getCurrentLevel().moveSnakeAndReturnOldCell(direction);
-        game.getCurrentLevel().getSnake().getHead().setDirection(playerDirection);
-        Teleport futureTeleport = (Teleport) oldObject;
+        game.getCurrentLevel().setObjectOnField(game.getCurrentLevel().getSnake().getHead().getPosition(), new Empty());
+
+        if(game.getCurrentLevel().getSnake().getHead().getChild() != null) {
+            Vector direction = futureTeleportPosition.subtract(game.getCurrentLevel().getSnake().getHead().getChild().getPosition());
+            game.getCurrentLevel().getSnake().getHead().setDirection(direction);
+        }
+
+        IFieldObject oldCell = game.getCurrentLevel().getFieldObject(futureTeleportPosition.x, futureTeleportPosition.y);
+        game.getCurrentLevel().getSnake().getHead().setPosition(futureTeleportPosition);
+        game.getCurrentLevel().setObjectOnField(futureTeleportPosition, game.getCurrentLevel().getSnake().getHead());
+
+        Teleport futureTeleport = (Teleport) oldCell;
         game.getCurrentLevel().getTeleports().remove(futureTeleport);
     }
 }

@@ -16,7 +16,7 @@ public class TeleportTest {
         LevelGenerator generator = new LevelGenerator();
         Level[] levels = new Level[1];
         for(int i = 0; i < 1000; i++){
-            Level level  = generator.createAndGetLevel("teleportsTests.txt.txt", 8, 2);
+            Level level  = generator.createAndGetLevel("teleportsTests.txt", 8, 2);
             levels[0] = level;
             Game game = new Game(levels);
             List<Teleport> teleports = new ArrayList<>(level.getTeleports().keySet());
