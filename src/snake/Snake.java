@@ -17,6 +17,18 @@ public class Snake {
         this(snakePart.getX(), snakePart.getY(), snakePart.getDirection());
     }
 
+    public Snake getClone(){
+        Snake clonedSnake = new Snake(head.getX(), head.getY(), head.getDirection());
+        SnakePart current = head.getChild();
+        SnakePart parentCloned = clonedSnake.head;
+        while (current != null){
+            clonedSnake.addPart(current.getClone(parentCloned, null));
+            current = current.getChild();
+            parentCloned = parentCloned.getChild();
+        }
+        return clonedSnake;
+    }
+
     public SnakePart addPartAndReturnTail(Vector levelSize) {
         int x = (tail.getX() + tail.getDirection().x * (-1)) % levelSize.x;
         int y = (tail.getY() + tail.getDirection().y * (-1)) % levelSize.y;

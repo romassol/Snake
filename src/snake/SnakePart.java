@@ -22,9 +22,14 @@ public class SnakePart extends IListedFieldObject {
         this.child = child;
     }
 
+    public SnakePart getClone(SnakePart parent, SnakePart child){
+        Vector clonedDirection = new Vector(direction.x, direction.y);
+        return new SnakePart(getX(), getY(), clonedDirection, parent, child);
+    }
+
     @Override
     public void intersectWithSnake(Game game) {
-        game.isGameOver = true;
+        game.setIsGameOver(true);
     }
 
     public Vector getPosition() {

@@ -37,6 +37,21 @@ public class Level {
         teleportGenerator = new TeleportGenerator(teleportsPairCount);
     }
 
+    public Level(IFieldObject[][] field, Snake snake, HashMap<Teleport, Vector> teleports,
+            int applesCount, int juggernautCount, int teleportsPairCount) {
+        this.field = new IFieldObject[field.length][field[0].length];
+        for(int i = 0; i<field.length;i++){
+            for(int j = 0; j<field[i].length; j++){
+                this.field[i][j] = field[i][j];
+            }
+        }
+        this.snake = snake.getClone();
+        this.teleports = (HashMap<Teleport, Vector>) teleports.clone();
+        appleGenerator = new AppleGenerator(applesCount);
+        juggernautGenerator = new JuggernautGenerator(juggernautCount);
+        teleportGenerator = new TeleportGenerator(teleportsPairCount);
+    }
+
     public HashMap<Teleport, Vector> getTeleports() {
         return teleports;
     }
@@ -62,6 +77,10 @@ public class Level {
         }
 
         return moveSnakeHeadAndReturnOldCell(snakeDirection);
+    }
+    public Level getClone(){
+        return new Level(field, snake, teleports, appleGenerator.getApplesCount(),
+                juggernautGenerator.getJuggernautesCount(), teleportGenerator.getTeleportsPairCount());
     }
 
     private IFieldObject moveSnakeHeadAndReturnOldCell(Vector snakeDirection) {

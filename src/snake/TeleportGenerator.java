@@ -48,4 +48,8 @@ public class TeleportGenerator {
         }
         return indexesFreeCells;
     }
+
+    public int getTeleportsPairCount() {
+        return teleportsPairCount;
+    }
 }

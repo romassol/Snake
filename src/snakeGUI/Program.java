@@ -4,6 +4,7 @@ import snake.*;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Stack;
 
 public class Program {
     public static void main(String[] args) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IOException, IllegalAccessException {

@@ -1,12 +1,11 @@
 package snakeGUI;
 
-import snake.Game;
-import snake.TurnException;
-import snake.Vector;
+import snake.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.Stack;
 
 class MainSnakeWindow extends JFrame
 {
@@ -15,12 +14,15 @@ class MainSnakeWindow extends JFrame
     private int cellSize;
     private Timer timer;
     Vector playerDirection;
+    Stack<Level> timeMachine;
+    Level currentLevel;
 
     private FieldPanel fieldPanel;
     private ScorePanel scorePanel;
 
     MainSnakeWindow(Game game) {
         super("Snake");
+        timeMachine = game.getTimeMachine();
         setWindowSizeConstants(game);
 
         JPanel mainPanel = new JPanel();
@@ -54,27 +56,33 @@ class MainSnakeWindow extends JFrame
 
     private ActionListener timerTick(Game game) {
         return e -> {
-            if (playerDirection == null)
+            if (playerDirection == null || playerDirection == Direction.ZERO)
                 return;
-
             game.setPlayerDirection(playerDirection);
             try {
-                game.makeTurn();
-                game.getCurrentLevel().getSnake().changeJuggernautTime(Settings.FREQUENCY);
-                game.getCurrentLevel().getJuggernautGenerator().changeTimer(Settings.FREQUENCY);
+                if (currentLevel != null){
+                    fieldPanel.updateLabels();
+                    game.setCurrentLevel(currentLevel);
+                    fieldPanel.updateLevel(game.getCurrentLevel());
+                }
+                else {
+                    timeMachine.push(game.getCurrentLevel().getClone());
+                    game.makeTurn();
+                    game.getCurrentLevel().getSnake().changeJuggernautTime(Settings.FREQUENCY);
+                    game.getCurrentLevel().getJuggernautGenerator().changeTimer(Settings.FREQUENCY);
+                }
+
             } catch (TurnException exception) {
                 exception.printStackTrace();
             }
 
-            if (game.isGameOver) {
-                if (game.isWin)
+            if (game.getIsGameOver()) {
+                if (game.getIsWin())
                     fieldPanel.updateLabels();
-                endGame(game.isWin);
+                endGame(game.getIsWin());
                 return;
             }
-
             fieldPanel.updateLabels();
-
         };
     }
 

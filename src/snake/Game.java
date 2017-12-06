@@ -1,14 +1,15 @@
 package snake;
 
 
-import javax.xml.stream.FactoryConfigurationError;
+import java.util.Stack;
 
 public class Game {
     private Level[] levels;
     private int currentLevelIndex;
     private Vector playerDirection;
-    public boolean isGameOver;
-    public boolean isWin;
+    private boolean isGameOver;
+    private boolean isWin;
+    private Stack<Level> timeMachine;
 
     public void makeTurn() throws TurnException {
         if(isGameOver) {
@@ -30,8 +31,8 @@ public class Game {
             getCurrentLevel().getJuggernautGenerator().generate(getCurrentLevel());
         }
 
-        if (!getCurrentLevel().appleGenerator.isNeedToAdd(oldCell)) {
-            return;
+        if (getCurrentLevel().appleGenerator.isNeedToAdd(oldCell)) {
+            getCurrentLevel().appleGenerator.generate(getCurrentLevel());
         }
 
         if (getCurrentLevel().isOver()) {
@@ -42,7 +43,6 @@ public class Game {
             }
             currentLevelIndex++;
         }
-        getCurrentLevel().appleGenerator.generate(getCurrentLevel());
     }
 
     public Game(Level[] levels) {
@@ -50,6 +50,7 @@ public class Game {
         currentLevelIndex = 0;
         isGameOver = false;
         isWin = false;
+        timeMachine = new Stack<>();
     }
 
     public void setPlayerDirection(Vector playerDirection) {
@@ -59,8 +60,31 @@ public class Game {
     public Level getCurrentLevel() {
         return levels[currentLevelIndex];
     }
+    public void setCurrentLevel(Level level){
+        levels[currentLevelIndex] = level;
+    }
 
     private boolean isLevelLast() {
         return currentLevelIndex == levels.length - 1;
+    }
+
+    public Stack<Level> getTimeMachine() {
+        return timeMachine;
+    }
+
+    public boolean getIsGameOver(){
+        return isGameOver;
+    }
+
+    public void setIsGameOver(boolean isGameOver){
+        this.isGameOver = isGameOver;
+    }
+
+    public boolean getIsWin(){
+        return isWin;
+    }
+
+    public void setIsWin(boolean isWin){
+        this.isWin = isWin;
     }
 }

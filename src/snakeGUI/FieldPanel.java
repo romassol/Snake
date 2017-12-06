@@ -33,6 +33,10 @@ class FieldPanel extends JPanel {
         updateLabels();
     }
 
+    void updateLevel(Level level){
+        this.level = level;
+    }
+
     void updateLabels() {
         if (labels.size() > 0)
             removeLabels();

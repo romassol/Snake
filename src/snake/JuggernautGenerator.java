@@ -45,4 +45,8 @@ public class JuggernautGenerator {
         }
         return indexesFreeCells;
     }
+
+    public int getJuggernautesCount() {
+        return juggernautesCount;
+    }
 }
